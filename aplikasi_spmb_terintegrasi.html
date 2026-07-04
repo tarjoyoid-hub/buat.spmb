@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem SPMB Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .page-section { display: none; }
+        .page-section.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Loader */
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center cursor-pointer" onclick="navigate('home')">
+                    <i class="fas fa-graduation-cap text-2xl mr-2"></i>
+                    <span class="font-bold text-xl" id="nav-school-name">SPMB Online</span>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-white hover:text-gray-200 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-4" id="desktop-menu">
+                    <button onclick="navigate('home')" class="hover:bg-blue-600 px-3 py-2 rounded">Beranda</button>
+                    <button onclick="navigate('flow')" class="hover:bg-blue-600 px-3 py-2 rounded">Alur Pendaftaran</button>
+                    <button onclick="navigate('form')" class="hover:bg-blue-600 px-3 py-2 rounded font-bold text-yellow-300">Daftar Sekarang</button>
+                    <button onclick="navigate('edit-student')" class="hover:bg-blue-600 px-3 py-2 rounded">Cek/Edit Data</button>
+                    <button onclick="navigate('announcement')" class="hover:bg-blue-600 px-3 py-2 rounded">Pengumuman</button>
+                    <button onclick="navigate('admin-login')" class="bg-blue-800 hover:bg-blue-900 px-3 py-2 rounded text-sm"><i class="fas fa-lock mr-1"></i> Admin</button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-blue-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button onclick="navigate('home'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded">Beranda</button>
+                <button onclick="navigate('flow'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded">Alur Pendaftaran</button>
+                <button onclick="navigate('form'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded text-yellow-300">Daftar Sekarang</button>
+                <button onclick="navigate('edit-student'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded">Cek/Edit Data</button>
+                <button onclick="navigate('announcement'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded">Pengumuman</button>
+                <button onclick="navigate('admin-login'); toggleMobileMenu()" class="block w-full text-left bg-blue-900 hover:bg-blue-700 px-3 py-2 rounded text-sm">Login Admin</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- 1. Beranda -->
+        <section id="home" class="page-section active">
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                <div class="h-64 bg-gray-300 relative w-full flex justify-center items-center overflow-hidden">
+                   <img id="ui-hero-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Sekolah" class="w-full h-full object-cover">
+                   <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                       <h1 class="text-4xl md:text-5xl text-white font-bold text-center px-4" id="ui-school-name">Nama Sekolah</h1>
+                   </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-2 space-y-8">
+                    <!-- Sambutan Kepala Sekolah -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6">
+                        <img id="ui-kepsek-img" src="https://via.placeholder.com/150" alt="Kepala Sekolah" class="w-32 h-32 rounded-full object-cover border-4 border-blue-100 mx-auto sm:mx-0">
+                        <div>
+                            <h2 class="text-2xl font-bold mb-2 text-blue-800">Sambutan Kepala Sekolah</h2>
+                            <p class="text-gray-600 italic mb-2" id="ui-kepsek-name">Bapak/Ibu Kepala Sekolah</p>
+                            <p class="text-gray-700 text-justify" id="ui-kepsek-msg">Memuat sambutan...</p>
+                        </div>
+                    </div>
+
+                    <!-- Visi Misi -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold mb-4 text-blue-800"><i class="fas fa-eye mr-2"></i>Visi & Misi</h2>
+                        <div class="prose max-w-none text-gray-700" id="ui-visi-misi">
+                            Memuat visi misi...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jadwal & Info -->
+                <div class="space-y-6">
+                    <div class="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-100">
+                        <h3 class="text-xl font-bold mb-4 text-blue-800"><i class="fas fa-calendar-alt mr-2"></i>Jadwal Seleksi</h3>
+                        <ul class="space-y-3" id="ui-schedule">
+                            <!-- Injected by JS -->
+                        </ul>
+                    </div>
+                    <div class="bg-yellow-50 p-6 rounded-xl shadow-sm border border-yellow-100 text-center">
+                        <h3 class="text-lg font-bold mb-2 text-yellow-800">Pendaftaran Dibuka!</h3>
+                        <p class="text-sm text-yellow-700 mb-4">Segera daftarkan diri Anda sebelum kuota terpenuhi.</p>
+                        <button onclick="navigate('form')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition">
+                            Daftar Sekarang <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Alur Pendaftaran -->
+        <section id="flow" class="page-section">
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold mb-8 text-center text-blue-800">Alur Pendaftaran SPMB</h2>
+                <div class="relative border-l-4 border-blue-500 ml-3 md:ml-6 space-y-8 pb-4">
+                    <div class="pl-6 relative">
+                        <div class="absolute w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center font-bold -left-4 top-0 border-4 border-white shadow">1</div>
+                        <h3 class="text-xl font-bold">Pengisian Formulir Online</h3>
+                        <p class="text-gray-600">Calon siswa mengisi formulir pendaftaran melalui menu "Daftar Sekarang" dengan data yang valid.</p>
+                    </div>
+                    <div class="pl-6 relative">
+                        <div class="absolute w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center font-bold -left-4 top-0 border-4 border-white shadow">2</div>
+                        <h3 class="text-xl font-bold">Cetak/Simpan Kartu Pendaftaran</h3>
+                        <p class="text-gray-600">Setelah berhasil mendaftar, sistem otomatis akan menerbitkan kartu bukti pendaftaran (juga dikirim via email).</p>
+                    </div>
+                    <div class="pl-6 relative">
+                        <div class="absolute w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center font-bold -left-4 top-0 border-4 border-white shadow">3</div>
+                        <h3 class="text-xl font-bold">Verifikasi Berkas oleh Admin</h3>
+                        <p class="text-gray-600">Panitia SPMB akan memvalidasi data yang telah masuk melalui sistem secara real-time.</p>
+                    </div>
+                    <div class="pl-6 relative">
+                        <div class="absolute w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center font-bold -left-4 top-0 border-4 border-white shadow">4</div>
+                        <h3 class="text-xl font-bold">Pengumuman Kelulusan</h3>
+                        <p class="text-gray-600">Calon siswa dapat mengecek status kelulusan pada menu "Pengumuman" sesuai jadwal yang ditentukan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Formulir Pendaftaran -->
+        <section id="form" class="page-section">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md border-t-4 border-blue-600">
+                <h2 class="text-2xl font-bold mb-2 text-gray-800">Formulir Pendaftaran</h2>
+                <p class="text-gray-500 mb-6 text-sm">Isi data di bawah ini dengan sebenar-benarnya. Field bertanda (*) wajib diisi.</p>
+                
+                <form id="registrationForm" onsubmit="submitRegistration(event)">
+                    <div id="dynamic-fields-container" class="space-y-4 mb-6">
+                        <!-- Fields di-inject via JS berdasarkan pengaturan admin -->
+                    </div>
+                    
+                    <!-- Email for Auto-send Card -->
+                    <div class="space-y-4 mb-6 pt-4 border-t border-gray-200">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Aktif (Untuk pengiriman Kartu) <span class="text-red-500">*</span></label>
+                            <input type="email" id="reg-email" required class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center mb-6">
+                        <input type="checkbox" id="agreement" required class="mr-2 h-4 w-4 text-blue-600">
+                        <label for="agreement" class="text-sm text-gray-600">Saya menyatakan bahwa data yang saya masukkan adalah benar.</label>
+                    </div>
+
+                    <button type="submit" id="btn-submit-reg" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded flex justify-center items-center transition">
+                        <span>Kirim Pendaftaran</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Cek & Edit Data (Siswa) -->
+        <section id="edit-student" class="page-section">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md border-t-4 border-yellow-500">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Cek & Edit Data Pendaftaran</h2>
+                <div id="applicant-login-section">
+                    <p class="text-gray-500 mb-6 text-sm">Masukkan Nomor Pendaftaran dan Email yang digunakan saat mendaftar untuk merevisi atau mengecek data Anda.</p>
+                    <form onsubmit="loginEditStudent(event)">
+                        <div class="space-y-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Nomor Pendaftaran (cth: SPMB-123456)</label>
+                                <input type="text" id="cek-id" required class="w-full p-2 border rounded focus:ring-yellow-500 focus:border-yellow-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Email Terdaftar</label>
+                                <input type="email" id="cek-email" required class="w-full p-2 border rounded focus:ring-yellow-500 focus:border-yellow-500">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Cari Data</button>
+                    </form>
+                </div>
+                
+                <div id="applicant-edit-section" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    <div class="bg-blue-50 p-4 rounded mb-6 text-sm text-blue-800 flex justify-between items-center">
+                        <span>Status Seleksi Anda saat ini: <strong id="applicant-status-display" class="uppercase"></strong></span>
+                    </div>
+                    <form id="applicant-edit-form" onsubmit="saveApplicantEdit(event)">
+                        <div id="applicant-dynamic-fields" class="space-y-4 mb-6">
+                            <!-- Injected by JS -->
+                        </div>
+                        <button type="submit" id="btn-save-applicant" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Simpan Perubahan</button>
+                        <button type="button" onclick="cancelApplicantEdit()" class="w-full mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Batal / Tutup</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Pengumuman -->
+        <section id="announcement" class="page-section">
+            <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-sm">
+                <h2 class="text-3xl font-bold mb-6 text-center text-blue-800">Pengumuman Seleksi</h2>
+                
+                <div class="mb-6 flex gap-2 max-w-md mx-auto">
+                    <input type="text" id="search-nisn" placeholder="Cari berdasarkan NISN/Nama..." class="flex-grow p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+                    <button onclick="renderAnnouncement()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"><i class="fas fa-search"></i></button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No. Daftar</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama Siswa</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="announcement-list" class="bg-white divide-y divide-gray-200">
+                            <!-- Injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Admin Login -->
+        <section id="admin-login" class="page-section">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md mt-10">
+                <div class="text-center mb-6">
+                    <i class="fas fa-shield-alt text-4xl text-blue-800 mb-2"></i>
+                    <h2 class="text-2xl font-bold">Login Admin</h2>
+                </div>
+                <div id="login-error" class="hidden bg-red-100 text-red-700 p-2 rounded mb-4 text-sm text-center">Password Salah!</div>
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password (Coba: admin123)</label>
+                        <input type="password" id="admin-pwd" required class="w-full p-2 border border-gray-300 rounded">
+                    </div>
+                    <button type="submit" class="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded transition">Masuk Dashboard</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 6. Admin Dashboard -->
+        <section id="admin-dashboard" class="page-section">
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Sidebar Admin -->
+                <div class="w-full md:w-64 bg-white rounded-xl shadow-sm p-4 h-fit border border-gray-100">
+                    <div class="text-center mb-6 pb-4 border-b">
+                        <p class="font-bold text-gray-800">Panel Administrator</p>
+                        <button onclick="logoutAdmin()" class="text-xs text-red-500 hover:underline">Logout</button>
+                    </div>
+                    <ul class="space-y-2">
+                        <li><button onclick="switchAdminTab('data')" id="tab-data" class="admin-tab w-full text-left px-4 py-2 rounded bg-blue-100 text-blue-800 font-medium"><i class="fas fa-users w-6"></i> Data Pendaftar</button></li>
+                        <li><button onclick="switchAdminTab('settings-profile')" id="tab-settings-profile" class="admin-tab w-full text-left px-4 py-2 rounded text-gray-600 hover:bg-gray-50"><i class="fas fa-school w-6"></i> Profil Sekolah</button></li>
+                        <li><button onclick="switchAdminTab('settings-form')" id="tab-settings-form" class="admin-tab w-full text-left px-4 py-2 rounded text-gray-600 hover:bg-gray-50"><i class="fas fa-list-alt w-6"></i> Atur Formulir</button></li>
+                    </ul>
+                </div>
+
+                <!-- Konten Admin -->
+                <div class="flex-grow bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    
+                    <!-- Admin: Data Pendaftar -->
+                    <div id="admin-content-data" class="admin-content-section">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-2xl font-bold text-gray-800">Data Pendaftar (Real-time)</h2>
+                            <button onclick="loadAdminData()" class="text-blue-600 hover:text-blue-800" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="bg-blue-50 p-4 rounded text-center border border-blue-100"><p class="text-sm text-gray-500">Total Masuk</p><p class="text-2xl font-bold text-blue-700" id="stat-total">0</p></div>
+                            <div class="bg-green-50 p-4 rounded text-center border border-green-100"><p class="text-sm text-gray-500">Diterima</p><p class="text-2xl font-bold text-green-700" id="stat-acc">0</p></div>
+                            <div class="bg-yellow-50 p-4 rounded text-center border border-yellow-100"><p class="text-sm text-gray-500">Menunggu</p><p class="text-2xl font-bold text-yellow-700" id="stat-pend">0</p></div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200 text-sm">
+                                <thead class="bg-gray-100">
+                                    <tr id="admin-table-head">
+                                        <!-- Injected dynamically -->
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-table-body" class="divide-y divide-gray-200">
+                                    <!-- Injected dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Admin: Pengaturan Profil Sekolah -->
+                    <div id="admin-content-settings-profile" class="admin-content-section hidden">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Pengaturan Beranda Sekolah</h2>
+                        <form onsubmit="saveSchoolSettings(event)" class="space-y-4">
+                            <div><label class="block text-sm font-medium mb-1">Nama Sekolah</label><input type="text" id="set-school-name" class="w-full p-2 border rounded"></div>
+                            <div><label class="block text-sm font-medium mb-1">URL Gambar Header</label><input type="text" id="set-hero-img" class="w-full p-2 border rounded"></div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="block text-sm font-medium mb-1">Nama Kepala Sekolah</label><input type="text" id="set-kepsek-name" class="w-full p-2 border rounded"></div>
+                                <div><label class="block text-sm font-medium mb-1">URL Foto Kepsek</label><input type="text" id="set-kepsek-img" class="w-full p-2 border rounded"></div>
+                            </div>
+                            <div><label class="block text-sm font-medium mb-1">Sambutan Kepsek</label><textarea id="set-kepsek-msg" rows="3" class="w-full p-2 border rounded"></textarea></div>
+                            <div><label class="block text-sm font-medium mb-1">Visi & Misi (HTML diperbolehkan)</label><textarea id="set-visi-misi" rows="4" class="w-full p-2 border rounded"></textarea></div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Jadwal Seleksi (Satu item per baris)</label>
+                                <textarea id="set-schedule" rows="4" placeholder="Misal: Pendaftaran: 1-10 Juli 2026&#10;Tes Tulis: 12 Juli 2026" class="w-full p-2 border rounded"></textarea>
+                            </div>
+
+                            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Simpan Pengaturan</button>
+                        </form>
+                    </div>
+
+                    <!-- Admin: Pengaturan Formulir -->
+                    <div id="admin-content-settings-form" class="admin-content-section hidden">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Pengaturan Field Formulir</h2>
+                        <p class="text-gray-500 mb-4 text-sm">Tambahkan atau hapus kolom isian untuk form pendaftaran calon siswa.</p>
+                        
+                        <div class="mb-6 p-4 border border-dashed border-gray-400 rounded bg-gray-50">
+                            <h3 class="font-bold mb-2">Tambah Field Baru</h3>
+                            <div class="flex gap-2">
+                                <input type="text" id="new-field-id" placeholder="ID (cth: asal_sekolah)" class="p-2 border rounded flex-1">
+                                <input type="text" id="new-field-label" placeholder="Label (cth: Asal Sekolah)" class="p-2 border rounded flex-1">
+                                <select id="new-field-type" class="p-2 border rounded">
+                                    <option value="text">Teks Singkat</option>
+                                    <option value="number">Angka</option>
+                                    <option value="textarea">Teks Panjang</option>
+                                    <option value="date">Tanggal</option>
+                                </select>
+                                <label class="flex items-center"><input type="checkbox" id="new-field-req" class="mr-1"> Wajib</label>
+                                <button onclick="addFormField()" class="bg-blue-600 text-white px-4 py-2 rounded">Tambah</button>
+                            </div>
+                        </div>
+
+                        <ul id="field-list-preview" class="space-y-2 mb-4">
+                            <!-- Injected -->
+                        </ul>
+                        <button onclick="saveFieldsSettings()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Simpan Konfigurasi Formulir</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Edit Siswa (Admin) -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <h3 class="text-xl font-bold mb-4">Edit Data Siswa</h3>
+            <form id="edit-student-form" onsubmit="saveStudentEdit(event)">
+                <input type="hidden" id="edit-idx">
+                <div id="edit-dynamic-inputs" class="space-y-3 mb-4">
+                    <!-- Injected -->
+                </div>
+                <div class="mb-4 pt-2 border-t">
+                    <label class="block text-sm font-medium mb-1">Status Seleksi</label>
+                    <select id="edit-status" class="w-full p-2 border rounded font-bold">
+                        <option value="Menunggu">Menunggu</option>
+                        <option value="Diterima" class="text-green-600">Diterima</option>
+                        <option value="Ditolak" class="text-red-600">Ditolak</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Kartu (Simulasi Auto Send) -->
+    <div id="card-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+        <div class="bg-white p-0 rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="bg-green-600 text-white text-center p-4">
+                <i class="fas fa-check-circle text-4xl mb-2"></i>
+                <h3 class="text-xl font-bold">Pendaftaran Berhasil!</h3>
+                <p class="text-sm opacity-90">Data telah masuk ke database (Google Drive).</p>
+            </div>
+            <div class="p-6 text-center">
+                <p class="text-gray-700 mb-4">Kartu Pendaftaran telah otomatis dikirimkan ke email Anda: <br><strong id="card-email-display"></strong></p>
+                <div class="border-2 border-dashed border-gray-300 p-4 mb-4 bg-gray-50 rounded text-left relative">
+                    <div class="absolute top-2 right-2 text-gray-300"><i class="fas fa-id-card text-4xl"></i></div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nomor Pendaftaran</p>
+                    <p class="text-xl font-bold font-mono text-blue-800 mb-2" id="card-reg-no">SPMB-001</p>
+                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nama Calon Siswa</p>
+                    <p class="font-bold text-gray-800" id="card-reg-name">Budi Santoso</p>
+                </div>
+                <button onclick="document.getElementById('card-modal').classList.replace('flex','hidden'); navigate('announcement')" class="w-full px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white text-center py-4 mt-auto">
+        <p>&copy; 2026 Sistem SPMB Web Terintegrasi Google Drive. All rights reserved.</p>
+    </footer>
+
+    <script>
+        /* =======================================================================
+           KONFIGURASI BACKEND 
+           Ubah USE_MOCK menjadi false dan isi GAS_WEB_APP_URL jika kode 
+           Code.gs sudah di-deploy di Google Apps Script.
+        ======================================================================= */
+        const USE_MOCK = true; // Set true untuk preview, false untuk production
+        const GAS_WEB_APP_URL = "URL_GOOGLE_APPS_SCRIPT_ANDA_DISINI";
+
+        // --- STATE APLIKASI ---
+        let appState = {
+            schoolInfo: {
+                name: "SMA Negeri 1 Prestasi",
+                heroImg: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                kepsekName: "Dr. Budi Darmawan, M.Pd.",
+                kepsekImg: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+                kepsekMsg: "Selamat datang calon pemimpin masa depan. Kami berkomitmen memberikan pelayanan pendidikan terbaik dan membina karakter berprestasi. Mari bergabung dan berkembang bersama kami.",
+                visiMisi: "<strong>Visi:</strong> Menjadi lembaga pendidikan unggul dan berkarakter global.<br><br><strong>Misi:</strong><br>1. Menyelenggarakan pembelajaran inovatif.<br>2. Mengembangkan potensi siswa secara holistik.",
+                schedule: "Pendaftaran: 1 - 20 Juli 2026\nTes Akademik: 25 Juli 2026\nPengumuman: 30 Juli 2026"
+            },
+            formFields: [
+                { id: "nisn", label: "NISN", type: "number", required: true },
+                { id: "nama", label: "Nama Lengkap", type: "text", required: true },
+                { id: "asal_sekolah", label: "Asal Sekolah", type: "text", required: true },
+                { id: "alamat", label: "Alamat Lengkap", type: "textarea", required: false }
+            ],
+            students: [],
+            isAdminLoggedIn: false
+        };
+
+        // Inisialisasi awal (Membaca dari localStorage jika MOCK, atau fetch dari GAS)
+        async function initApp() {
+            if (USE_MOCK) {
+                const saved = localStorage.getItem('spmbState');
+                if (saved) appState = JSON.parse(saved);
+                renderAll();
+            } else {
+                try {
+                    // Fetch dari Google Apps Script
+                    const response = await fetch(`${GAS_WEB_APP_URL}?action=get_settings`);
+                    const data = await response.json();
+                    if(data.status === 'success') {
+                        appState.schoolInfo = data.schoolInfo;
+                        appState.formFields = data.formFields;
+                        renderAll();
+                    }
+                } catch (e) {
+                    console.error("Gagal terhubung ke database", e);
+                    alert("Koneksi ke database gagal.");
+                }
+            }
+        }
+
+        function saveMockData() {
+            if (USE_MOCK) localStorage.setItem('spmbState', JSON.stringify(appState));
+        }
+
+        // --- NAVIGASI ---
+        function navigate(pageId) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            if(pageId === 'admin-dashboard' && !appState.isAdminLoggedIn) {
+                navigate('admin-login');
+                return;
+            }
+            if(pageId === 'admin-dashboard') loadAdminData();
+            if(pageId === 'announcement') renderAnnouncement();
+            window.scrollTo(0, 0);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // --- RENDER UI PUBLIK ---
+        function renderAll() {
+            // Beranda UI
+            document.getElementById('nav-school-name').textContent = appState.schoolInfo.name;
+            document.getElementById('ui-school-name').textContent = appState.schoolInfo.name;
+            document.getElementById('ui-hero-img').src = appState.schoolInfo.heroImg;
+            document.getElementById('ui-kepsek-name').textContent = appState.schoolInfo.kepsekName;
+            document.getElementById('ui-kepsek-img').src = appState.schoolInfo.kepsekImg;
+            document.getElementById('ui-kepsek-msg').textContent = appState.schoolInfo.kepsekMsg;
+            document.getElementById('ui-visi-misi').innerHTML = appState.schoolInfo.visiMisi;
+            
+            const scheduleHtml = appState.schoolInfo.schedule.split('\n').map(s => {
+                let parts = s.split(':');
+                if(parts.length > 1) return `<li><span class="font-bold text-gray-700">${parts[0]}:</span> ${parts[1]}</li>`;
+                return `<li>${s}</li>`;
+            }).join('');
+            document.getElementById('ui-schedule').innerHTML = scheduleHtml;
+
+            // Render Form Fields
+            const formContainer = document.getElementById('dynamic-fields-container');
+            formContainer.innerHTML = '';
+            appState.formFields.forEach(field => {
+                let inputHtml = '';
+                const reqAttr = field.required ? 'required' : '';
+                const reqStar = field.required ? '<span class="text-red-500">*</span>' : '';
+                const commonClass = "w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500";
+                
+                if (field.type === 'textarea') {
+                    inputHtml = `<textarea id="reg_${field.id}" ${reqAttr} rows="3" class="${commonClass}"></textarea>`;
+                } else {
+                    inputHtml = `<input type="${field.type}" id="reg_${field.id}" ${reqAttr} class="${commonClass}">`;
+                }
+
+                formContainer.innerHTML += `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">${field.label} ${reqStar}</label>
+                        ${inputHtml}
+                    </div>
+                `;
+            });
+
+            // Populate form pengaturan admin agar sesuai data saat ini
+            document.getElementById('set-school-name').value = appState.schoolInfo.name;
+            document.getElementById('set-hero-img').value = appState.schoolInfo.heroImg;
+            document.getElementById('set-kepsek-name').value = appState.schoolInfo.kepsekName;
+            document.getElementById('set-kepsek-img').value = appState.schoolInfo.kepsekImg;
+            document.getElementById('set-kepsek-msg').value = appState.schoolInfo.kepsekMsg;
+            document.getElementById('set-visi-misi').value = appState.schoolInfo.visiMisi.replace(/<br>/g, '\n');
+            document.getElementById('set-schedule').value = appState.schoolInfo.schedule;
+            
+            renderAdminFieldsList();
+        }
+
+        // --- SUBMIT PENDAFTARAN ---
+        async function submitRegistration(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-reg');
+            btn.innerHTML = '<div class="loader mr-2 border-white border-t-transparent"></div> Memproses...';
+            btn.disabled = true;
+
+            const email = document.getElementById('reg-email').value;
+            
+            // --- FITUR PENCEGAHAN PENDAFTARAN DOBEL ---
+            let isDuplicate = false;
+            let nisnFieldId = appState.formFields.find(f => f.id.toLowerCase() === 'nisn')?.id;
+            let inputNisn = nisnFieldId ? document.getElementById(`reg_${nisnFieldId}`).value : null;
+
+            for (let s of appState.students) {
+                // Cek apakah email sama ATAU (jika form punya kolom NISN) NISN sama
+                if (s.email.toLowerCase() === email.toLowerCase()) {
+                    isDuplicate = true; break;
+                }
+                if (nisnFieldId && inputNisn && s.data[nisnFieldId] === inputNisn) {
+                    isDuplicate = true; break;
+                }
+            }
+
+            if (isDuplicate) {
+                alert('Pendaftaran Ditolak: Email atau NISN yang Anda masukkan sudah terdaftar di sistem!');
+                btn.innerHTML = 'Kirim Pendaftaran';
+                btn.disabled = false;
+                return;
+            }
+            // --- AKHIR PENCEGAHAN ---
+
+            let studentData = { 
+                id: 'SPMB-' + new Date().getTime().toString().slice(-6),
+                tanggal_daftar: new Date().toLocaleDateString('id-ID'),
+                email: email,
+                status: 'Menunggu',
+                data: {}
+            };
+
+            appState.formFields.forEach(field => {
+                studentData.data[field.id] = document.getElementById(`reg_${field.id}`).value;
+            });
+
+            if (USE_MOCK) {
+                // Simulasi delay jaringan
+                setTimeout(() => {
+                    appState.students.push(studentData);
+                    saveMockData();
+                    showSuccessCard(studentData);
+                    e.target.reset();
+                    btn.innerHTML = 'Kirim Pendaftaran';
+                    btn.disabled = false;
+                }, 1000);
+            } else {
+                try {
+                    // Kirim ke GAS via POST
+                    const response = await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'register', payload: studentData })
+                    });
+                    const result = await response.json();
+                    if(result.status === 'success') {
+                        showSuccessCard(result.data); // GAS harus mengembalikan data yg tersimpan
+                        e.target.reset();
+                    }
+                } catch (error) {
+                    alert('Gagal mengirim data. Coba lagi.');
+                }
+                btn.innerHTML = 'Kirim Pendaftaran';
+                btn.disabled = false;
+            }
+        }
+
+        function showSuccessCard(student) {
+            document.getElementById('card-email-display').textContent = student.email;
+            document.getElementById('card-reg-no').textContent = student.id;
+            // Coba ambil field yang mirip nama
+            let nama = student.data.nama || student.data.nama_lengkap || student.data.name || "Calon Siswa";
+            document.getElementById('card-reg-name').textContent = nama;
+            
+            const modal = document.getElementById('card-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // --- PENGUMUMAN ---
+        function renderAnnouncement() {
+            const query = document.getElementById('search-nisn').value.toLowerCase();
+            const tbody = document.getElementById('announcement-list');
+            tbody.innerHTML = '';
+            
+            // Urutkan diterima di atas, lalu menunggu
+            let displayStudents = [...appState.students];
+
+            if(query) {
+                displayStudents = displayStudents.filter(s => {
+                    return JSON.stringify(s.data).toLowerCase().includes(query) || s.id.toLowerCase().includes(query);
+                });
+            }
+
+            if(displayStudents.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-gray-500">Data tidak ditemukan.</td></tr>`;
+                return;
+            }
+
+            displayStudents.forEach(s => {
+                let nama = s.data.nama || s.data.nama_lengkap || s.data.name || "-";
+                let statusBadge = s.status === 'Diterima' ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Diterima</span>' :
+                                  s.status === 'Ditolak' ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Ditolak</span>' :
+                                  '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Menunggu</span>';
+                
+                // Masking data agar privacy terjaga di publik, kecual id
+                let maskedName = nama.substring(0, 3) + "***";
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${s.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${query ? nama : maskedName}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${statusBadge}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // --- ADMIN AREA ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const pwd = document.getElementById('admin-pwd').value;
+            if(pwd === 'admin123') { // Simple client side check untuk mock
+                appState.isAdminLoggedIn = true;
+                document.getElementById('login-error').classList.add('hidden');
+                document.getElementById('admin-pwd').value = '';
+                navigate('admin-dashboard');
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            appState.isAdminLoggedIn = false;
+            navigate('home');
+        }
+
+        function switchAdminTab(tab) {
+            document.querySelectorAll('.admin-tab').forEach(el => {
+                el.classList.remove('bg-blue-100', 'text-blue-800', 'font-medium');
+                el.classList.add('text-gray-600');
+            });
+            document.getElementById('tab-' + tab).classList.add('bg-blue-100', 'text-blue-800', 'font-medium');
+            document.getElementById('tab-' + tab).classList.remove('text-gray-600');
+
+            document.querySelectorAll('.admin-content-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById('admin-content-' + tab).classList.remove('hidden');
+        }
+
+        async function loadAdminData() {
+            if (!USE_MOCK) {
+                // Fetch students dari GAS
+                try {
+                    const response = await fetch(`${GAS_WEB_APP_URL}?action=get_students`);
+                    const data = await response.json();
+                    if(data.status === 'success') appState.students = data.students;
+                } catch (e) {
+                    console.error("Gagal load data siswa", e);
+                }
+            }
+
+            // Hitung statistik
+            document.getElementById('stat-total').textContent = appState.students.length;
+            document.getElementById('stat-acc').textContent = appState.students.filter(s => s.status === 'Diterima').length;
+            document.getElementById('stat-pend').textContent = appState.students.filter(s => s.status === 'Menunggu').length;
+
+            // Bangun Tabel Dinamis
+            const thead = document.getElementById('admin-table-head');
+            const tbody = document.getElementById('admin-table-body');
+            
+            let headHtml = `<th class="px-4 py-2 text-left text-xs font-medium text-gray-500">ID / Tgl</th>`;
+            appState.formFields.forEach(f => {
+                headHtml += `<th class="px-4 py-2 text-left text-xs font-medium text-gray-500">${f.label}</th>`;
+            });
+            headHtml += `<th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Status</th>
+                         <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">Aksi</th>`;
+            thead.innerHTML = headHtml;
+
+            tbody.innerHTML = '';
+            appState.students.forEach((s, idx) => {
+                let rowHtml = `<tr>
+                    <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 font-bold">${s.id}<br><span class="font-normal text-gray-500">${s.tanggal_daftar}</span></td>`;
+                
+                appState.formFields.forEach(f => {
+                    let val = s.data[f.id] || '-';
+                    if(val.length > 20) val = val.substring(0, 20) + '...';
+                    rowHtml += `<td class="px-4 py-2 whitespace-nowrap text-xs text-gray-500">${val}</td>`;
+                });
+
+                let statusColor = s.status === 'Diterima' ? 'text-green-600' : s.status === 'Ditolak' ? 'text-red-600' : 'text-yellow-600';
+                rowHtml += `
+                    <td class="px-4 py-2 whitespace-nowrap text-xs font-bold ${statusColor}">${s.status}</td>
+                    <td class="px-4 py-2 whitespace-nowrap text-xs">
+                        <button onclick="openEditModal(${idx})" class="text-blue-600 hover:text-blue-900 bg-blue-50 px-2 py-1 rounded"><i class="fas fa-edit"></i> Edit</button>
+                    </td>
+                </tr>`;
+                tbody.innerHTML += rowHtml;
+            });
+        }
+
+        // --- EDIT PROFIL SEKOLAH ---
+        async function saveSchoolSettings(e) {
+            e.preventDefault();
+            appState.schoolInfo = {
+                name: document.getElementById('set-school-name').value,
+                heroImg: document.getElementById('set-hero-img').value,
+                kepsekName: document.getElementById('set-kepsek-name').value,
+                kepsekImg: document.getElementById('set-kepsek-img').value,
+                kepsekMsg: document.getElementById('set-kepsek-msg').value,
+                visiMisi: document.getElementById('set-visi-misi').value.replace(/\n/g, '<br>'),
+                schedule: document.getElementById('set-schedule').value
+            };
+
+            if(USE_MOCK) {
+                saveMockData();
+                renderAll();
+                alert("Pengaturan Berhasil Disimpan (Lokal)!");
+            } else {
+                // Kirim ke GAS
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'save_settings', payload: { type: 'school', data: appState.schoolInfo }})
+                });
+                renderAll();
+                alert("Pengaturan Berhasil Disimpan di Database!");
+            }
+        }
+
+        // --- PENGATURAN FORMULIR DINAMIS ---
+        function renderAdminFieldsList() {
+            const list = document.getElementById('field-list-preview');
+            list.innerHTML = '';
+            appState.formFields.forEach((f, index) => {
+                list.innerHTML += `
+                    <li class="flex justify-between items-center bg-white p-2 border rounded shadow-sm">
+                        <div>
+                            <span class="font-bold">${f.label}</span> <span class="text-xs text-gray-500">(${f.type}) ID: ${f.id}</span>
+                            ${f.required ? '<span class="text-xs bg-red-100 text-red-600 px-1 rounded ml-2">Wajib</span>' : ''}
+                        </div>
+                        <button onclick="removeFormField(${index})" class="text-red-500 hover:text-red-700 p-1"><i class="fas fa-trash"></i></button>
+                    </li>
+                `;
+            });
+        }
+
+        function addFormField() {
+            const id = document.getElementById('new-field-id').value.trim().toLowerCase().replace(/\s+/g, '_');
+            const label = document.getElementById('new-field-label').value.trim();
+            const type = document.getElementById('new-field-type').value;
+            const req = document.getElementById('new-field-req').checked;
+
+            if(!id || !label) return alert("ID dan Label harus diisi!");
+            if(appState.formFields.find(f => f.id === id)) return alert("ID field sudah ada!");
+
+            appState.formFields.push({ id, label, type, required: req });
+            
+            document.getElementById('new-field-id').value = '';
+            document.getElementById('new-field-label').value = '';
+            renderAdminFieldsList();
+        }
+
+        function removeFormField(index) {
+            if(confirm("Yakin hapus kolom ini?")) {
+                appState.formFields.splice(index, 1);
+                renderAdminFieldsList();
+            }
+        }
+
+        async function saveFieldsSettings() {
+            if(USE_MOCK) {
+                saveMockData();
+                renderAll();
+                alert("Konfigurasi Form Disimpan!");
+            } else {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'save_settings', payload: { type: 'fields', data: appState.formFields }})
+                });
+                renderAll();
+                alert("Konfigurasi Form Disimpan di Database!");
+            }
+        }
+
+        // --- EDIT DATA SISWA (ADMIN) ---
+        function openEditModal(idx) {
+            const student = appState.students[idx];
+            document.getElementById('edit-idx').value = idx;
+            document.getElementById('edit-status').value = student.status;
+
+            const container = document.getElementById('edit-dynamic-inputs');
+            container.innerHTML = '';
+            
+            appState.formFields.forEach(f => {
+                let val = student.data[f.id] || '';
+                container.innerHTML += `
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1">${f.label}</label>
+                        <input type="text" id="edit_field_${f.id}" value="${val}" class="w-full p-2 border rounded text-sm">
+                    </div>
+                `;
+            });
+
+            document.getElementById('edit-modal').classList.remove('hidden');
+            document.getElementById('edit-modal').classList.add('flex');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.add('hidden');
+            document.getElementById('edit-modal').classList.remove('flex');
+        }
+
+        async function saveStudentEdit(e) {
+            e.preventDefault();
+            const idx = document.getElementById('edit-idx').value;
+            const student = appState.students[idx];
+            
+            student.status = document.getElementById('edit-status').value;
+            appState.formFields.forEach(f => {
+                student.data[f.id] = document.getElementById(`edit_field_${f.id}`).value;
+            });
+
+            if(USE_MOCK) {
+                saveMockData();
+                closeEditModal();
+                loadAdminData();
+                alert("Data siswa diperbarui!");
+            } else {
+                // Kirim update ke GAS
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'update_student', payload: student })
+                });
+                closeEditModal();
+                loadAdminData();
+            }
+        }
+
+        // --- FITUR CEK & EDIT DATA OLEH CALON SISWA ---
+        let currentApplicantEdit = null;
+
+        function loginEditStudent(e) {
+            e.preventDefault();
+            const id = document.getElementById('cek-id').value.trim();
+            const email = document.getElementById('cek-email').value.trim().toLowerCase();
+            
+            // Validasi data
+            const student = appState.students.find(s => s.id === id && s.email.toLowerCase() === email);
+            if (!student) {
+                alert("Data tidak ditemukan! Pastikan Nomor Pendaftaran dan Email diketik dengan benar.");
+                return;
+            }
+            
+            currentApplicantEdit = student;
+            document.getElementById('applicant-status-display').textContent = student.status;
+            
+            // Jika status bukan menunggu (sudah diverifikasi), kunci agar tidak bisa diubah
+            const isLocked = student.status === 'Diterima' || student.status === 'Ditolak';
+            document.getElementById('btn-save-applicant').style.display = isLocked ? 'none' : 'block';
+            
+            if(isLocked) {
+                 alert(`Pemberitahuan: Status seleksi Anda sudah "${student.status}". Data tidak dapat diubah lagi.`);
+            }
+
+            // Render form dinamis
+            const container = document.getElementById('applicant-dynamic-fields');
+            container.innerHTML = '';
+            appState.formFields.forEach(f => {
+                let val = student.data[f.id] || '';
+                const reqAttr = f.required ? 'required' : '';
+                const readonly = isLocked ? 'readonly disabled' : '';
+                const bg = isLocked ? 'bg-gray-100 cursor-not-allowed' : 'bg-white focus:ring-blue-500 focus:border-blue-500';
+                
+                let inputHtml = f.type === 'textarea' 
+                    ? `<textarea id="edit_app_${f.id}" ${reqAttr} ${readonly} rows="3" class="w-full p-2 border border-gray-300 rounded ${bg}">${val}</textarea>`
+                    : `<input type="${f.type}" id="edit_app_${f.id}" value="${val}" ${reqAttr} ${readonly} class="w-full p-2 border border-gray-300 rounded ${bg}">`;
+                    
+                container.innerHTML += `<div><label class="block text-sm font-medium text-gray-700 mb-1">${f.label}</label>${inputHtml}</div>`;
+            });
+
+            document.getElementById('applicant-login-section').classList.add('hidden');
+            document.getElementById('applicant-edit-section').classList.remove('hidden');
+        }
+
+        function cancelApplicantEdit() {
+            currentApplicantEdit = null;
+            document.getElementById('applicant-edit-section').classList.add('hidden');
+            document.getElementById('applicant-login-section').classList.remove('hidden');
+            document.getElementById('cek-id').value = '';
+            document.getElementById('cek-email').value = '';
+        }
+
+        async function saveApplicantEdit(e) {
+            e.preventDefault();
+            if (!currentApplicantEdit || currentApplicantEdit.status !== 'Menunggu') return;
+
+            const btn = document.getElementById('btn-save-applicant');
+            btn.innerHTML = 'Menyimpan...';
+            btn.disabled = true;
+
+            // Memperbarui objek data
+            appState.formFields.forEach(f => {
+                currentApplicantEdit.data[f.id] = document.getElementById(`edit_app_${f.id}`).value;
+            });
+
+            if(USE_MOCK) {
+                saveMockData();
+                alert("Data pendaftaran Anda berhasil diperbarui!");
+                btn.innerHTML = 'Simpan Perubahan';
+                btn.disabled = false;
+            } else {
+                try {
+                    // Mengirimkan pembaruan data ke server GAS (menggunakan endpoint update_student yg sama seperti Admin)
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'update_student', payload: currentApplicantEdit })
+                    });
+                    alert("Data pendaftaran Anda berhasil diperbarui di server!");
+                } catch (err) {
+                    alert("Gagal menyimpan ke server. Pastikan koneksi internet Anda stabil.");
+                }
+                btn.innerHTML = 'Simpan Perubahan';
+                btn.disabled = false;
+            }
+        }
+
+        // Mulai aplikasi saat dimuat
+        window.onload = initApp;
+
+    </script>
+</body>
+</html>
