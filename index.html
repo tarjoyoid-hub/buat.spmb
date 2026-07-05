@@ -6,6 +6,11 @@
     <title>Sistem SPMB Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tambahan Leaflet CSS & JS untuk Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
     <style>
         .page-section { display: none; }
         .page-section.active { display: block; animation: fadeIn 0.3s; }
@@ -13,9 +18,28 @@
         /* Loader */
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Penyesuaian Z-Index Peta agar tidak menutupi Navbar */
+        .leaflet-pane { z-index: 10 !important; }
+        .leaflet-top, .leaflet-bottom { z-index: 10 !important; }
+        
+        /* Animasi Toast Notification */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        .toast-enter { animation: slideInRight 0.3s ease-out forwards; pointer-events: auto; }
+        .toast-exit { animation: fadeOut 0.3s ease-out forwards; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
     <!-- Navbar -->
     <nav class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
@@ -304,6 +328,11 @@
                                 <div><label class="block text-sm font-medium mb-1">Nama Kepala Sekolah</label><input type="text" id="set-kepsek-name" class="w-full p-2 border rounded"></div>
                                 <div><label class="block text-sm font-medium mb-1">URL Foto Kepsek</label><input type="text" id="set-kepsek-img" class="w-full p-2 border rounded"></div>
                             </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Titik Koordinat Sekolah (Default Maps)</label>
+                                <input type="text" id="set-coordinates" class="w-full p-2 border rounded" placeholder="-6.1754, 106.8272">
+                                <p class="text-xs text-gray-500 mt-1">Format: Latitude, Longitude (Gunakan titik, koma spasi. Contoh: -6.2088, 106.8456)</p>
+                            </div>
                             <div><label class="block text-sm font-medium mb-1">Sambutan Kepsek</label><textarea id="set-kepsek-msg" rows="3" class="w-full p-2 border rounded"></textarea></div>
                             <div><label class="block text-sm font-medium mb-1">Visi & Misi (HTML diperbolehkan)</label><textarea id="set-visi-misi" rows="4" class="w-full p-2 border rounded"></textarea></div>
                             
@@ -319,21 +348,27 @@
                     <!-- Admin: Pengaturan Formulir -->
                     <div id="admin-content-settings-form" class="admin-content-section hidden">
                         <h2 class="text-2xl font-bold text-gray-800 mb-2">Pengaturan Field Formulir</h2>
-                        <p class="text-gray-500 mb-4 text-sm">Tambahkan atau hapus kolom isian untuk form pendaftaran calon siswa.</p>
+                        <p class="text-gray-500 mb-4 text-sm">Tambahkan, ubah teks bayangan, hapus, atau geser (drag & drop) kotak isian untuk mengatur urutannya.</p>
                         
                         <div class="mb-6 p-4 border border-dashed border-gray-400 rounded bg-gray-50">
                             <h3 class="font-bold mb-2">Tambah Field Baru</h3>
-                            <div class="flex gap-2">
-                                <input type="text" id="new-field-id" placeholder="ID (cth: asal_sekolah)" class="p-2 border rounded flex-1">
-                                <input type="text" id="new-field-label" placeholder="Label (cth: Asal Sekolah)" class="p-2 border rounded flex-1">
-                                <select id="new-field-type" class="p-2 border rounded">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2 items-center">
+                                <input type="text" id="new-field-id" placeholder="ID (cth: asal_sekolah)" class="p-2 border rounded w-full">
+                                <input type="text" id="new-field-label" placeholder="Label (cth: Asal Sekolah)" class="p-2 border rounded w-full">
+                                <input type="text" id="new-field-placeholder" placeholder="Teks Bayangan (Opsional)" class="p-2 border rounded w-full">
+                                <select id="new-field-type" class="p-2 border rounded w-full">
                                     <option value="text">Teks Singkat</option>
                                     <option value="number">Angka</option>
                                     <option value="textarea">Teks Panjang</option>
                                     <option value="date">Tanggal</option>
+                                    <option value="file">File (Unggah)</option>
+                                    <option value="maps">Peta Interaktif (Maps)</option>
                                 </select>
-                                <label class="flex items-center"><input type="checkbox" id="new-field-req" class="mr-1"> Wajib</label>
-                                <button onclick="addFormField()" class="bg-blue-600 text-white px-4 py-2 rounded">Tambah</button>
+                                <div class="flex gap-2 w-full">
+                                    <label class="flex items-center whitespace-nowrap"><input type="checkbox" id="new-field-req" class="mr-1"> Wajib</label>
+                                    <button id="btn-add-field" onclick="addFormField()" class="bg-blue-600 text-white px-4 py-2 rounded flex-grow">Tambah</button>
+                                    <button id="btn-cancel-edit-field" onclick="cancelEditField()" class="bg-gray-400 text-white px-3 py-2 rounded hidden"><i class="fas fa-times"></i></button>
+                                </div>
                             </div>
                         </div>
 
@@ -374,24 +409,15 @@
         </div>
     </div>
 
-    <!-- Modal Kartu (Simulasi Auto Send) -->
-    <div id="card-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
-        <div class="bg-white p-0 rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div class="bg-green-600 text-white text-center p-4">
-                <i class="fas fa-check-circle text-4xl mb-2"></i>
-                <h3 class="text-xl font-bold">Pendaftaran Berhasil!</h3>
-                <p class="text-sm opacity-90">Data telah masuk ke database (Google Drive).</p>
-            </div>
-            <div class="p-6 text-center">
-                <p class="text-gray-700 mb-4">Kartu Pendaftaran telah otomatis dikirimkan ke email Anda: <br><strong id="card-email-display"></strong></p>
-                <div class="border-2 border-dashed border-gray-300 p-4 mb-4 bg-gray-50 rounded text-left relative">
-                    <div class="absolute top-2 right-2 text-gray-300"><i class="fas fa-id-card text-4xl"></i></div>
-                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nomor Pendaftaran</p>
-                    <p class="text-xl font-bold font-mono text-blue-800 mb-2" id="card-reg-no">SPMB-001</p>
-                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nama Calon Siswa</p>
-                    <p class="font-bold text-gray-800" id="card-reg-name">Budi Santoso</p>
-                </div>
-                <button onclick="document.getElementById('card-modal').classList.replace('flex','hidden'); navigate('announcement')" class="w-full px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300">Tutup</button>
+    <!-- Modal Konfirmasi Kustom -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-[9999]">
+        <div class="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full text-center transform transition-all scale-95 opacity-0" id="confirm-box">
+            <div class="text-yellow-500 mb-4"><i class="fas fa-exclamation-triangle text-5xl"></i></div>
+            <h3 class="text-lg font-bold text-gray-800 mb-2" id="confirm-title">Konfirmasi</h3>
+            <p class="text-sm text-gray-600 mb-6" id="confirm-msg">Apakah Anda yakin?</p>
+            <div class="flex gap-3 justify-center">
+                <button id="btn-confirm-cancel" class="px-4 py-2 bg-gray-200 text-gray-800 rounded font-bold hover:bg-gray-300 transition">Batal</button>
+                <button id="btn-confirm-ok" class="px-4 py-2 bg-red-600 text-white rounded font-bold hover:bg-red-700 transition">Ya, Lanjutkan</button>
             </div>
         </div>
     </div>
@@ -416,15 +442,16 @@
                 heroImg: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
                 kepsekName: "Dr. Budi Darmawan, M.Pd.",
                 kepsekImg: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+                coordinates: "-6.1754, 106.8272",
                 kepsekMsg: "Selamat datang calon pemimpin masa depan. Kami berkomitmen memberikan pelayanan pendidikan terbaik dan membina karakter berprestasi. Mari bergabung dan berkembang bersama kami.",
                 visiMisi: "<strong>Visi:</strong> Menjadi lembaga pendidikan unggul dan berkarakter global.<br><br><strong>Misi:</strong><br>1. Menyelenggarakan pembelajaran inovatif.<br>2. Mengembangkan potensi siswa secara holistik.",
                 schedule: "Pendaftaran: 1 - 20 Juli 2026\nTes Akademik: 25 Juli 2026\nPengumuman: 30 Juli 2026"
             },
             formFields: [
-                { id: "nisn", label: "NISN", type: "number", required: true },
-                { id: "nama", label: "Nama Lengkap", type: "text", required: true },
-                { id: "asal_sekolah", label: "Asal Sekolah", type: "text", required: true },
-                { id: "alamat", label: "Alamat Lengkap", type: "textarea", required: false }
+                { id: "nisn", label: "NISN", type: "number", placeholder: "Masukkan 10 digit NISN", required: true },
+                { id: "nama", label: "Nama Lengkap", type: "text", placeholder: "Nama Sesuai Ijazah", required: true },
+                { id: "asal_sekolah", label: "Asal Sekolah", type: "text", placeholder: "Contoh: SMPN 1 Jakarta", required: true },
+                { id: "alamat", label: "Alamat Lengkap", type: "textarea", placeholder: "Nama jalan, RT/RW, dll.", required: false }
             ],
             students: [],
             isAdminLoggedIn: false
@@ -432,9 +459,17 @@
 
         // Inisialisasi awal (Membaca dari localStorage jika MOCK, atau fetch dari GAS)
         async function initApp() {
+            // Pulihkan state Admin Login
+            if(localStorage.getItem('isAdminLoggedIn') === 'true') {
+                appState.isAdminLoggedIn = true;
+            }
+
             if (USE_MOCK) {
                 const saved = localStorage.getItem('spmbState');
-                if (saved) appState = JSON.parse(saved);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...parsed, isAdminLoggedIn: appState.isAdminLoggedIn }; 
+                }
                 renderAll();
             } else {
                 try {
@@ -448,7 +483,7 @@
                     }
                 } catch (e) {
                     console.error("Gagal terhubung ke database", e);
-                    alert("Koneksi ke database gagal.");
+                    showToast("Koneksi ke database gagal.", "error");
                 }
             }
         }
@@ -464,8 +499,14 @@
             
             if(pageId === 'admin-dashboard' && !appState.isAdminLoggedIn) {
                 navigate('admin-login');
+                showToast("Anda harus login terlebih dahulu", "warning");
                 return;
             }
+            if(pageId === 'admin-login' && appState.isAdminLoggedIn) {
+                navigate('admin-dashboard');
+                return;
+            }
+            
             if(pageId === 'admin-dashboard') loadAdminData();
             if(pageId === 'announcement') renderAnnouncement();
             window.scrollTo(0, 0);
@@ -501,11 +542,24 @@
                 const reqAttr = field.required ? 'required' : '';
                 const reqStar = field.required ? '<span class="text-red-500">*</span>' : '';
                 const commonClass = "w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500";
+                const ph = field.placeholder ? `placeholder="${field.placeholder}"` : '';
                 
                 if (field.type === 'textarea') {
-                    inputHtml = `<textarea id="reg_${field.id}" ${reqAttr} rows="3" class="${commonClass}"></textarea>`;
+                    inputHtml = `<textarea id="reg_${field.id}" ${reqAttr} ${ph} rows="3" class="${commonClass}"></textarea>`;
+                } else if (field.type === 'file') {
+                    inputHtml = `
+                        <input type="file" accept="image/*,.pdf,.doc,.docx" onchange="encodeFileAsBase64(this, 'reg_${field.id}')" class="${commonClass} bg-white p-1" ${reqAttr}>
+                        <input type="hidden" id="reg_${field.id}" ${reqAttr}>
+                    `;
+                    if(field.placeholder) inputHtml += `<p class="text-xs text-gray-500 mt-1">${field.placeholder}</p>`;
+                } else if (field.type === 'maps') {
+                    inputHtml = `
+                        <div id="map_reg_${field.id}" class="h-64 w-full rounded border border-gray-300 relative z-0 mb-2"></div>
+                        <p class="text-xs text-gray-500 mb-1"><i class="fas fa-info-circle"></i> Klik atau geser penanda untuk menentukan lokasi persis.</p>
+                        <input type="hidden" id="reg_${field.id}" ${reqAttr}>
+                    `;
                 } else {
-                    inputHtml = `<input type="${field.type}" id="reg_${field.id}" ${reqAttr} class="${commonClass}">`;
+                    inputHtml = `<input type="${field.type}" id="reg_${field.id}" ${reqAttr} ${ph} class="${commonClass}">`;
                 }
 
                 formContainer.innerHTML += `
@@ -515,12 +569,16 @@
                     </div>
                 `;
             });
+            
+            // Inisialisasi peta setelah form di render
+            setTimeout(() => { initLeafletMaps('reg_', appState.formFields); }, 300);
 
             // Populate form pengaturan admin agar sesuai data saat ini
             document.getElementById('set-school-name').value = appState.schoolInfo.name;
             document.getElementById('set-hero-img').value = appState.schoolInfo.heroImg;
             document.getElementById('set-kepsek-name').value = appState.schoolInfo.kepsekName;
             document.getElementById('set-kepsek-img').value = appState.schoolInfo.kepsekImg;
+            document.getElementById('set-coordinates').value = appState.schoolInfo.coordinates || '';
             document.getElementById('set-kepsek-msg').value = appState.schoolInfo.kepsekMsg;
             document.getElementById('set-visi-misi').value = appState.schoolInfo.visiMisi.replace(/<br>/g, '\n');
             document.getElementById('set-schedule').value = appState.schoolInfo.schedule;
@@ -553,7 +611,7 @@
             }
 
             if (isDuplicate) {
-                alert('Pendaftaran Ditolak: Email atau NISN yang Anda masukkan sudah terdaftar di sistem!');
+                showToast('Pendaftaran Ditolak: Email atau NISN yang Anda masukkan sudah terdaftar di sistem!', 'error');
                 btn.innerHTML = 'Kirim Pendaftaran';
                 btn.disabled = false;
                 return;
@@ -595,7 +653,7 @@
                         e.target.reset();
                     }
                 } catch (error) {
-                    alert('Gagal mengirim data. Coba lagi.');
+                    showToast('Gagal mengirim data. Pastikan jaringan Anda stabil.', 'error');
                 }
                 btn.innerHTML = 'Kirim Pendaftaran';
                 btn.disabled = false;
@@ -659,8 +717,10 @@
             const pwd = document.getElementById('admin-pwd').value;
             if(pwd === 'admin123') { // Simple client side check untuk mock
                 appState.isAdminLoggedIn = true;
+                localStorage.setItem('isAdminLoggedIn', 'true');
                 document.getElementById('login-error').classList.add('hidden');
                 document.getElementById('admin-pwd').value = '';
+                showToast('Login berhasil', 'success');
                 navigate('admin-dashboard');
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
@@ -669,6 +729,8 @@
 
         function logoutAdmin() {
             appState.isAdminLoggedIn = false;
+            localStorage.removeItem('isAdminLoggedIn');
+            showToast('Anda telah keluar dari dashboard Admin', 'info');
             navigate('home');
         }
 
@@ -743,6 +805,7 @@
                 heroImg: document.getElementById('set-hero-img').value,
                 kepsekName: document.getElementById('set-kepsek-name').value,
                 kepsekImg: document.getElementById('set-kepsek-img').value,
+                coordinates: document.getElementById('set-coordinates').value,
                 kepsekMsg: document.getElementById('set-kepsek-msg').value,
                 visiMisi: document.getElementById('set-visi-misi').value.replace(/\n/g, '<br>'),
                 schedule: document.getElementById('set-schedule').value
@@ -751,7 +814,7 @@
             if(USE_MOCK) {
                 saveMockData();
                 renderAll();
-                alert("Pengaturan Berhasil Disimpan (Lokal)!");
+                showToast("Pengaturan Berhasil Disimpan (Lokal)!", "success");
             } else {
                 // Kirim ke GAS
                 await fetch(GAS_WEB_APP_URL, {
@@ -759,47 +822,135 @@
                     body: JSON.stringify({ action: 'save_settings', payload: { type: 'school', data: appState.schoolInfo }})
                 });
                 renderAll();
-                alert("Pengaturan Berhasil Disimpan di Database!");
+                showToast("Pengaturan Berhasil Disimpan di Database!", "success");
             }
         }
 
         // --- PENGATURAN FORMULIR DINAMIS ---
+        let dragIndex = null;
+        let editingFieldIndex = null;
+
+        function dragStart(e, index) {
+            dragIndex = index;
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        function drop(e, dropIndex) {
+            e.preventDefault();
+            if (dragIndex === null || dragIndex === dropIndex) return;
+            
+            const fieldToMove = appState.formFields.splice(dragIndex, 1)[0];
+            appState.formFields.splice(dropIndex, 0, fieldToMove);
+            
+            dragIndex = null;
+            renderAdminFieldsList();
+        }
+
         function renderAdminFieldsList() {
             const list = document.getElementById('field-list-preview');
             list.innerHTML = '';
             appState.formFields.forEach((f, index) => {
+                let placeholderText = f.placeholder ? `<span class="text-xs text-gray-500">Bayangan: ${f.placeholder}</span>` : '';
                 list.innerHTML += `
-                    <li class="flex justify-between items-center bg-white p-2 border rounded shadow-sm">
-                        <div>
-                            <span class="font-bold">${f.label}</span> <span class="text-xs text-gray-500">(${f.type}) ID: ${f.id}</span>
-                            ${f.required ? '<span class="text-xs bg-red-100 text-red-600 px-1 rounded ml-2">Wajib</span>' : ''}
+                    <li draggable="true" ondragstart="dragStart(event, ${index})" ondragover="dragOver(event)" ondrop="drop(event, ${index})" class="flex justify-between items-center bg-white p-3 border border-gray-200 rounded shadow-sm cursor-move mb-2 hover:bg-gray-50 transition border-l-4 border-l-blue-500">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-grip-vertical text-gray-400"></i>
+                            <div class="flex flex-col">
+                                <div>
+                                    <span class="font-bold">${f.label}</span> 
+                                    <span class="text-xs text-gray-500 bg-gray-200 px-1 rounded ml-1">${f.type}</span>
+                                    <span class="text-xs text-gray-400 ml-1">ID: ${f.id}</span>
+                                    ${f.required ? '<span class="text-xs bg-red-100 text-red-600 px-1 rounded ml-2">Wajib</span>' : ''}
+                                </div>
+                                ${placeholderText}
+                            </div>
                         </div>
-                        <button onclick="removeFormField(${index})" class="text-red-500 hover:text-red-700 p-1"><i class="fas fa-trash"></i></button>
+                        <div>
+                            <button onclick="editFormField(${index})" class="text-yellow-500 hover:text-yellow-600 p-2 mr-1" title="Edit Field"><i class="fas fa-edit"></i></button>
+                            <button onclick="removeFormField(${index})" class="text-red-500 hover:text-red-700 p-2" title="Hapus Field"><i class="fas fa-trash"></i></button>
+                        </div>
                     </li>
                 `;
             });
         }
 
+        function editFormField(index) {
+            editingFieldIndex = index;
+            const f = appState.formFields[index];
+            document.getElementById('new-field-id').value = f.id;
+            document.getElementById('new-field-label').value = f.label;
+            document.getElementById('new-field-placeholder').value = f.placeholder || '';
+            document.getElementById('new-field-type').value = f.type;
+            document.getElementById('new-field-req').checked = f.required;
+            
+            const btnAdd = document.getElementById('btn-add-field');
+            btnAdd.textContent = 'Simpan Edit';
+            btnAdd.classList.replace('bg-blue-600', 'bg-yellow-500');
+            document.getElementById('btn-cancel-edit-field').classList.remove('hidden');
+        }
+        
+        function cancelEditField() {
+            editingFieldIndex = null;
+            document.getElementById('new-field-id').value = '';
+            document.getElementById('new-field-label').value = '';
+            document.getElementById('new-field-placeholder').value = '';
+            document.getElementById('new-field-type').value = 'text';
+            document.getElementById('new-field-req').checked = false;
+            
+            const btnAdd = document.getElementById('btn-add-field');
+            btnAdd.textContent = 'Tambah';
+            btnAdd.classList.replace('bg-yellow-500', 'bg-blue-600');
+            document.getElementById('btn-cancel-edit-field').classList.add('hidden');
+        }
+
         function addFormField() {
             const id = document.getElementById('new-field-id').value.trim().toLowerCase().replace(/\s+/g, '_');
             const label = document.getElementById('new-field-label').value.trim();
+            const placeholder = document.getElementById('new-field-placeholder').value.trim();
             const type = document.getElementById('new-field-type').value;
             const req = document.getElementById('new-field-req').checked;
 
-            if(!id || !label) return alert("ID dan Label harus diisi!");
-            if(appState.formFields.find(f => f.id === id)) return alert("ID field sudah ada!");
-
-            appState.formFields.push({ id, label, type, required: req });
+            if(!id || !label) return showToast("ID dan Label harus diisi!", "warning");
             
-            document.getElementById('new-field-id').value = '';
-            document.getElementById('new-field-label').value = '';
+            // Mode Tambah Baru (cek duplikat ID)
+            if(editingFieldIndex === null) {
+                if(appState.formFields.find(f => f.id === id)) return showToast("ID field sudah ada!", "warning");
+                appState.formFields.push({ id, label, placeholder, type, required: req });
+            } else {
+                // Mode Edit
+                if(appState.formFields.find((f, i) => f.id === id && i !== editingFieldIndex)) return showToast("ID field sudah dipakai!", "warning");
+                appState.formFields[editingFieldIndex] = { id, label, placeholder, type, required: req };
+            }
+            
+            cancelEditField();
             renderAdminFieldsList();
         }
 
         function removeFormField(index) {
-            if(confirm("Yakin hapus kolom ini?")) {
+            showCustomConfirm("Yakin ingin menghapus kolom ini?", () => {
                 appState.formFields.splice(index, 1);
                 renderAdminFieldsList();
+                showToast("Kolom berhasil dihapus", "info");
+            });
+        }
+
+        async function saveFieldsSettings() {
+            if(USE_MOCK) {
+                saveMockData();
+                renderAll();
+                showToast("Konfigurasi Form Disimpan!", "success");
+            } else {
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'save_settings', payload: { type: 'fields', data: appState.formFields }})
+                });
+                renderAll();
+                showToast("Konfigurasi Form Disimpan di Database!", "success");
             }
         }
 
@@ -829,13 +980,36 @@
             
             appState.formFields.forEach(f => {
                 let val = student.data[f.id] || '';
+                let inputHtml = '';
+
+                if(f.type === 'file') {
+                    let fileLink = val ? `<a href="${val}" target="_blank" class="text-blue-600 underline text-xs ml-2"><i class="fas fa-external-link-alt"></i> Lihat File Tersimpan</a>` : '<span class="text-xs text-gray-400 ml-2">Belum ada file</span>';
+                    inputHtml = `
+                        <div class="mb-1">${fileLink}</div>
+                        <input type="file" onchange="encodeFileAsBase64(this, 'edit_field_${f.id}')" class="w-full p-1 border rounded text-sm bg-white">
+                        <input type="hidden" id="edit_field_${f.id}" value="${val}">
+                    `;
+                } else if (f.type === 'textarea') {
+                    inputHtml = `<textarea id="edit_field_${f.id}" class="w-full p-2 border rounded text-sm">${val}</textarea>`;
+                } else if (f.type === 'maps') {
+                    inputHtml = `
+                        <div id="map_edit_field_${f.id}" class="h-48 w-full rounded border border-gray-300 relative z-0 mb-1"></div>
+                        <input type="hidden" id="edit_field_${f.id}" value="${val}">
+                    `;
+                } else {
+                    inputHtml = `<input type="${f.type}" id="edit_field_${f.id}" value="${val}" class="w-full p-2 border rounded text-sm">`;
+                }
+
                 container.innerHTML += `
                     <div>
                         <label class="block text-xs font-medium text-gray-500 mb-1">${f.label}</label>
-                        <input type="text" id="edit_field_${f.id}" value="${val}" class="w-full p-2 border rounded text-sm">
+                        ${inputHtml}
                     </div>
                 `;
             });
+            
+            // Inisialisasi peta di modal admin
+            setTimeout(() => { initLeafletMaps('edit_field_', appState.formFields); }, 300);
 
             document.getElementById('edit-modal').classList.remove('hidden');
             document.getElementById('edit-modal').classList.add('flex');
@@ -853,14 +1027,16 @@
             
             student.status = document.getElementById('edit-status').value;
             appState.formFields.forEach(f => {
-                student.data[f.id] = document.getElementById(`edit_field_${f.id}`).value;
+                const el = document.getElementById(`edit_field_${f.id}`);
+                // Karena kita menggunakan input hidden, nilainya akan selalu aman walau file tidak diganti
+                student.data[f.id] = el.value;
             });
 
             if(USE_MOCK) {
                 saveMockData();
                 closeEditModal();
                 loadAdminData();
-                alert("Data siswa diperbarui!");
+                showToast("Data siswa diperbarui!", "success");
             } else {
                 // Kirim update ke GAS
                 await fetch(GAS_WEB_APP_URL, {
@@ -869,6 +1045,7 @@
                 });
                 closeEditModal();
                 loadAdminData();
+                showToast("Data siswa diperbarui di server!", "success");
             }
         }
 
@@ -883,7 +1060,7 @@
             // Validasi data
             const student = appState.students.find(s => s.id === id && s.email.toLowerCase() === email);
             if (!student) {
-                alert("Data tidak ditemukan! Pastikan Nomor Pendaftaran dan Email diketik dengan benar.");
+                showToast("Data tidak ditemukan! Pastikan Nomor Pendaftaran dan Email diketik dengan benar.", "error");
                 return;
             }
             
@@ -895,7 +1072,7 @@
             document.getElementById('btn-save-applicant').style.display = isLocked ? 'none' : 'block';
             
             if(isLocked) {
-                 alert(`Pemberitahuan: Status seleksi Anda sudah "${student.status}". Data tidak dapat diubah lagi.`);
+                 showToast(`Pemberitahuan: Status seleksi Anda sudah "${student.status}". Data tidak dapat diubah lagi.`, "info");
             }
 
             // Render form dinamis
@@ -906,13 +1083,34 @@
                 const reqAttr = f.required ? 'required' : '';
                 const readonly = isLocked ? 'readonly disabled' : '';
                 const bg = isLocked ? 'bg-gray-100 cursor-not-allowed' : 'bg-white focus:ring-blue-500 focus:border-blue-500';
+                const ph = f.placeholder ? `placeholder="${f.placeholder}"` : '';
                 
-                let inputHtml = f.type === 'textarea' 
-                    ? `<textarea id="edit_app_${f.id}" ${reqAttr} ${readonly} rows="3" class="w-full p-2 border border-gray-300 rounded ${bg}">${val}</textarea>`
-                    : `<input type="${f.type}" id="edit_app_${f.id}" value="${val}" ${reqAttr} ${readonly} class="w-full p-2 border border-gray-300 rounded ${bg}">`;
+                let inputHtml = '';
+                if(f.type === 'textarea') {
+                    inputHtml = `<textarea id="edit_app_${f.id}" ${reqAttr} ${readonly} ${ph} rows="3" class="w-full p-2 border border-gray-300 rounded ${bg}">${val}</textarea>`;
+                } else if (f.type === 'file') {
+                    let fileLink = val ? `<a href="${val}" target="_blank" class="text-blue-600 text-xs underline mb-2 inline-block"><i class="fas fa-file-alt"></i> Lihat File Saat Ini</a>` : '';
+                    inputHtml = `
+                        ${fileLink}
+                        <input type="file" onchange="encodeFileAsBase64(this, 'edit_app_${f.id}')" ${readonly} class="w-full p-1 border border-gray-300 rounded bg-white ${bg}">
+                        <input type="hidden" id="edit_app_${f.id}" value="${val}">
+                    `;
+                    if(f.placeholder) inputHtml += `<p class="text-xs text-gray-500 mt-1">${f.placeholder}</p>`;
+                } else if (f.type === 'maps') {
+                    inputHtml = `
+                        <div id="map_edit_app_${f.id}" class="h-64 w-full rounded border border-gray-300 relative z-0 mb-1"></div>
+                        <input type="hidden" id="edit_app_${f.id}" value="${val}">
+                        <p class="text-xs text-gray-500"><i class="fas fa-hand-pointer"></i> Geser peta/marker untuk mengubah lokasi.</p>
+                    `;
+                } else {
+                    inputHtml = `<input type="${f.type}" id="edit_app_${f.id}" value="${val}" ${reqAttr} ${readonly} ${ph} class="w-full p-2 border border-gray-300 rounded ${bg}">`;
+                }
                     
                 container.innerHTML += `<div><label class="block text-sm font-medium text-gray-700 mb-1">${f.label}</label>${inputHtml}</div>`;
             });
+            
+            // Inisialisasi peta di form pendaftar
+            setTimeout(() => { initLeafletMaps('edit_app_', appState.formFields); }, 300);
 
             document.getElementById('applicant-login-section').classList.add('hidden');
             document.getElementById('applicant-edit-section').classList.remove('hidden');
@@ -936,12 +1134,13 @@
 
             // Memperbarui objek data
             appState.formFields.forEach(f => {
-                currentApplicantEdit.data[f.id] = document.getElementById(`edit_app_${f.id}`).value;
+                const el = document.getElementById(`edit_app_${f.id}`);
+                currentApplicantEdit.data[f.id] = el.value;
             });
 
             if(USE_MOCK) {
                 saveMockData();
-                alert("Data pendaftaran Anda berhasil diperbarui!");
+                showToast("Data pendaftaran Anda berhasil diperbarui!", "success");
                 btn.innerHTML = 'Simpan Perubahan';
                 btn.disabled = false;
             } else {
@@ -951,13 +1150,160 @@
                         method: 'POST',
                         body: JSON.stringify({ action: 'update_student', payload: currentApplicantEdit })
                     });
-                    alert("Data pendaftaran Anda berhasil diperbarui di server!");
+                    showToast("Data pendaftaran Anda berhasil diperbarui di server!", "success");
                 } catch (err) {
-                    alert("Gagal menyimpan ke server. Pastikan koneksi internet Anda stabil.");
+                    showToast("Gagal menyimpan ke server. Pastikan koneksi internet Anda stabil.", "error");
                 }
                 btn.innerHTML = 'Simpan Perubahan';
                 btn.disabled = false;
             }
+        }
+        
+        // --- HELPER UNTUK KUSTOM TOAST & MODAL ---
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            let icon = '';
+            let colorClass = '';
+            
+            if(type === 'success') { icon = '<i class="fas fa-check-circle text-2xl"></i>'; colorClass = 'bg-green-500'; }
+            else if(type === 'error') { icon = '<i class="fas fa-exclamation-circle text-2xl"></i>'; colorClass = 'bg-red-500'; }
+            else if(type === 'warning') { icon = '<i class="fas fa-exclamation-triangle text-2xl"></i>'; colorClass = 'bg-yellow-500'; }
+            else { icon = '<i class="fas fa-info-circle text-2xl"></i>'; colorClass = 'bg-blue-500'; }
+
+            toast.className = `flex items-center gap-3 text-white px-4 py-3 rounded shadow-lg toast-enter ${colorClass}`;
+            toast.innerHTML = `${icon} <span class="font-medium text-sm">${message}</span>`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.replace('toast-enter', 'toast-exit');
+                setTimeout(() => toast.remove(), 300); // Wait for exit animation
+            }, 3000);
+        }
+
+        function showCustomConfirm(msg, onConfirm) {
+            const modal = document.getElementById('confirm-modal');
+            const box = document.getElementById('confirm-box');
+            document.getElementById('confirm-msg').textContent = msg;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            setTimeout(() => {
+                box.classList.remove('scale-95', 'opacity-0');
+                box.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            const btnOk = document.getElementById('btn-confirm-ok');
+            const btnCancel = document.getElementById('btn-confirm-cancel');
+            
+            const cleanup = () => {
+                box.classList.remove('scale-100', 'opacity-100');
+                box.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }, 200);
+                // Remove listeners to prevent multiple triggers
+                btnOk.removeEventListener('click', okHandler);
+                btnCancel.removeEventListener('click', cancelHandler);
+            };
+
+            const okHandler = () => { cleanup(); onConfirm(); };
+            const cancelHandler = () => { cleanup(); };
+
+            btnOk.addEventListener('click', okHandler);
+            btnCancel.addEventListener('click', cancelHandler);
+        }
+
+        // --- HELPER UNTUK FILE DAN PETA ---
+        function encodeFileAsBase64(element, targetId) {
+            const file = element.files[0];
+            if(!file) return;
+            
+            // Batasan ukuran (contoh 2MB)
+            if(file.size > 2 * 1024 * 1024) {
+                showToast("Ukuran file terlalu besar! Maksimal 2MB.", "warning");
+                element.value = "";
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                document.getElementById(targetId).value = reader.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        let activeMaps = {};
+        function initLeafletMaps(prefix, fields) {
+            fields.forEach(f => {
+                if(f.type === 'maps') {
+                    const mapId = `map_${prefix}${f.id}`;
+                    const inputId = `${prefix}${f.id}`;
+                    
+                    // Bersihkan instance lama jika form dirender ulang
+                    if(activeMaps[mapId]) {
+                        activeMaps[mapId].remove();
+                    }
+
+                    const inputEl = document.getElementById(inputId);
+                    const containerEl = document.getElementById(mapId);
+                    if(!containerEl) return;
+
+                    // Kordinat Default Dari Pengaturan Profil
+                    let defaultLat = -6.1754; // Monas sbg Fallback Default
+                    let defaultLng = 106.8272;
+
+                    if (appState.schoolInfo.coordinates) {
+                        const coords = appState.schoolInfo.coordinates.split(',');
+                        if(coords.length === 2) {
+                            defaultLat = parseFloat(coords[0].trim());
+                            defaultLng = parseFloat(coords[1].trim());
+                        }
+                    }
+
+                    let lat = defaultLat;
+                    let lng = defaultLng;
+
+                    if(inputEl.value) {
+                        const parts = inputEl.value.split(',');
+                        if(parts.length === 2) {
+                            lat = parseFloat(parts[0]);
+                            lng = parseFloat(parts[1]);
+                        }
+                    }
+
+                    const map = L.map(mapId).setView([lat, lng], 14);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: '© OpenStreetMap'
+                    }).addTo(map);
+
+                    const marker = L.marker([lat, lng], {draggable: true}).addTo(map);
+
+                    // Tetapkan kordinat awal ke input jika kosong
+                    if(!inputEl.value) inputEl.value = `${lat},${lng}`;
+
+                    // Update koordinat saat marker digeser
+                    marker.on('dragend', function(e) {
+                        const pos = marker.getLatLng();
+                        inputEl.value = `${pos.lat},${pos.lng}`;
+                    });
+
+                    // Update koordinat saat peta diklik
+                    map.on('click', function(e) {
+                        marker.setLatLng(e.latlng);
+                        inputEl.value = `${e.latlng.lat},${e.latlng.lng}`;
+                    });
+
+                    activeMaps[mapId] = map;
+                    
+                    // Paksa peta merender ulang (menghindari isu ubin terpotong di tab tersembunyi)
+                    setTimeout(() => { map.invalidateSize(); }, 500);
+                }
+            });
         }
 
         // Mulai aplikasi saat dimuat
