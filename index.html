@@ -92,8 +92,40 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="md:col-span-2 space-y-8">
+                    
+                    <!-- Visi & Misi Terpisah di Atas Sambutan -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Card Visi -->
+                        <div class="bg-white p-8 rounded-3xl shadow-md border border-teal-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden group transform hover:-translate-y-2">
+                            <div class="absolute -right-8 -bottom-8 text-teal-100 opacity-40 text-9xl transform -rotate-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-0">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-[#004D40] to-teal-400 text-white rounded-full flex items-center justify-center text-4xl mb-5 shadow-lg shadow-teal-900/30 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h3 class="relative z-10 text-2xl font-extrabold text-[#004D40] mb-3 tracking-wide">Visi Sekolah</h3>
+                            <p class="relative z-10 text-gray-700 leading-relaxed text-sm" id="ui-visi">
+                                Memuat visi...
+                            </p>
+                        </div>
+
+                        <!-- Card Misi -->
+                        <div class="bg-white p-8 rounded-3xl shadow-md border border-teal-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center relative overflow-hidden group transform hover:-translate-y-2">
+                            <div class="absolute -right-8 -bottom-8 text-amber-100 opacity-40 text-9xl transform rotate-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-0">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-full flex items-center justify-center text-4xl mb-5 shadow-lg shadow-orange-600/30 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <h3 class="relative z-10 text-2xl font-extrabold text-[#004D40] mb-4 tracking-wide text-center w-full">Misi Sekolah</h3>
+                            <div class="relative z-10 text-gray-700 text-left text-sm leading-relaxed w-full" id="ui-misi">
+                                Memuat misi...
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Sambutan Kepala Sekolah -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6">
                         <img id="ui-kepsek-img" src="https://via.placeholder.com/150" alt="Kepala Sekolah" class="w-32 h-32 rounded-full object-cover border-4 border-teal-100 mx-auto sm:mx-0">
                         <div>
                             <h2 class="text-2xl font-bold mb-2 text-[#004D40]">Sambutan Kepala Sekolah</h2>
@@ -102,13 +134,6 @@
                         </div>
                     </div>
 
-                    <!-- Visi Misi -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <h2 class="text-2xl font-bold mb-4 text-[#004D40]"><i class="fas fa-eye mr-2"></i>Visi & Misi</h2>
-                        <div class="prose max-w-none text-gray-700" id="ui-visi-misi">
-                            Memuat visi misi...
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Jadwal & Info -->
@@ -406,13 +431,22 @@
                                 <input type="text" id="set-coordinates" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]" placeholder="-6.1754, 106.8272">
                                 <p class="text-xs text-gray-500 mt-1">Format: Latitude, Longitude (Gunakan titik, koma spasi. Contoh: -6.2088, 106.8456)</p>
                             </div>
+                            
+                            <!-- Pecah Form Input Visi & Misi Terpisah -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Visi Sekolah</label>
+                                    <textarea id="set-visi" rows="4" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Misi Sekolah (Gunakan baris baru atau &lt;br&gt; untuk pemisah)</label>
+                                    <textarea id="set-misi" rows="4" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]"></textarea>
+                                </div>
+                            </div>
+
                             <div>
                                 <label class="block text-sm font-medium mb-1">Sambutan Kepsek</label>
                                 <textarea id="set-kepsek-msg" rows="3" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]"></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1">Visi & Misi (HTML diperbolehkan)</label>
-                                <textarea id="set-visi-misi" rows="4" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]"></textarea>
                             </div>
                             
                             <div>
@@ -546,7 +580,8 @@
                 kepsekImg: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
                 coordinates: "-6.1754, 106.8272",
                 kepsekMsg: "Selamat datang calon pemimpin masa depan. Kami berkomitmen memberikan pelayanan pendidikan terbaik dan membina karakter berprestasi. Mari bergabung dan berkembang bersama kami.",
-                visiMisi: "<strong>Visi:</strong> Menjadi lembaga pendidikan unggul dan berkarakter global.<br><br><strong>Misi:</strong><br>1. Menyelenggarakan pembelajaran inovatif.<br>2. Mengembangkan potensi siswa secara holistik.",
+                visi: "Menjadi lembaga pendidikan unggul, inovatif, dan berkarakter global di era teknologi modern.",
+                misi: "Menyelenggarakan pembelajaran berkualitas berbasis imtaq dan iptek.<br>Mengembangkan bakat, minat, dan potensi peserta didik secara holistik.<br>Membentuk karakter mandiri, disiplin, dan berwawasan lingkungan.",
                 schedule: "Pendaftaran: 1 - 20 Juli 2026\nTes Akademik: 25 Juli 2026\nPengumuman: 30 Juli 2026"
             },
             formFields: [
@@ -590,6 +625,7 @@
             }
         }
 
+        // Simpan Data di LocalStorage jika USE_MOCK = true
         function saveMockData() {
             if (USE_MOCK) localStorage.setItem('spmbState', JSON.stringify(appState));
         }
@@ -629,7 +665,34 @@
             document.getElementById('ui-kepsek-name').textContent = appState.schoolInfo.kepsekName;
             document.getElementById('ui-kepsek-img').src = appState.schoolInfo.kepsekImg;
             document.getElementById('ui-kepsek-msg').textContent = appState.schoolInfo.kepsekMsg;
-            document.getElementById('ui-visi-misi').innerHTML = appState.schoolInfo.visiMisi;
+            
+            // Set Visi
+            document.getElementById('ui-visi').textContent = appState.schoolInfo.visi || 'Visi belum diatur oleh admin.';
+            
+            // --- PEMBARUAN PINTAR PARSING MISI DENGAN IKON CHECKLIST ---
+            const misiRaw = appState.schoolInfo.misi || '';
+            // Pecah berdasarkan baris/break dan bersihkan yang kosong
+            const misiItems = misiRaw.split('<br>').map(item => item.trim()).filter(item => item !== '');
+            let misiHtml = '';
+            
+            if (misiItems.length > 0) {
+                misiHtml = '<ul class="space-y-3 w-full">';
+                misiItems.forEach(item => {
+                    // Ekspresi reguler untuk menghapus angka manual di depan kalimat (misal: "1. Misi" -> "Misi")
+                    let cleanItem = item.replace(/^\d+[\.\s\-)]+/, '').trim();
+                    misiHtml += `
+                        <li class="flex items-start gap-3 w-full group">
+                            <span class="text-orange-500 mt-1 flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
+                                <i class="fas fa-check-circle"></i>
+                            </span>
+                            <span class="text-gray-700 text-sm leading-relaxed">${cleanItem}</span>
+                        </li>`;
+                });
+                misiHtml += '</ul>';
+            } else {
+                misiHtml = '<p class="text-center text-gray-500 text-sm">Misi belum diatur oleh admin.</p>';
+            }
+            document.getElementById('ui-misi').innerHTML = misiHtml;
             
             const scheduleHtml = appState.schoolInfo.schedule.split('\n').map(s => {
                 let parts = s.split(':');
@@ -700,7 +763,11 @@
             
             document.getElementById('set-coordinates').value = appState.schoolInfo.coordinates || '';
             document.getElementById('set-kepsek-msg').value = appState.schoolInfo.kepsekMsg;
-            document.getElementById('set-visi-misi').value = appState.schoolInfo.visiMisi.replace(/<br>/g, '\n');
+            
+            // Set nilai input Visi dan Misi Admin
+            document.getElementById('set-visi').value = (appState.schoolInfo.visi || '').replace(/<br>/g, '\n');
+            document.getElementById('set-misi').value = (appState.schoolInfo.misi || '').replace(/<br>/g, '\n');
+            
             document.getElementById('set-schedule').value = appState.schoolInfo.schedule;
             
             renderAdminFieldsList();
@@ -927,7 +994,8 @@
                 kepsekImg: document.getElementById('set-kepsek-img').value,
                 coordinates: document.getElementById('set-coordinates').value,
                 kepsekMsg: document.getElementById('set-kepsek-msg').value,
-                visiMisi: document.getElementById('set-visi-misi').value.replace(/\n/g, '<br>'),
+                visi: document.getElementById('set-visi').value.replace(/\n/g, '<br>'),
+                misi: document.getElementById('set-misi').value.replace(/\n/g, '<br>'),
                 schedule: document.getElementById('set-schedule').value
             };
 
