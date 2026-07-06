@@ -16,7 +16,7 @@
         .page-section.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         /* Loader */
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #004D40; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
         /* Penyesuaian Z-Index Peta agar tidak menutupi Navbar */
@@ -42,7 +42,7 @@
     <div id="toast-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
     <!-- Navbar -->
-    <nav class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
+    <nav class="bg-[#004D40] text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center cursor-pointer" onclick="navigate('home')">
@@ -57,24 +57,24 @@
                 </div>
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-4" id="desktop-menu">
-                    <button onclick="navigate('home')" class="hover:bg-blue-600 px-3 py-2 rounded">Beranda</button>
-                    <button onclick="navigate('flow')" class="hover:bg-blue-600 px-3 py-2 rounded">Alur Pendaftaran</button>
-                    <button onclick="navigate('form')" class="hover:bg-blue-600 px-3 py-2 rounded font-bold text-yellow-300">Daftar Sekarang</button>
-                    <button onclick="navigate('edit-student')" class="hover:bg-blue-600 px-3 py-2 rounded">Cek/Edit Data</button>
-                    <button onclick="navigate('announcement')" class="hover:bg-blue-600 px-3 py-2 rounded">Pengumuman</button>
-                    <button onclick="navigate('admin-login')" class="bg-blue-800 hover:bg-blue-900 px-3 py-2 rounded text-sm"><i class="fas fa-lock mr-1"></i> Admin</button>
+                    <button onclick="navigate('home')" class="hover:bg-[#005957] px-3 py-2 rounded">Beranda</button>
+                    <button onclick="navigate('flow')" class="hover:bg-[#005957] px-3 py-2 rounded">Alur Pendaftaran</button>
+                    <button onclick="navigate('form')" class="hover:bg-[#005957] px-3 py-2 rounded font-bold text-yellow-300">Daftar Sekarang</button>
+                    <button onclick="navigate('edit-student')" class="hover:bg-[#005957] px-3 py-2 rounded">Cek/Edit Data</button>
+                    <button onclick="navigate('announcement')" class="hover:bg-[#005957] px-3 py-2 rounded">Pengumuman</button>
+                    <button onclick="navigate('admin-login')" class="bg-[#00332C] hover:bg-[#00251A] px-3 py-2 rounded text-sm"><i class="fas fa-lock mr-1"></i> Admin</button>
                 </div>
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div class="md:hidden hidden bg-blue-800" id="mobile-menu">
+        <div class="md:hidden hidden bg-[#00332C]" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <button onclick="navigate('home'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded">Beranda</button>
-                <button onclick="navigate('flow'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded">Alur Pendaftaran</button>
-                <button onclick="navigate('form'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded text-yellow-300">Daftar Sekarang</button>
-                <button onclick="navigate('edit-student'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded">Cek/Edit Data</button>
-                <button onclick="navigate('announcement'); toggleMobileMenu()" class="block w-full text-left hover:bg-blue-600 px-3 py-2 rounded">Pengumuman</button>
-                <button onclick="navigate('admin-login'); toggleMobileMenu()" class="block w-full text-left bg-blue-900 hover:bg-blue-700 px-3 py-2 rounded text-sm">Login Admin</button>
+                <button onclick="navigate('home'); toggleMobileMenu()" class="block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Beranda</button>
+                <button onclick="navigate('flow'); toggleMobileMenu()" class="block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Alur Pendaftaran</button>
+                <button onclick="navigate('form'); toggleMobileMenu()" class="block w-full text-left hover:bg-[#005957] px-3 py-2 rounded text-yellow-300">Daftar Sekarang</button>
+                <button onclick="navigate('edit-student'); toggleMobileMenu()" class="block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Cek/Edit Data</button>
+                <button onclick="navigate('announcement'); toggleMobileMenu()" class="block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Pengumuman</button>
+                <button onclick="navigate('admin-login'); toggleMobileMenu()" class="block w-full text-left bg-[#00251A] hover:bg-[#005957] px-3 py-2 rounded text-sm">Login Admin</button>
             </div>
         </div>
     </nav>
@@ -87,9 +87,6 @@
             <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
                 <div class="h-64 bg-gray-300 relative w-full flex justify-center items-center overflow-hidden">
                    <img id="ui-hero-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Sekolah" class="w-full h-full object-cover">
-                   <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                       <h1 class="text-4xl md:text-5xl text-white font-bold text-center px-4" id="ui-school-name">Nama Sekolah</h1>
-                   </div>
                 </div>
             </div>
 
@@ -97,9 +94,9 @@
                 <div class="md:col-span-2 space-y-8">
                     <!-- Sambutan Kepala Sekolah -->
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6">
-                        <img id="ui-kepsek-img" src="https://via.placeholder.com/150" alt="Kepala Sekolah" class="w-32 h-32 rounded-full object-cover border-4 border-blue-100 mx-auto sm:mx-0">
+                        <img id="ui-kepsek-img" src="https://via.placeholder.com/150" alt="Kepala Sekolah" class="w-32 h-32 rounded-full object-cover border-4 border-teal-100 mx-auto sm:mx-0">
                         <div>
-                            <h2 class="text-2xl font-bold mb-2 text-blue-800">Sambutan Kepala Sekolah</h2>
+                            <h2 class="text-2xl font-bold mb-2 text-[#004D40]">Sambutan Kepala Sekolah</h2>
                             <p class="text-gray-600 italic mb-2" id="ui-kepsek-name">Bapak/Ibu Kepala Sekolah</p>
                             <p class="text-gray-700 text-justify" id="ui-kepsek-msg">Memuat sambutan...</p>
                         </div>
@@ -107,7 +104,7 @@
 
                     <!-- Visi Misi -->
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <h2 class="text-2xl font-bold mb-4 text-blue-800"><i class="fas fa-eye mr-2"></i>Visi & Misi</h2>
+                        <h2 class="text-2xl font-bold mb-4 text-[#004D40]"><i class="fas fa-eye mr-2"></i>Visi & Misi</h2>
                         <div class="prose max-w-none text-gray-700" id="ui-visi-misi">
                             Memuat visi misi...
                         </div>
@@ -116,8 +113,8 @@
 
                 <!-- Jadwal & Info -->
                 <div class="space-y-6">
-                    <div class="bg-blue-50 p-6 rounded-xl shadow-sm border border-blue-100">
-                        <h3 class="text-xl font-bold mb-4 text-blue-800"><i class="fas fa-calendar-alt mr-2"></i>Jadwal Seleksi</h3>
+                    <div class="bg-teal-50 p-6 rounded-xl shadow-sm border border-teal-100">
+                        <h3 class="text-xl font-bold mb-4 text-[#004D40]"><i class="fas fa-calendar-alt mr-2"></i>Jadwal Seleksi</h3>
                         <ul class="space-y-3" id="ui-schedule">
                             <!-- Injected by JS -->
                         </ul>
@@ -135,36 +132,73 @@
 
         <!-- 2. Alur Pendaftaran -->
         <section id="flow" class="page-section">
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 max-w-4xl mx-auto">
-                <h2 class="text-3xl font-bold mb-8 text-center text-blue-800">Alur Pendaftaran SPMB</h2>
-                <div class="relative border-l-4 border-blue-500 ml-3 md:ml-6 space-y-8 pb-4">
-                    <div class="pl-6 relative">
-                        <div class="absolute w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center font-bold -left-4 top-0 border-4 border-white shadow">1</div>
-                        <h3 class="text-xl font-bold">Pengisian Formulir Online</h3>
-                        <p class="text-gray-600">Calon siswa mengisi formulir pendaftaran melalui menu "Daftar Sekarang" dengan data yang valid.</p>
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="bg-teal-100 text-[#004D40] text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">Langkah Mudah</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold mt-3 text-[#004D40]">Alur Pendaftaran SPMB</h2>
+                    <p class="text-gray-600 mt-2 max-w-xl mx-auto">Ikuti 4 langkah terstruktur berikut untuk mendaftarkan diri Anda sebagai calon siswa baru di sekolah kami.</p>
+                </div>
+
+                <!-- Grid Kartu Alur Interaktif -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+                    
+                    <!-- Kartu Langkah 1 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-150 hover:border-teal-200 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl flex flex-col items-center text-center relative group">
+                        <div class="absolute -top-4 left-6 w-8 h-8 bg-[#004D40] text-white rounded-full flex items-center justify-center font-bold shadow-md group-hover:scale-110 transition-transform">1</div>
+                        <div class="w-16 h-16 bg-teal-50 text-[#004D40] rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:bg-[#004D40] group-hover:text-white transition-colors duration-300">
+                            <i class="fas fa-file-signature"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Formulir Online</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">Isi formulir pendaftaran melalui menu <strong class="text-[#004D40]">"Daftar Sekarang"</strong> dengan data yang lengkap dan valid.</p>
                     </div>
-                    <div class="pl-6 relative">
-                        <div class="absolute w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center font-bold -left-4 top-0 border-4 border-white shadow">2</div>
-                        <h3 class="text-xl font-bold">Cetak/Simpan Kartu Pendaftaran</h3>
-                        <p class="text-gray-600">Setelah berhasil mendaftar, sistem otomatis akan menerbitkan kartu bukti pendaftaran (juga dikirim via email).</p>
+
+                    <!-- Kartu Langkah 2 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-150 hover:border-teal-200 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl flex flex-col items-center text-center relative group">
+                        <div class="absolute -top-4 left-6 w-8 h-8 bg-[#004D40] text-white rounded-full flex items-center justify-center font-bold shadow-md group-hover:scale-110 transition-transform">2</div>
+                        <div class="w-16 h-16 bg-teal-50 text-[#004D40] rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:bg-[#004D40] group-hover:text-white transition-colors duration-300">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Kartu Pendaftaran</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">Setelah berhasil mengirim data, sistem akan menerbitkan kartu bukti pendaftaran yang otomatis dikirim ke email.</p>
                     </div>
-                    <div class="pl-6 relative">
-                        <div class="absolute w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center font-bold -left-4 top-0 border-4 border-white shadow">3</div>
-                        <h3 class="text-xl font-bold">Verifikasi Berkas oleh Admin</h3>
-                        <p class="text-gray-600">Panitia SPMB akan memvalidasi data yang telah masuk melalui sistem secara real-time.</p>
+
+                    <!-- Kartu Langkah 3 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-150 hover:border-teal-200 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl flex flex-col items-center text-center relative group">
+                        <div class="absolute -top-4 left-6 w-8 h-8 bg-[#004D40] text-white rounded-full flex items-center justify-center font-bold shadow-md group-hover:scale-110 transition-transform">3</div>
+                        <div class="w-16 h-16 bg-teal-50 text-[#004D40] rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:bg-[#004D40] group-hover:text-white transition-colors duration-300">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Verifikasi Berkas</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">Panitia SPMB akan memvalidasi seluruh berkas, gambar yang diunggah, serta lokasi koordinat secara real-time.</p>
                     </div>
-                    <div class="pl-6 relative">
-                        <div class="absolute w-8 h-8 bg-blue-600 rounded-full text-white flex items-center justify-center font-bold -left-4 top-0 border-4 border-white shadow">4</div>
-                        <h3 class="text-xl font-bold">Pengumuman Kelulusan</h3>
-                        <p class="text-gray-600">Calon siswa dapat mengecek status kelulusan pada menu "Pengumuman" sesuai jadwal yang ditentukan.</p>
+
+                    <!-- Kartu Langkah 4 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-150 hover:border-teal-200 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl flex flex-col items-center text-center relative group">
+                        <div class="absolute -top-4 left-6 w-8 h-8 bg-[#004D40] text-white rounded-full flex items-center justify-center font-bold shadow-md group-hover:scale-110 transition-transform">4</div>
+                        <div class="w-16 h-16 bg-teal-50 text-[#004D40] rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:bg-[#004D40] group-hover:text-white transition-colors duration-300">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Hasil Seleksi</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">Pantau secara berkala hasil kelulusan Anda di menu <strong class="text-[#004D40]">"Pengumuman Seleksi"</strong> sesuai dengan jadwal.</p>
                     </div>
+                </div>
+
+                <!-- Banner Call to Action Bawah Alur -->
+                <div class="mt-12 text-center bg-teal-50 p-6 rounded-2xl border border-teal-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="text-left">
+                        <h4 class="font-bold text-[#004D40] text-lg">Sudah memahami alur pendaftarannya?</h4>
+                        <p class="text-sm text-gray-600">Siapkan dokumen pendukung berupa berkas JPG/PNG berukuran maksimal 2MB Anda sebelum memulai.</p>
+                    </div>
+                    <button onclick="navigate('form')" class="px-6 py-3 bg-[#004D40] hover:bg-[#00332C] text-white font-bold rounded-xl shadow-md transition-all duration-300 hover:shadow-lg flex items-center gap-2">
+                        <i class="fas fa-arrow-right"></i> Mulai Mendaftar Sekarang
+                    </button>
                 </div>
             </div>
         </section>
 
         <!-- 3. Formulir Pendaftaran -->
         <section id="form" class="page-section">
-            <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md border-t-4 border-blue-600">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md border-t-4 border-[#004D40]">
                 <h2 class="text-2xl font-bold mb-2 text-gray-800">Formulir Pendaftaran</h2>
                 <p class="text-gray-500 mb-6 text-sm">Isi data di bawah ini dengan sebenar-benarnya. Field bertanda (*) wajib diisi.</p>
                 
@@ -178,16 +212,16 @@
                     <div class="space-y-4 mb-6 pt-4 border-t border-gray-200">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Email Aktif (Untuk pengiriman Kartu) <span class="text-red-500">*</span></label>
-                            <input type="email" id="reg-email" required class="w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500">
+                            <input type="email" id="reg-email" required class="w-full p-2 border border-gray-300 rounded focus:ring-[#004D40] focus:border-[#004D40]">
                         </div>
                     </div>
 
                     <div class="flex items-center mb-6">
-                        <input type="checkbox" id="agreement" required class="mr-2 h-4 w-4 text-blue-600">
+                        <input type="checkbox" id="agreement" required class="mr-2 h-4 w-4 text-[#004D40]">
                         <label for="agreement" class="text-sm text-gray-600">Saya menyatakan bahwa data yang saya masukkan adalah benar.</label>
                     </div>
 
-                    <button type="submit" id="btn-submit-reg" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded flex justify-center items-center transition">
+                    <button type="submit" id="btn-submit-reg" class="w-full bg-[#004D40] hover:bg-[#00332C] text-white font-bold py-3 px-4 rounded flex justify-center items-center transition">
                         <span>Kirim Pendaftaran</span>
                     </button>
                 </form>
@@ -216,7 +250,7 @@
                 </div>
                 
                 <div id="applicant-edit-section" class="hidden mt-6 pt-6 border-t border-gray-200">
-                    <div class="bg-blue-50 p-4 rounded mb-6 text-sm text-blue-800 flex justify-between items-center">
+                    <div class="bg-teal-50 p-4 rounded mb-6 text-sm text-[#004D40] flex justify-between items-center">
                         <span>Status Seleksi Anda saat ini: <strong id="applicant-status-display" class="uppercase"></strong></span>
                     </div>
                     <form id="applicant-edit-form" onsubmit="saveApplicantEdit(event)">
@@ -224,7 +258,7 @@
                         <div id="applicant-dynamic-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             <!-- Injected by JS -->
                         </div>
-                        <button type="submit" id="btn-save-applicant" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Simpan Perubahan</button>
+                        <button type="submit" id="btn-save-applicant" class="w-full bg-[#004D40] hover:bg-[#00332C] text-white font-bold py-2 px-4 rounded">Simpan Perubahan</button>
                         <button type="button" onclick="cancelApplicantEdit()" class="w-full mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Batal / Tutup</button>
                     </form>
                 </div>
@@ -234,11 +268,11 @@
         <!-- 4. Pengumuman -->
         <section id="announcement" class="page-section">
             <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-sm">
-                <h2 class="text-3xl font-bold mb-6 text-center text-blue-800">Pengumuman Seleksi</h2>
+                <h2 class="text-3xl font-bold mb-6 text-center text-[#004D40]">Pengumuman Seleksi</h2>
                 
                 <div class="mb-6 flex gap-2 max-w-md mx-auto">
-                    <input type="text" id="search-nisn" placeholder="Cari berdasarkan NISN/Nama..." class="flex-grow p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
-                    <button onclick="renderAnnouncement()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"><i class="fas fa-search"></i></button>
+                    <input type="text" id="search-nisn" placeholder="Cari berdasarkan NISN/Nama..." class="flex-grow p-2 border border-gray-300 rounded focus:outline-none focus:border-[#004D40]">
+                    <button onclick="renderAnnouncement()" class="bg-[#004D40] text-white px-4 py-2 rounded hover:bg-[#00332C]"><i class="fas fa-search"></i></button>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -262,7 +296,7 @@
         <section id="admin-login" class="page-section">
             <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md mt-10">
                 <div class="text-center mb-6">
-                    <i class="fas fa-shield-alt text-4xl text-blue-800 mb-2"></i>
+                    <i class="fas fa-shield-alt text-4xl text-[#004D40] mb-2"></i>
                     <h2 class="text-2xl font-bold">Login Admin</h2>
                 </div>
                 <div id="login-error" class="hidden bg-red-100 text-red-700 p-2 rounded mb-4 text-sm text-center">Password Salah!</div>
@@ -271,7 +305,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-1">Password (Coba: admin123)</label>
                         <input type="password" id="admin-pwd" required class="w-full p-2 border border-gray-300 rounded">
                     </div>
-                    <button type="submit" class="w-full bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded transition">Masuk Dashboard</button>
+                    <button type="submit" class="w-full bg-[#004D40] hover:bg-[#00332C] text-white font-bold py-2 px-4 rounded transition">Masuk Dashboard</button>
                 </form>
             </div>
         </section>
@@ -286,7 +320,7 @@
                         <button onclick="logoutAdmin()" class="text-xs text-red-500 hover:underline">Logout</button>
                     </div>
                     <ul class="space-y-2">
-                        <li><button onclick="switchAdminTab('data')" id="tab-data" class="admin-tab w-full text-left px-4 py-2 rounded bg-blue-100 text-blue-800 font-medium"><i class="fas fa-users w-6"></i> Data Pendaftar</button></li>
+                        <li><button onclick="switchAdminTab('data')" id="tab-data" class="admin-tab w-full text-left px-4 py-2 rounded bg-teal-100 text-[#004D40] font-medium"><i class="fas fa-users w-6"></i> Data Pendaftar</button></li>
                         <li><button onclick="switchAdminTab('settings-profile')" id="tab-settings-profile" class="admin-tab w-full text-left px-4 py-2 rounded text-gray-600 hover:bg-gray-50"><i class="fas fa-school w-6"></i> Profil Sekolah</button></li>
                         <li><button onclick="switchAdminTab('settings-form')" id="tab-settings-form" class="admin-tab w-full text-left px-4 py-2 rounded text-gray-600 hover:bg-gray-50"><i class="fas fa-list-alt w-6"></i> Atur Formulir</button></li>
                     </ul>
@@ -299,10 +333,10 @@
                     <div id="admin-content-data" class="admin-content-section">
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-2xl font-bold text-gray-800">Data Pendaftar (Real-time)</h2>
-                            <button onclick="loadAdminData()" class="text-blue-600 hover:text-blue-800" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
+                            <button onclick="loadAdminData()" class="text-[#004D40] hover:text-[#00332C]" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
                         </div>
                         <div class="grid grid-cols-3 gap-4 mb-6">
-                            <div class="bg-blue-50 p-4 rounded text-center border border-blue-100"><p class="text-sm text-gray-500">Total Masuk</p><p class="text-2xl font-bold text-blue-700" id="stat-total">0</p></div>
+                            <div class="bg-teal-50 p-4 rounded text-center border border-teal-100"><p class="text-sm text-gray-500">Total Masuk</p><p class="text-2xl font-bold text-[#004D40]" id="stat-total">0</p></div>
                             <div class="bg-green-50 p-4 rounded text-center border border-green-100"><p class="text-sm text-gray-500">Diterima</p><p class="text-2xl font-bold text-green-700" id="stat-acc">0</p></div>
                             <div class="bg-yellow-50 p-4 rounded text-center border border-yellow-100"><p class="text-sm text-gray-500">Menunggu</p><p class="text-2xl font-bold text-yellow-700" id="stat-pend">0</p></div>
                         </div>
@@ -324,23 +358,66 @@
                     <div id="admin-content-settings-profile" class="admin-content-section hidden">
                         <h2 class="text-2xl font-bold text-gray-800 mb-6">Pengaturan Beranda Sekolah</h2>
                         <form onsubmit="saveSchoolSettings(event)" class="space-y-4">
-                            <div><label class="block text-sm font-medium mb-1">Nama Sekolah</label><input type="text" id="set-school-name" class="w-full p-2 border rounded"></div>
-                            <div><label class="block text-sm font-medium mb-1">URL Gambar Header</label><input type="text" id="set-hero-img" class="w-full p-2 border rounded"></div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div><label class="block text-sm font-medium mb-1">Nama Kepala Sekolah</label><input type="text" id="set-kepsek-name" class="w-full p-2 border rounded"></div>
-                                <div><label class="block text-sm font-medium mb-1">URL Foto Kepsek</label><input type="text" id="set-kepsek-img" class="w-full p-2 border rounded"></div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Nama Sekolah</label>
+                                <input type="text" id="set-school-name" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]">
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Unggah Gambar Header -->
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Gambar Header Sekolah</label>
+                                    <div class="relative h-40 border-2 border-dashed border-gray-300 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center">
+                                        <img id="preview-set-hero-img" class="absolute inset-0 w-full h-full object-cover z-0" src="" alt="Hero Preview">
+                                        <div class="relative z-10 p-2 bg-white/80 backdrop-blur-sm rounded-lg text-center shadow">
+                                            <label for="upload-hero" class="cursor-pointer text-[#004D40] hover:text-[#00332C] font-bold text-sm block">
+                                                <i class="fas fa-camera mr-1"></i> Ganti Gambar Header
+                                            </label>
+                                            <input type="file" id="upload-hero" accept="image/*" class="sr-only" onchange="handleSettingImageUpload(this, 'set-hero-img', 'preview-set-hero-img')">
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Format gambar diperbolehkan (Maks. 10MB)</p>
+                                    <input type="hidden" id="set-hero-img">
+                                </div>
+                                
+                                <!-- Unggah Foto Kepsek -->
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Foto Kepala Sekolah</label>
+                                    <div class="relative h-40 border-2 border-dashed border-gray-300 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center">
+                                        <img id="preview-set-kepsek-img" class="absolute inset-0 w-full h-full object-cover z-0" src="" alt="Kepsek Preview">
+                                        <div class="relative z-10 p-2 bg-white/80 backdrop-blur-sm rounded-lg text-center shadow">
+                                            <label for="upload-kepsek" class="cursor-pointer text-[#004D40] hover:text-[#00332C] font-bold text-sm block">
+                                                <i class="fas fa-camera mr-1"></i> Ganti Foto Kepsek
+                                            </label>
+                                            <input type="file" id="upload-kepsek" accept="image/*" class="sr-only" onchange="handleSettingImageUpload(this, 'set-kepsek-img', 'preview-set-kepsek-img')">
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Format gambar diperbolehkan (Maks. 10MB)</p>
+                                    <input type="hidden" id="set-kepsek-img">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Nama Kepala Sekolah</label>
+                                <input type="text" id="set-kepsek-name" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-1">Titik Koordinat Sekolah (Default Maps)</label>
-                                <input type="text" id="set-coordinates" class="w-full p-2 border rounded" placeholder="-6.1754, 106.8272">
+                                <input type="text" id="set-coordinates" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]" placeholder="-6.1754, 106.8272">
                                 <p class="text-xs text-gray-500 mt-1">Format: Latitude, Longitude (Gunakan titik, koma spasi. Contoh: -6.2088, 106.8456)</p>
                             </div>
-                            <div><label class="block text-sm font-medium mb-1">Sambutan Kepsek</label><textarea id="set-kepsek-msg" rows="3" class="w-full p-2 border rounded"></textarea></div>
-                            <div><label class="block text-sm font-medium mb-1">Visi & Misi (HTML diperbolehkan)</label><textarea id="set-visi-misi" rows="4" class="w-full p-2 border rounded"></textarea></div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Sambutan Kepsek</label>
+                                <textarea id="set-kepsek-msg" rows="3" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Visi & Misi (HTML diperbolehkan)</label>
+                                <textarea id="set-visi-misi" rows="4" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]"></textarea>
+                            </div>
                             
                             <div>
                                 <label class="block text-sm font-medium mb-1">Jadwal Seleksi (Satu item per baris)</label>
-                                <textarea id="set-schedule" rows="4" placeholder="Misal: Pendaftaran: 1-10 Juli 2026&#10;Tes Tulis: 12 Juli 2026" class="w-full p-2 border rounded"></textarea>
+                                <textarea id="set-schedule" rows="4" placeholder="Misal: Pendaftaran: 1-10 Juli 2026&#10;Tes Tulis: 12 Juli 2026" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]"></textarea>
                             </div>
 
                             <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Simpan Pengaturan</button>
@@ -368,7 +445,7 @@
                                 </select>
                                 <div class="flex gap-2 w-full">
                                     <label class="flex items-center whitespace-nowrap"><input type="checkbox" id="new-field-req" class="mr-1"> Wajib</label>
-                                    <button id="btn-add-field" onclick="addFormField()" class="bg-blue-600 text-white px-4 py-2 rounded flex-grow">Tambah</button>
+                                    <button id="btn-add-field" onclick="addFormField()" class="bg-[#004D40] text-white px-4 py-2 rounded flex-grow">Tambah</button>
                                     <button id="btn-cancel-edit-field" onclick="cancelEditField()" class="bg-gray-400 text-white px-3 py-2 rounded hidden"><i class="fas fa-times"></i></button>
                                 </div>
                             </div>
@@ -406,7 +483,7 @@
                 </div>
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Simpan Perubahan</button>
+                    <button type="submit" class="px-4 py-2 bg-[#004D40] text-white rounded hover:bg-[#00332C]">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -421,6 +498,28 @@
             <div class="flex gap-3 justify-center">
                 <button id="btn-confirm-cancel" class="px-4 py-2 bg-gray-200 text-gray-800 rounded font-bold hover:bg-gray-300 transition">Batal</button>
                 <button id="btn-confirm-ok" class="px-4 py-2 bg-red-600 text-white rounded font-bold hover:bg-red-700 transition">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Kartu (Simulasi Auto Send) -->
+    <div id="card-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+        <div class="bg-white p-0 rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
+            <div class="bg-green-600 text-white text-center p-4">
+                <i class="fas fa-check-circle text-4xl mb-2"></i>
+                <h3 class="text-xl font-bold">Pendaftaran Berhasil!</h3>
+                <p class="text-sm opacity-90">Data telah masuk ke database.</p>
+            </div>
+            <div class="p-6 text-center">
+                <p class="text-gray-700 mb-4">Kartu Pendaftaran telah otomatis dikirimkan ke email Anda: <br><strong id="card-email-display"></strong></p>
+                <div class="border-2 border-dashed border-gray-300 p-4 mb-4 bg-gray-50 rounded text-left relative">
+                    <div class="absolute top-2 right-2 text-gray-300"><i class="fas fa-id-card text-4xl"></i></div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nomor Pendaftaran</p>
+                    <p class="text-xl font-bold font-mono text-[#004D40] mb-2" id="card-reg-no">SPMB-001</p>
+                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nama Calon Siswa</p>
+                    <p class="font-bold text-gray-800" id="card-reg-name">Budi Santoso</p>
+                </div>
+                <button onclick="document.getElementById('card-modal').classList.replace('flex','hidden'); navigate('announcement')" class="w-full px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300">Tutup</button>
             </div>
         </div>
     </div>
@@ -526,7 +625,6 @@
         function renderAll() {
             // Beranda UI
             document.getElementById('nav-school-name').textContent = appState.schoolInfo.name;
-            document.getElementById('ui-school-name').textContent = appState.schoolInfo.name;
             document.getElementById('ui-hero-img').src = appState.schoolInfo.heroImg;
             document.getElementById('ui-kepsek-name').textContent = appState.schoolInfo.kepsekName;
             document.getElementById('ui-kepsek-img').src = appState.schoolInfo.kepsekImg;
@@ -553,7 +651,7 @@
                 let inputHtml = '';
                 const reqAttr = field.required ? 'required' : '';
                 const reqStar = field.required ? '<span class="text-red-500">*</span>' : '';
-                const commonClass = "w-full p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500";
+                const commonClass = "w-full p-2 border border-gray-300 rounded focus:ring-[#004D40] focus:border-[#004D40]";
                 const ph = field.placeholder ? `placeholder="${field.placeholder}"` : '';
                 
                 if (field.type === 'textarea') {
@@ -563,7 +661,7 @@
                 } else if (field.type === 'maps') {
                     inputHtml = `
                         <div class="mb-2">
-                            <button type="button" onclick="useCurrentLocation('map_reg_${field.id}', 'reg_${field.id}')" class="text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 py-1.5 px-3 rounded shadow-sm border border-blue-200 transition">
+                            <button type="button" onclick="useCurrentLocation('map_reg_${field.id}', 'reg_${field.id}')" class="text-sm bg-teal-50 hover:bg-teal-100 text-[#004D40] py-1.5 px-3 rounded shadow-sm border border-teal-200 transition">
                                 <i class="fas fa-location-arrow mr-1"></i> Gunakan Lokasi Saat Ini
                             </button>
                         </div>
@@ -591,9 +689,15 @@
 
             // Populate form pengaturan admin agar sesuai data saat ini
             document.getElementById('set-school-name').value = appState.schoolInfo.name;
-            document.getElementById('set-hero-img').value = appState.schoolInfo.heroImg;
+            
+            // Atur file hidden input dan preview gambar profil admin
+            document.getElementById('set-hero-img').value = appState.schoolInfo.heroImg || "";
+            document.getElementById('preview-set-hero-img').src = appState.schoolInfo.heroImg || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80";
+            
             document.getElementById('set-kepsek-name').value = appState.schoolInfo.kepsekName;
-            document.getElementById('set-kepsek-img').value = appState.schoolInfo.kepsekImg;
+            document.getElementById('set-kepsek-img').value = appState.schoolInfo.kepsekImg || "";
+            document.getElementById('preview-set-kepsek-img').src = appState.schoolInfo.kepsekImg || "https://via.placeholder.com/150";
+            
             document.getElementById('set-coordinates').value = appState.schoolInfo.coordinates || '';
             document.getElementById('set-kepsek-msg').value = appState.schoolInfo.kepsekMsg;
             document.getElementById('set-visi-misi').value = appState.schoolInfo.visiMisi.replace(/<br>/g, '\n');
@@ -752,10 +856,10 @@
 
         function switchAdminTab(tab) {
             document.querySelectorAll('.admin-tab').forEach(el => {
-                el.classList.remove('bg-blue-100', 'text-blue-800', 'font-medium');
+                el.classList.remove('bg-teal-100', 'text-[#004D40]', 'font-medium');
                 el.classList.add('text-gray-600');
             });
-            document.getElementById('tab-' + tab).classList.add('bg-blue-100', 'text-blue-800', 'font-medium');
+            document.getElementById('tab-' + tab).classList.add('bg-teal-100', 'text-[#004D40]', 'font-medium');
             document.getElementById('tab-' + tab).classList.remove('text-gray-600');
 
             document.querySelectorAll('.admin-content-section').forEach(el => el.classList.add('hidden'));
@@ -806,7 +910,7 @@
                 rowHtml += `
                     <td class="px-4 py-2 whitespace-nowrap text-xs font-bold ${statusColor}">${s.status}</td>
                     <td class="px-4 py-2 whitespace-nowrap text-xs">
-                        <button onclick="openEditModal(${idx})" class="text-blue-600 hover:text-blue-900 bg-blue-50 px-2 py-1 rounded"><i class="fas fa-edit"></i> Edit</button>
+                        <button onclick="openEditModal(${idx})" class="text-[#004D40] hover:text-[#00251A] bg-teal-50 px-2 py-1 rounded"><i class="fas fa-edit"></i> Edit</button>
                     </td>
                 </tr>`;
                 tbody.innerHTML += rowHtml;
@@ -873,7 +977,7 @@
             appState.formFields.forEach((f, index) => {
                 let placeholderText = f.placeholder ? `<span class="text-xs text-gray-500">Bayangan: ${f.placeholder}</span>` : '';
                 list.innerHTML += `
-                    <li draggable="true" ondragstart="dragStart(event, ${index})" ondragover="dragOver(event)" ondrop="drop(event, ${index})" class="flex justify-between items-center bg-white p-3 border border-gray-200 rounded shadow-sm cursor-move mb-2 hover:bg-gray-50 transition border-l-4 border-l-blue-500">
+                    <li draggable="true" ondragstart="dragStart(event, ${index})" ondragover="dragOver(event)" ondrop="drop(event, ${index})" class="flex justify-between items-center bg-white p-3 border border-gray-200 rounded shadow-sm cursor-move mb-2 hover:bg-gray-50 transition border-l-4 border-l-[#004D40]">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-grip-vertical text-gray-400"></i>
                             <div class="flex flex-col">
@@ -906,7 +1010,7 @@
             
             const btnAdd = document.getElementById('btn-add-field');
             btnAdd.textContent = 'Simpan Edit';
-            btnAdd.classList.replace('bg-blue-600', 'bg-yellow-500');
+            btnAdd.classList.replace('bg-[#004D40]', 'bg-yellow-500');
             document.getElementById('btn-cancel-edit-field').classList.remove('hidden');
         }
         
@@ -920,7 +1024,7 @@
             
             const btnAdd = document.getElementById('btn-add-field');
             btnAdd.textContent = 'Tambah';
-            btnAdd.classList.replace('bg-yellow-500', 'bg-blue-600');
+            btnAdd.classList.replace('bg-yellow-500', 'bg-[#004D40]');
             document.getElementById('btn-cancel-edit-field').classList.add('hidden');
         }
 
@@ -995,7 +1099,7 @@
                 } else if (f.type === 'maps') {
                     inputHtml = `
                         <div class="mb-2">
-                            <button type="button" onclick="useCurrentLocation('map_edit_field_${f.id}', 'edit_field_${f.id}')" class="text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 py-1 px-2 rounded shadow-sm border border-blue-200 transition">
+                            <button type="button" onclick="useCurrentLocation('map_edit_field_${f.id}', 'edit_field_${f.id}')" class="text-xs bg-teal-50 hover:bg-teal-100 text-[#004D40] py-1 px-2 rounded shadow-sm border border-teal-200 transition">
                                 <i class="fas fa-location-arrow mr-1"></i> Gunakan Lokasi Saat Ini
                             </button>
                         </div>
@@ -1072,7 +1176,7 @@
             // Validasi data
             const student = appState.students.find(s => s.id === id && s.email.toLowerCase() === email);
             if (!student) {
-                showToast("Data tidak ditemukan! Pastikan Nomor Pendaftaran dan Email diketik dengan benar.", "error");
+                showToast("Data tidak ditemukan! Pastikan Nomor Pendaftaran and Email diketik dengan benar.", "error");
                 return;
             }
             
@@ -1100,7 +1204,7 @@
                 let val = student.data[f.id] || '';
                 const reqAttr = f.required ? 'required' : '';
                 const readonly = isLocked ? 'readonly disabled' : '';
-                const bg = isLocked ? 'bg-gray-100 cursor-not-allowed' : 'bg-white focus:ring-blue-500 focus:border-blue-500';
+                const bg = isLocked ? 'bg-gray-100 cursor-not-allowed' : 'bg-white focus:ring-[#004D40] focus:border-[#004D40]';
                 const ph = f.placeholder ? `placeholder="${f.placeholder}"` : '';
                 
                 let inputHtml = '';
@@ -1111,7 +1215,7 @@
                 } else if (f.type === 'maps') {
                     let locBtn = isLocked ? '' : `
                         <div class="mb-2">
-                            <button type="button" onclick="useCurrentLocation('map_edit_app_${f.id}', 'edit_app_${f.id}')" class="text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 py-1.5 px-3 rounded shadow-sm border border-blue-200 transition">
+                            <button type="button" onclick="useCurrentLocation('map_edit_app_${f.id}', 'edit_app_${f.id}')" class="text-sm bg-teal-50 hover:bg-teal-100 text-[#004D40] py-1.5 px-3 rounded shadow-sm border border-teal-200 transition">
                                 <i class="fas fa-location-arrow mr-1"></i> Gunakan Lokasi Saat Ini
                             </button>
                         </div>
@@ -1195,7 +1299,7 @@
             if(type === 'success') { icon = '<i class="fas fa-check-circle text-2xl"></i>'; colorClass = 'bg-green-500'; }
             else if(type === 'error') { icon = '<i class="fas fa-exclamation-circle text-2xl"></i>'; colorClass = 'bg-red-500'; }
             else if(type === 'warning') { icon = '<i class="fas fa-exclamation-triangle text-2xl"></i>'; colorClass = 'bg-yellow-500'; }
-            else { icon = '<i class="fas fa-info-circle text-2xl"></i>'; colorClass = 'bg-blue-500'; }
+            else { icon = '<i class="fas fa-info-circle text-2xl"></i>'; colorClass = 'bg-teal-700'; }
 
             toast.className = `flex items-center gap-3 text-white px-4 py-3 rounded shadow-lg toast-enter ${colorClass}`;
             toast.innerHTML = `${icon} <span class="font-medium text-sm">${message}</span>`;
@@ -1208,6 +1312,7 @@
             }, 3000);
         }
 
+        // --- HELPER UNTUK KUSTOM CONFIRM ---
         function showCustomConfirm(msg, onConfirm) {
             const modal = document.getElementById('confirm-modal');
             const box = document.getElementById('confirm-box');
@@ -1305,9 +1410,9 @@
             // File hanya wajib jika field diset wajib, belum ada value sebelumnya, dan tidak sedang dilock
             const isRequired = field.required && !val && !isLocked ? 'required' : ''; 
             const readonlyAttr = isLocked ? 'disabled' : '';
-            const bg = isLocked ? 'bg-gray-100 cursor-not-allowed border-gray-300' : 'hover:bg-blue-50 bg-gray-50 border-blue-300 cursor-pointer';
+            const bg = isLocked ? 'bg-gray-100 cursor-not-allowed border-gray-300' : 'hover:bg-teal-50 bg-gray-50 border-teal-300 cursor-pointer';
             
-            let existingFileLink = val ? `<div class="mb-2"><a href="${val}" target="_blank" class="text-blue-600 underline text-sm font-medium"><i class="fas fa-external-link-alt"></i> Buka Gambar Saat Ini</a></div>` : '';
+            let existingFileLink = val ? `<div class="mb-2"><a href="${val}" target="_blank" class="text-teal-700 underline text-sm font-medium"><i class="fas fa-external-link-alt"></i> Buka Gambar Saat Ini</a></div>` : '';
             let labelText = val ? 'Upload Ulang' : 'Pilih Gambar';
             
             // Style yang sangat adaptif. Jika value sudah ada, overlay transparan saat normal, dan muncul gelap (glassmorphism) saat di-hover.
@@ -1315,11 +1420,11 @@
                 ? 'absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-300 opacity-0 hover:opacity-100 bg-black/60 backdrop-blur-sm' 
                 : 'absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-300 bg-white/80 backdrop-blur-sm p-4';
                 
-            let iconClass = val ? 'hidden' : 'fas fa-image text-blue-500 text-4xl mb-2 drop-shadow-sm';
+            let iconClass = val ? 'hidden' : 'fas fa-image text-teal-600 text-4xl mb-2 drop-shadow-sm';
             let placeholderClass = val ? 'hidden' : 'text-xs text-gray-700 mt-2 font-medium drop-shadow-sm';
             let btnClass = val 
                 ? 'relative cursor-pointer px-4 py-2 rounded-md font-medium transition shadow-md w-full max-w-[200px] text-center bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/50' 
-                : 'relative cursor-pointer px-4 py-2 rounded-md font-medium transition shadow-sm w-full max-w-[200px] text-center bg-blue-600 hover:bg-blue-700 text-white';
+                : 'relative cursor-pointer px-4 py-2 rounded-md font-medium transition shadow-sm w-full max-w-[200px] text-center bg-[#004D40] hover:bg-[#00332C] text-white';
             
             let uploadArea = isLocked ? `<div class="${overlayClass}"><p class="text-sm text-gray-800 font-bold mt-2 bg-white/80 px-3 py-1 rounded">Terkunci (Read-Only)</p></div>` : `
                 <div id="${overlayId}" class="${overlayClass}">
@@ -1363,7 +1468,7 @@
                 return;
             }
             
-            // Batasan ukuran (contoh 2MB)
+            // Batasan ukuran untuk berkas calon siswa (tetap 2MB)
             if(file.size > 2 * 1024 * 1024) {
                 showToast("Ukuran file terlalu besar! Maksimal 2MB.", "warning");
                 element.value = "";
@@ -1391,6 +1496,33 @@
                 if(btnText) btnText.innerHTML = '<i class="fas fa-upload mr-1"></i> Upload Ulang';
                 if(labelBtn) labelBtn.className = "relative cursor-pointer px-4 py-2 rounded-md font-medium transition shadow-md w-full max-w-[200px] text-center bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/50";
                 if(displayEl) displayEl.textContent = ""; // Kosongkan teks indikator karena gambar sudah langsung terlihat
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // --- HELPER UNTUK PROFIL SEKOLAH (GAMBAR & KEPSEK) ---
+        function handleSettingImageUpload(element, hiddenId, previewId) {
+            const file = element.files[0];
+            if(!file) return;
+
+            if(!file.type.match('image.*')) {
+                showToast("Hanya file gambar (JPG/PNG) yang diperbolehkan!", "warning");
+                element.value = "";
+                return;
+            }
+
+            // Batasan ukuran file diubah dari 2MB menjadi 10MB khusus pengaturan admin profil sekolah
+            if(file.size > 10 * 1024 * 1024) {
+                showToast("Ukuran file terlalu besar! Maksimal 10MB.", "warning");
+                element.value = "";
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                document.getElementById(hiddenId).value = reader.result;
+                document.getElementById(previewId).src = reader.result;
+                showToast("Pratinjau gambar berhasil diperbarui!", "success");
             }
             reader.readAsDataURL(file);
         }
