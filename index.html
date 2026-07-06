@@ -361,7 +361,7 @@
                                     <option value="number">Angka</option>
                                     <option value="textarea">Teks Panjang</option>
                                     <option value="date">Tanggal</option>
-                                    <option value="file">File (Unggah)</option>
+                                    <option value="file">Gambar (JPG/PNG)</option>
                                     <option value="maps">Peta Interaktif (Maps)</option>
                                 </select>
                                 <div class="flex gap-2 w-full">
@@ -510,6 +510,9 @@
             if(pageId === 'admin-dashboard') loadAdminData();
             if(pageId === 'announcement') renderAnnouncement();
             window.scrollTo(0, 0);
+
+            // Perbarui ukuran peta setiap kali pindah halaman
+            resizeAllMaps();
         }
 
         function toggleMobileMenu() {
@@ -537,7 +540,13 @@
             // Render Form Fields
             const formContainer = document.getElementById('dynamic-fields-container');
             formContainer.innerHTML = '';
-            appState.formFields.forEach(field => {
+            
+            // Urutkan: Field biasa di atas, Field Tipe 'File' di paling bawah
+            const regularFields = appState.formFields.filter(f => f.type !== 'file');
+            const fileFields = appState.formFields.filter(f => f.type === 'file');
+            const sortedFields = [...regularFields, ...fileFields];
+
+            sortedFields.forEach(field => {
                 let inputHtml = '';
                 const reqAttr = field.required ? 'required' : '';
                 const reqStar = field.required ? '<span class="text-red-500">*</span>' : '';
@@ -547,11 +556,7 @@
                 if (field.type === 'textarea') {
                     inputHtml = `<textarea id="reg_${field.id}" ${reqAttr} ${ph} rows="3" class="${commonClass}"></textarea>`;
                 } else if (field.type === 'file') {
-                    inputHtml = `
-                        <input type="file" accept="image/*,.pdf,.doc,.docx" onchange="encodeFileAsBase64(this, 'reg_${field.id}')" class="${commonClass} bg-white p-1" ${reqAttr}>
-                        <input type="hidden" id="reg_${field.id}" ${reqAttr}>
-                    `;
-                    if(field.placeholder) inputHtml += `<p class="text-xs text-gray-500 mt-1">${field.placeholder}</p>`;
+                    inputHtml = generateFileInputBox(field, 'reg_');
                 } else if (field.type === 'maps') {
                     inputHtml = `
                         <div id="map_reg_${field.id}" class="h-64 w-full rounded border border-gray-300 relative z-0 mb-2"></div>
@@ -978,17 +983,17 @@
             const container = document.getElementById('edit-dynamic-inputs');
             container.innerHTML = '';
             
-            appState.formFields.forEach(f => {
+            // Urutkan: Field biasa di atas, Field Tipe 'File' di paling bawah
+            const regularFields = appState.formFields.filter(f => f.type !== 'file');
+            const fileFields = appState.formFields.filter(f => f.type === 'file');
+            const sortedFields = [...regularFields, ...fileFields];
+            
+            sortedFields.forEach(f => {
                 let val = student.data[f.id] || '';
                 let inputHtml = '';
 
                 if(f.type === 'file') {
-                    let fileLink = val ? `<a href="${val}" target="_blank" class="text-blue-600 underline text-xs ml-2"><i class="fas fa-external-link-alt"></i> Lihat File Tersimpan</a>` : '<span class="text-xs text-gray-400 ml-2">Belum ada file</span>';
-                    inputHtml = `
-                        <div class="mb-1">${fileLink}</div>
-                        <input type="file" onchange="encodeFileAsBase64(this, 'edit_field_${f.id}')" class="w-full p-1 border rounded text-sm bg-white">
-                        <input type="hidden" id="edit_field_${f.id}" value="${val}">
-                    `;
+                    inputHtml = generateFileInputBox(f, 'edit_field_', val);
                 } else if (f.type === 'textarea') {
                     inputHtml = `<textarea id="edit_field_${f.id}" class="w-full p-2 border rounded text-sm">${val}</textarea>`;
                 } else if (f.type === 'maps') {
@@ -1013,6 +1018,9 @@
 
             document.getElementById('edit-modal').classList.remove('hidden');
             document.getElementById('edit-modal').classList.add('flex');
+            
+            // Perbarui ukuran peta saat modal terbuka
+            resizeAllMaps();
         }
 
         function closeEditModal() {
@@ -1078,7 +1086,13 @@
             // Render form dinamis
             const container = document.getElementById('applicant-dynamic-fields');
             container.innerHTML = '';
-            appState.formFields.forEach(f => {
+            
+            // Urutkan: Field biasa di atas, Field Tipe 'File' di paling bawah
+            const regularFields = appState.formFields.filter(f => f.type !== 'file');
+            const fileFields = appState.formFields.filter(f => f.type === 'file');
+            const sortedFields = [...regularFields, ...fileFields];
+
+            sortedFields.forEach(f => {
                 let val = student.data[f.id] || '';
                 const reqAttr = f.required ? 'required' : '';
                 const readonly = isLocked ? 'readonly disabled' : '';
@@ -1089,13 +1103,7 @@
                 if(f.type === 'textarea') {
                     inputHtml = `<textarea id="edit_app_${f.id}" ${reqAttr} ${readonly} ${ph} rows="3" class="w-full p-2 border border-gray-300 rounded ${bg}">${val}</textarea>`;
                 } else if (f.type === 'file') {
-                    let fileLink = val ? `<a href="${val}" target="_blank" class="text-blue-600 text-xs underline mb-2 inline-block"><i class="fas fa-file-alt"></i> Lihat File Saat Ini</a>` : '';
-                    inputHtml = `
-                        ${fileLink}
-                        <input type="file" onchange="encodeFileAsBase64(this, 'edit_app_${f.id}')" ${readonly} class="w-full p-1 border border-gray-300 rounded bg-white ${bg}">
-                        <input type="hidden" id="edit_app_${f.id}" value="${val}">
-                    `;
-                    if(f.placeholder) inputHtml += `<p class="text-xs text-gray-500 mt-1">${f.placeholder}</p>`;
+                    inputHtml = generateFileInputBox(f, 'edit_app_', val, isLocked);
                 } else if (f.type === 'maps') {
                     inputHtml = `
                         <div id="map_edit_app_${f.id}" class="h-64 w-full rounded border border-gray-300 relative z-0 mb-1"></div>
@@ -1114,6 +1122,9 @@
 
             document.getElementById('applicant-login-section').classList.add('hidden');
             document.getElementById('applicant-edit-section').classList.remove('hidden');
+            
+            // Perbarui ukuran peta saat form edit terbuka
+            resizeAllMaps();
         }
 
         function cancelApplicantEdit() {
@@ -1218,20 +1229,93 @@
         }
 
         // --- HELPER UNTUK FILE DAN PETA ---
-        function encodeFileAsBase64(element, targetId) {
+        function resizeAllMaps() {
+            // Beri sedikit jeda waktu (300ms) agar animasi CSS selesai dan wadah peta memiliki ukuran yang valid
+            setTimeout(() => {
+                for (let mapId in activeMaps) {
+                    if(activeMaps[mapId]) {
+                        activeMaps[mapId].invalidateSize();
+                    }
+                }
+            }, 300);
+        }
+
+        function generateFileInputBox(field, prefix, val = '', isLocked = false) {
+            const hiddenId = `${prefix}${field.id}`;
+            const fileId = `${prefix}${field.id}_file`;
+            const displayId = `${prefix}${field.id}_display`;
+            const previewId = `${prefix}${field.id}_preview`;
+            // File hanya wajib jika field diset wajib, belum ada value sebelumnya, dan tidak sedang dilock
+            const isRequired = field.required && !val && !isLocked ? 'required' : ''; 
+            const readonlyAttr = isLocked ? 'disabled' : '';
+            const bg = isLocked ? 'bg-gray-100 cursor-not-allowed border-gray-300' : 'hover:bg-blue-50 bg-white border-blue-200 cursor-pointer';
+            
+            let existingFileLink = val ? `<div class="mb-2"><a href="${val}" target="_blank" class="text-blue-600 underline text-sm font-medium"><i class="fas fa-external-link-alt"></i> Buka Gambar di Tab Baru</a></div>` : '';
+            let labelText = val ? 'Ganti Gambar' : 'Pilih Gambar';
+            
+            let uploadArea = isLocked ? `<p class="text-xs text-gray-500 font-bold mt-2">Terkunci (Read-Only)</p>` : `
+                <div class="flex text-sm text-gray-600 justify-center items-center mt-2">
+                    <label for="${fileId}" class="relative cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 focus-within:outline-none transition shadow-sm">
+                        <span><i class="fas fa-upload mr-1"></i> ${labelText}</span>
+                        <input id="${fileId}" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" class="sr-only" ${readonlyAttr} ${isRequired} onchange="handleFileInputChange(this, '${hiddenId}', '${displayId}', '${previewId}')">
+                    </label>
+                </div>
+                <p class="text-xs text-gray-500 mt-3">${field.placeholder || 'Format: JPG, JPEG, PNG (Maks 2MB)'}</p>
+            `;
+
+            let imagePreviewHtml = val ? `<img id="${previewId}" src="${val}" class="mt-4 max-h-48 mx-auto rounded-md shadow object-contain" alt="Preview">` : `<img id="${previewId}" class="mt-4 max-h-48 mx-auto rounded-md shadow object-contain hidden" alt="Preview">`;
+
+            return `
+                ${existingFileLink}
+                <div class="mt-1 flex justify-center px-6 pt-6 pb-6 border-2 border-dashed rounded-xl relative transition ${bg}">
+                    <div class="space-y-1 text-center w-full">
+                        <i class="fas fa-image text-blue-300 text-5xl mb-2"></i>
+                        ${uploadArea}
+                        <p id="${displayId}" class="text-sm font-bold text-green-600 mt-3 truncate w-full px-2"></p>
+                        ${imagePreviewHtml}
+                    </div>
+                </div>
+                <input type="hidden" id="${hiddenId}" value="${val}">
+            `;
+        }
+
+        function handleFileInputChange(element, hiddenId, displayId, previewId) {
             const file = element.files[0];
-            if(!file) return;
+            const displayEl = document.getElementById(displayId);
+            const previewEl = document.getElementById(previewId);
+            
+            if(!file) {
+                displayEl.textContent = '';
+                return;
+            }
+
+            // Validasi tipe file agar hanya gambar
+            if(!file.type.match('image.*')) {
+                showToast("Hanya file gambar (JPG/PNG) yang diperbolehkan!", "warning");
+                element.value = "";
+                displayEl.textContent = '';
+                if(previewEl && !document.getElementById(hiddenId).value) previewEl.classList.add('hidden');
+                return;
+            }
             
             // Batasan ukuran (contoh 2MB)
             if(file.size > 2 * 1024 * 1024) {
                 showToast("Ukuran file terlalu besar! Maksimal 2MB.", "warning");
                 element.value = "";
+                displayEl.textContent = '';
+                if(previewEl && !document.getElementById(hiddenId).value) previewEl.classList.add('hidden');
                 return;
             }
             
+            displayEl.textContent = "✓ Gambar siap diunggah: " + file.name;
+            
             const reader = new FileReader();
             reader.onloadend = function() {
-                document.getElementById(targetId).value = reader.result;
+                document.getElementById(hiddenId).value = reader.result;
+                if(previewEl) {
+                    previewEl.src = reader.result;
+                    previewEl.classList.remove('hidden');
+                }
             }
             reader.readAsDataURL(file);
         }
