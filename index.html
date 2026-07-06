@@ -169,7 +169,8 @@
                 <p class="text-gray-500 mb-6 text-sm">Isi data di bawah ini dengan sebenar-benarnya. Field bertanda (*) wajib diisi.</p>
                 
                 <form id="registrationForm" onsubmit="submitRegistration(event)">
-                    <div id="dynamic-fields-container" class="space-y-4 mb-6">
+                    <!-- Diubah menggunakan Grid Layout agar isian form bisa berjejer sebaris -->
+                    <div id="dynamic-fields-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <!-- Fields di-inject via JS berdasarkan pengaturan admin -->
                     </div>
                     
@@ -219,7 +220,8 @@
                         <span>Status Seleksi Anda saat ini: <strong id="applicant-status-display" class="uppercase"></strong></span>
                     </div>
                     <form id="applicant-edit-form" onsubmit="saveApplicantEdit(event)">
-                        <div id="applicant-dynamic-fields" class="space-y-4 mb-6">
+                        <!-- Diubah menggunakan Grid Layout -->
+                        <div id="applicant-dynamic-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                             <!-- Injected by JS -->
                         </div>
                         <button type="submit" id="btn-save-applicant" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Simpan Perubahan</button>
@@ -386,11 +388,12 @@
 
     <!-- Modal Edit Siswa (Admin) -->
     <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             <h3 class="text-xl font-bold mb-4">Edit Data Siswa</h3>
             <form id="edit-student-form" onsubmit="saveStudentEdit(event)">
                 <input type="hidden" id="edit-idx">
-                <div id="edit-dynamic-inputs" class="space-y-3 mb-4">
+                <!-- Diubah menggunakan Grid Layout -->
+                <div id="edit-dynamic-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <!-- Injected -->
                 </div>
                 <div class="mb-4 pt-2 border-t">
@@ -572,8 +575,11 @@
                     inputHtml = `<input type="${field.type}" id="reg_${field.id}" ${reqAttr} ${ph} class="${commonClass}">`;
                 }
 
+                // Field selain 'file' dibuat melebar penuh, khusus 'file' dibuat setengah lebar agar bisa berjejer
+                let colSpan = (field.type === 'file') ? 'col-span-1' : 'md:col-span-2 col-span-1';
+
                 formContainer.innerHTML += `
-                    <div>
+                    <div class="${colSpan}">
                         <label class="block text-sm font-medium text-gray-700 mb-1">${field.label} ${reqStar}</label>
                         ${inputHtml}
                     </div>
@@ -964,21 +970,6 @@
             }
         }
 
-        async function saveFieldsSettings() {
-            if(USE_MOCK) {
-                saveMockData();
-                renderAll();
-                alert("Konfigurasi Form Disimpan!");
-            } else {
-                await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'save_settings', payload: { type: 'fields', data: appState.formFields }})
-                });
-                renderAll();
-                alert("Konfigurasi Form Disimpan di Database!");
-            }
-        }
-
         // --- EDIT DATA SISWA (ADMIN) ---
         function openEditModal(idx) {
             const student = appState.students[idx];
@@ -1014,9 +1005,12 @@
                 } else {
                     inputHtml = `<input type="${f.type}" id="edit_field_${f.id}" value="${val}" class="w-full p-2 border rounded text-sm">`;
                 }
+                
+                // Field selain 'file' dibuat melebar penuh, khusus 'file' dibuat setengah lebar agar bisa berjejer
+                let colSpan = (f.type === 'file') ? 'col-span-1' : 'md:col-span-2 col-span-1';
 
                 container.innerHTML += `
-                    <div>
+                    <div class="${colSpan}">
                         <label class="block text-xs font-medium text-gray-500 mb-1">${f.label}</label>
                         ${inputHtml}
                     </div>
@@ -1131,8 +1125,11 @@
                 } else {
                     inputHtml = `<input type="${f.type}" id="edit_app_${f.id}" value="${val}" ${reqAttr} ${readonly} ${ph} class="w-full p-2 border border-gray-300 rounded ${bg}">`;
                 }
+                
+                // Field selain 'file' dibuat melebar penuh, khusus 'file' dibuat setengah lebar agar bisa berjejer
+                let colSpan = (f.type === 'file') ? 'col-span-1' : 'md:col-span-2 col-span-1';
                     
-                container.innerHTML += `<div><label class="block text-sm font-medium text-gray-700 mb-1">${f.label}</label>${inputHtml}</div>`;
+                container.innerHTML += `<div class="${colSpan}"><label class="block text-sm font-medium text-gray-700 mb-1">${f.label}</label>${inputHtml}</div>`;
             });
             
             // Inisialisasi peta di form pendaftar
@@ -1298,56 +1295,71 @@
             const fileId = `${prefix}${field.id}_file`;
             const displayId = `${prefix}${field.id}_display`;
             const previewId = `${prefix}${field.id}_preview`;
+            
+            // ID elemen tambahan untuk JS Toggle
+            const overlayId = `${prefix}${field.id}_overlay`;
+            const iconId = `${prefix}${field.id}_icon`;
+            const placeholderId = `${prefix}${field.id}_placeholder`;
+            const btnTextId = `${prefix}${field.id}_btnText`;
+            
             // File hanya wajib jika field diset wajib, belum ada value sebelumnya, dan tidak sedang dilock
             const isRequired = field.required && !val && !isLocked ? 'required' : ''; 
             const readonlyAttr = isLocked ? 'disabled' : '';
-            const bg = isLocked ? 'bg-gray-100 cursor-not-allowed border-gray-300' : 'hover:bg-blue-50 bg-white border-blue-200 cursor-pointer';
+            const bg = isLocked ? 'bg-gray-100 cursor-not-allowed border-gray-300' : 'hover:bg-blue-50 bg-gray-50 border-blue-300 cursor-pointer';
             
-            let existingFileLink = val ? `<div class="mb-2"><a href="${val}" target="_blank" class="text-blue-600 underline text-sm font-medium"><i class="fas fa-external-link-alt"></i> Buka Gambar di Tab Baru</a></div>` : '';
-            let labelText = val ? 'Ganti Gambar' : 'Pilih Gambar';
+            let existingFileLink = val ? `<div class="mb-2"><a href="${val}" target="_blank" class="text-blue-600 underline text-sm font-medium"><i class="fas fa-external-link-alt"></i> Buka Gambar Saat Ini</a></div>` : '';
+            let labelText = val ? 'Upload Ulang' : 'Pilih Gambar';
             
-            let uploadArea = isLocked ? `<p class="text-xs text-gray-500 font-bold mt-2">Terkunci (Read-Only)</p>` : `
-                <div class="flex text-sm text-gray-600 justify-center items-center mt-2">
-                    <label for="${fileId}" class="relative cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 focus-within:outline-none transition shadow-sm">
-                        <span><i class="fas fa-upload mr-1"></i> ${labelText}</span>
-                        <input id="${fileId}" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" class="sr-only" ${readonlyAttr} ${isRequired} onchange="handleFileInputChange(this, '${hiddenId}', '${displayId}', '${previewId}')">
+            // Style yang sangat adaptif. Jika value sudah ada, overlay transparan saat normal, dan muncul gelap (glassmorphism) saat di-hover.
+            let overlayClass = val 
+                ? 'absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-300 opacity-0 hover:opacity-100 bg-black/60 backdrop-blur-sm' 
+                : 'absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-300 bg-white/80 backdrop-blur-sm p-4';
+                
+            let iconClass = val ? 'hidden' : 'fas fa-image text-blue-500 text-4xl mb-2 drop-shadow-sm';
+            let placeholderClass = val ? 'hidden' : 'text-xs text-gray-700 mt-2 font-medium drop-shadow-sm';
+            let btnClass = val 
+                ? 'relative cursor-pointer px-4 py-2 rounded-md font-medium transition shadow-md w-full max-w-[200px] text-center bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/50' 
+                : 'relative cursor-pointer px-4 py-2 rounded-md font-medium transition shadow-sm w-full max-w-[200px] text-center bg-blue-600 hover:bg-blue-700 text-white';
+            
+            let uploadArea = isLocked ? `<div class="${overlayClass}"><p class="text-sm text-gray-800 font-bold mt-2 bg-white/80 px-3 py-1 rounded">Terkunci (Read-Only)</p></div>` : `
+                <div id="${overlayId}" class="${overlayClass}">
+                    <i id="${iconId}" class="${iconClass}"></i>
+                    <label for="${fileId}" class="${btnClass}">
+                        <span id="${btnTextId}"><i class="fas fa-upload mr-1"></i> ${labelText}</span>
+                        <input id="${fileId}" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" class="sr-only" ${readonlyAttr} ${isRequired} onchange="handleFileInputChange(this, '${hiddenId}', '${displayId}', '${previewId}', '${overlayId}', '${iconId}', '${placeholderId}', '${btnTextId}')">
                     </label>
+                    <p id="${placeholderId}" class="${placeholderClass}">${field.placeholder || 'Format: JPG, JPEG, PNG (Maks 2MB)'}</p>
+                    <p id="${displayId}" class="text-sm font-bold mt-2 truncate w-full px-2 text-white drop-shadow-md"></p>
                 </div>
-                <p class="text-xs text-gray-500 mt-3">${field.placeholder || 'Format: JPG, JPEG, PNG (Maks 2MB)'}</p>
             `;
 
-            let imagePreviewHtml = val ? `<img id="${previewId}" src="${val}" class="mt-4 max-h-48 mx-auto rounded-md shadow object-contain" alt="Preview">` : `<img id="${previewId}" class="mt-4 max-h-48 mx-auto rounded-md shadow object-contain hidden" alt="Preview">`;
+            let imagePreviewHtml = val 
+                ? `<img id="${previewId}" src="${val}" class="absolute inset-0 w-full h-full object-cover z-0" alt="Preview">` 
+                : `<img id="${previewId}" class="absolute inset-0 w-full h-full object-cover z-0 hidden" alt="Preview">`;
 
             return `
                 ${existingFileLink}
-                <div class="mt-1 flex justify-center px-6 pt-6 pb-6 border-2 border-dashed rounded-xl relative transition ${bg}">
-                    <div class="space-y-1 text-center w-full">
-                        <i class="fas fa-image text-blue-300 text-5xl mb-2"></i>
-                        ${uploadArea}
-                        <p id="${displayId}" class="text-sm font-bold text-green-600 mt-3 truncate w-full px-2"></p>
-                        ${imagePreviewHtml}
-                    </div>
+                <div class="mt-1 flex justify-center items-center h-48 border-2 border-dashed rounded-xl relative overflow-hidden transition ${bg}">
+                    ${imagePreviewHtml}
+                    ${uploadArea}
                 </div>
                 <input type="hidden" id="${hiddenId}" value="${val}">
             `;
         }
 
-        function handleFileInputChange(element, hiddenId, displayId, previewId) {
+        function handleFileInputChange(element, hiddenId, displayId, previewId, overlayId, iconId, placeholderId, btnTextId) {
             const file = element.files[0];
             const displayEl = document.getElementById(displayId);
             const previewEl = document.getElementById(previewId);
             
             if(!file) {
-                displayEl.textContent = '';
-                return;
+                return; // Jika dibatalkan, biarkan state terakhir
             }
 
             // Validasi tipe file agar hanya gambar
             if(!file.type.match('image.*')) {
                 showToast("Hanya file gambar (JPG/PNG) yang diperbolehkan!", "warning");
                 element.value = "";
-                displayEl.textContent = '';
-                if(previewEl && !document.getElementById(hiddenId).value) previewEl.classList.add('hidden');
                 return;
             }
             
@@ -1355,12 +1367,8 @@
             if(file.size > 2 * 1024 * 1024) {
                 showToast("Ukuran file terlalu besar! Maksimal 2MB.", "warning");
                 element.value = "";
-                displayEl.textContent = '';
-                if(previewEl && !document.getElementById(hiddenId).value) previewEl.classList.add('hidden');
                 return;
             }
-            
-            displayEl.textContent = "✓ Gambar siap diunggah: " + file.name;
             
             const reader = new FileReader();
             reader.onloadend = function() {
@@ -1369,6 +1377,20 @@
                     previewEl.src = reader.result;
                     previewEl.classList.remove('hidden');
                 }
+                
+                // --- UPDATE UI MENJADI STATE "UPLOADED" ---
+                const overlay = document.getElementById(overlayId);
+                const icon = document.getElementById(iconId);
+                const placeholder = document.getElementById(placeholderId);
+                const btnText = document.getElementById(btnTextId);
+                const labelBtn = element.parentElement;
+                
+                if(overlay) overlay.className = "absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-300 opacity-0 hover:opacity-100 bg-black/60 backdrop-blur-sm";
+                if(icon) icon.className = "hidden";
+                if(placeholder) placeholder.className = "hidden";
+                if(btnText) btnText.innerHTML = '<i class="fas fa-upload mr-1"></i> Upload Ulang';
+                if(labelBtn) labelBtn.className = "relative cursor-pointer px-4 py-2 rounded-md font-medium transition shadow-md w-full max-w-[200px] text-center bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/50";
+                if(displayEl) displayEl.textContent = ""; // Kosongkan teks indikator karena gambar sudah langsung terlihat
             }
             reader.readAsDataURL(file);
         }
@@ -1381,8 +1403,8 @@
                     const inputId = `${prefix}${f.id}`;
                     
                     // Bersihkan instance lama jika form dirender ulang
-                    if(activeMaps[mapId]) {
-                        activeMaps[mapId].remove();
+                    if(activeMaps[mapId] && activeMaps[mapId].map) {
+                        activeMaps[mapId].map.remove();
                     }
 
                     const inputEl = document.getElementById(inputId);
