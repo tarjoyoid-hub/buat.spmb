@@ -559,6 +559,11 @@
                     inputHtml = generateFileInputBox(field, 'reg_');
                 } else if (field.type === 'maps') {
                     inputHtml = `
+                        <div class="mb-2">
+                            <button type="button" onclick="useCurrentLocation('map_reg_${field.id}', 'reg_${field.id}')" class="text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 py-1.5 px-3 rounded shadow-sm border border-blue-200 transition">
+                                <i class="fas fa-location-arrow mr-1"></i> Gunakan Lokasi Saat Ini
+                            </button>
+                        </div>
                         <div id="map_reg_${field.id}" class="h-64 w-full rounded border border-gray-300 relative z-0 mb-2"></div>
                         <p class="text-xs text-gray-500 mb-1"><i class="fas fa-info-circle"></i> Klik atau geser penanda untuk menentukan lokasi persis.</p>
                         <input type="hidden" id="reg_${field.id}" ${reqAttr}>
@@ -998,6 +1003,11 @@
                     inputHtml = `<textarea id="edit_field_${f.id}" class="w-full p-2 border rounded text-sm">${val}</textarea>`;
                 } else if (f.type === 'maps') {
                     inputHtml = `
+                        <div class="mb-2">
+                            <button type="button" onclick="useCurrentLocation('map_edit_field_${f.id}', 'edit_field_${f.id}')" class="text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 py-1 px-2 rounded shadow-sm border border-blue-200 transition">
+                                <i class="fas fa-location-arrow mr-1"></i> Gunakan Lokasi Saat Ini
+                            </button>
+                        </div>
                         <div id="map_edit_field_${f.id}" class="h-48 w-full rounded border border-gray-300 relative z-0 mb-1"></div>
                         <input type="hidden" id="edit_field_${f.id}" value="${val}">
                     `;
@@ -1105,7 +1115,15 @@
                 } else if (f.type === 'file') {
                     inputHtml = generateFileInputBox(f, 'edit_app_', val, isLocked);
                 } else if (f.type === 'maps') {
+                    let locBtn = isLocked ? '' : `
+                        <div class="mb-2">
+                            <button type="button" onclick="useCurrentLocation('map_edit_app_${f.id}', 'edit_app_${f.id}')" class="text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 py-1.5 px-3 rounded shadow-sm border border-blue-200 transition">
+                                <i class="fas fa-location-arrow mr-1"></i> Gunakan Lokasi Saat Ini
+                            </button>
+                        </div>
+                    `;
                     inputHtml = `
+                        ${locBtn}
                         <div id="map_edit_app_${f.id}" class="h-64 w-full rounded border border-gray-300 relative z-0 mb-1"></div>
                         <input type="hidden" id="edit_app_${f.id}" value="${val}">
                         <p class="text-xs text-gray-500"><i class="fas fa-hand-pointer"></i> Geser peta/marker untuk mengubah lokasi.</p>
@@ -1233,11 +1251,46 @@
             // Beri sedikit jeda waktu (300ms) agar animasi CSS selesai dan wadah peta memiliki ukuran yang valid
             setTimeout(() => {
                 for (let mapId in activeMaps) {
-                    if(activeMaps[mapId]) {
-                        activeMaps[mapId].invalidateSize();
+                    if(activeMaps[mapId] && activeMaps[mapId].map) {
+                        activeMaps[mapId].map.invalidateSize();
                     }
                 }
             }, 300);
+        }
+
+        function useCurrentLocation(mapId, inputId) {
+            if (navigator.geolocation) {
+                const btn = event.currentTarget;
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mencari Lokasi...';
+                btn.disabled = true;
+
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        const inputEl = document.getElementById(inputId);
+                        inputEl.value = `${lat},${lng}`;
+                        
+                        if(activeMaps[mapId]) {
+                            const mapObj = activeMaps[mapId];
+                            mapObj.map.setView([lat, lng], 16);
+                            mapObj.marker.setLatLng([lat, lng]);
+                        }
+                        showToast("Lokasi berhasil diperbarui ke posisi Anda", "success");
+                        btn.innerHTML = originalHtml;
+                        btn.disabled = false;
+                    },
+                    (error) => {
+                        showToast("Gagal mendapatkan lokasi. Pastikan izin lokasi browser Anda aktif.", "error");
+                        btn.innerHTML = originalHtml;
+                        btn.disabled = false;
+                    },
+                    { enableHighAccuracy: true }
+                );
+            } else {
+                showToast("Fitur lokasi (GPS) tidak didukung oleh browser Anda.", "error");
+            }
         }
 
         function generateFileInputBox(field, prefix, val = '', isLocked = false) {
@@ -1382,7 +1435,8 @@
                         inputEl.value = `${e.latlng.lat},${e.latlng.lng}`;
                     });
 
-                    activeMaps[mapId] = map;
+                    // Simpan objek map dan marker untuk digunakan oleh fitur Gunakan Lokasi Saat Ini
+                    activeMaps[mapId] = { map: map, marker: marker };
                     
                     // Paksa peta merender ulang (menghindari isu ubin terpotong di tab tersembunyi)
                     setTimeout(() => { map.invalidateSize(); }, 500);
