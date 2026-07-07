@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem SPMB Online</title>
+    <title>Sistem PPDB Online</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
@@ -44,7 +44,7 @@
     <!-- Navbar -->
     <nav class="bg-[#004D40] text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-14">
                 <div class="flex items-center cursor-pointer" onclick="navigate('home')">
                     <i class="fas fa-graduation-cap text-2xl mr-2"></i>
                     <span class="font-bold text-xl" id="nav-school-name">SPMB Online</span>
@@ -80,12 +80,28 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex flex-col">
         
         <!-- 1. Beranda -->
         <section id="home" class="page-section active">
+            <!-- Teks Selamat Datang (Dinamis Diatur Oleh Admin) - Oranye, Border Putih & Tanpa Latar Belakang -->
+            <div class="text-center py-6 px-4 mb-4 select-none">
+                <span class="text-3xl sm:text-4xl md:text-5xl font-black tracking-wider uppercase block" 
+                      id="ui-welcome-tag" 
+                      style="color: #FF6F00; -webkit-text-stroke: 1.5px #FFFFFF; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); font-family: 'Arial Black', sans-serif;">
+                    Selamat Datang
+                </span>
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#004D40] mt-3.5 leading-tight drop-shadow-sm" id="ui-welcome-title">
+                    Sistem Penerimaan Murid Baru (SPMB)
+                </h1>
+                <p class="text-base sm:text-lg md:text-xl text-teal-700 font-bold mt-2" id="ui-welcome-year">
+                    Tahun Ajaran 2026/2027
+                </p>
+            </div>
+
+            <!-- Foto Header Sekolah -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-                <div class="h-64 bg-gray-300 relative w-full flex justify-center items-center overflow-hidden">
+                <div class="h-64 md:h-auto md:aspect-[3/1] bg-gray-300 relative w-full flex justify-center items-center overflow-hidden">
                    <img id="ui-hero-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Sekolah" class="w-full h-full object-cover">
                 </div>
             </div>
@@ -93,8 +109,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="md:col-span-2 space-y-8">
                     
-                    <!-- Visi & Misi Terpisah di Atas Sambutan -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Visi & Misi Terpisah secara Vertikal (Visi di atas Misi) -->
+                    <div class="flex flex-col gap-6">
                         <!-- Card Visi -->
                         <div class="bg-white p-8 rounded-3xl shadow-md border border-teal-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden group transform hover:-translate-y-2">
                             <div class="absolute -right-8 -bottom-8 text-teal-100 opacity-40 text-9xl transform -rotate-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-0">
@@ -228,10 +244,8 @@
                 <p class="text-gray-500 mb-6 text-sm">Isi data di bawah ini dengan sebenar-benarnya. Field bertanda (*) wajib diisi.</p>
                 
                 <form id="registrationForm" onsubmit="submitRegistration(event)">
-                    <!-- Diubah menggunakan Grid Layout agar isian form bisa berjejer sebaris -->
-                    <div id="dynamic-fields-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                        <!-- Fields di-inject via JS berdasarkan pengaturan admin -->
-                    </div>
+                    <!-- Dynamic fields -->
+                    <div id="dynamic-fields-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
                     
                     <!-- Email for Auto-send Card -->
                     <div class="space-y-4 mb-6 pt-4 border-t border-gray-200">
@@ -279,10 +293,7 @@
                         <span>Status Seleksi Anda saat ini: <strong id="applicant-status-display" class="uppercase"></strong></span>
                     </div>
                     <form id="applicant-edit-form" onsubmit="saveApplicantEdit(event)">
-                        <!-- Diubah menggunakan Grid Layout -->
-                        <div id="applicant-dynamic-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <!-- Injected by JS -->
-                        </div>
+                        <div id="applicant-dynamic-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
                         <button type="submit" id="btn-save-applicant" class="w-full bg-[#004D40] hover:bg-[#00332C] text-white font-bold py-2 px-4 rounded">Simpan Perubahan</button>
                         <button type="button" onclick="cancelApplicantEdit()" class="w-full mt-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Batal / Tutup</button>
                     </form>
@@ -309,9 +320,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="announcement-list" class="bg-white divide-y divide-gray-200">
-                            <!-- Injected via JS -->
-                        </tbody>
+                        <tbody id="announcement-list" class="bg-white divide-y divide-gray-200"></tbody>
                     </table>
                 </div>
             </div>
@@ -319,19 +328,47 @@
 
         <!-- 5. Admin Login -->
         <section id="admin-login" class="page-section">
-            <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md mt-10">
-                <div class="text-center mb-6">
-                    <i class="fas fa-shield-alt text-4xl text-[#004D40] mb-2"></i>
-                    <h2 class="text-2xl font-bold">Login Admin</h2>
-                </div>
-                <div id="login-error" class="hidden bg-red-100 text-red-700 p-2 rounded mb-4 text-sm text-center">Password Salah!</div>
-                <form onsubmit="handleLogin(event)">
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Password (Coba: admin123)</label>
-                        <input type="password" id="admin-pwd" required class="w-full p-2 border border-gray-300 rounded">
+            <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl overflow-hidden mt-10 border border-teal-50">
+                <!-- Header Card Login Premium -->
+                <div class="bg-gradient-to-br from-[#004D40] to-teal-800 text-white text-center py-8 px-4 relative">
+                    <div class="absolute -right-4 -bottom-4 text-white/5 text-8xl">
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                    <button type="submit" class="w-full bg-[#004D40] hover:bg-[#00332C] text-white font-bold py-2 px-4 rounded transition">Masuk Dashboard</button>
-                </form>
+                    <div class="w-16 h-16 bg-white/10 rounded-2xl backdrop-blur-md flex items-center justify-center text-3xl mx-auto mb-4 border border-white/20 shadow-md">
+                        <i class="fas fa-user-shield text-teal-200"></i>
+                    </div>
+                    <h2 class="text-2xl font-extrabold tracking-wide">Login Administrator</h2>
+                    <p class="text-xs text-teal-100/80 mt-1">Sistem Penerimaan Murid Baru Online</p>
+                </div>
+
+                <div class="p-8">
+                    <div id="login-error" class="hidden bg-red-50 border border-red-200 text-red-700 p-3 rounded-xl mb-6 text-sm flex items-center gap-2">
+                        <i class="fas fa-exclamation-circle text-lg"></i>
+                        <span>Kata sandi salah! Silakan coba lagi.</span>
+                    </div>
+
+                    <form onsubmit="handleLogin(event)" class="space-y-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Kata Sandi Akses</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                    <i class="fas fa-key"></i>
+                                </span>
+                                <input type="password" id="admin-pwd" required placeholder="Masukkan password admin..." 
+                                       class="w-full pl-10 pr-10 p-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#004D40]/50 focus:border-[#004D40] transition bg-gray-50/50">
+                                <button type="button" onclick="togglePasswordVisibility('admin-pwd', 'login-eye-icon')" 
+                                        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600">
+                                    <i id="login-eye-icon" class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <span class="text-xs text-gray-400 mt-2 block italic"><i class="fas fa-info-circle mr-1"></i>Default: admin123</span>
+                        </div>
+
+                        <button type="submit" class="w-full bg-[#004D40] hover:bg-[#00332C] text-white font-bold py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                            <i class="fas fa-sign-in-alt"></i> Masuk Dashboard
+                        </button>
+                    </form>
+                </div>
             </div>
         </section>
 
@@ -348,6 +385,7 @@
                         <li><button onclick="switchAdminTab('data')" id="tab-data" class="admin-tab w-full text-left px-4 py-2 rounded bg-teal-100 text-[#004D40] font-medium"><i class="fas fa-users w-6"></i> Data Pendaftar</button></li>
                         <li><button onclick="switchAdminTab('settings-profile')" id="tab-settings-profile" class="admin-tab w-full text-left px-4 py-2 rounded text-gray-600 hover:bg-gray-50"><i class="fas fa-school w-6"></i> Profil Sekolah</button></li>
                         <li><button onclick="switchAdminTab('settings-form')" id="tab-settings-form" class="admin-tab w-full text-left px-4 py-2 rounded text-gray-600 hover:bg-gray-50"><i class="fas fa-list-alt w-6"></i> Atur Formulir</button></li>
+                        <li><button onclick="switchAdminTab('settings-password')" id="tab-settings-password" class="admin-tab w-full text-left px-4 py-2 rounded text-gray-600 hover:bg-gray-50"><i class="fas fa-key w-6"></i> Ganti Password</button></li>
                     </ul>
                 </div>
 
@@ -368,13 +406,9 @@
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200 text-sm">
                                 <thead class="bg-gray-100">
-                                    <tr id="admin-table-head">
-                                        <!-- Injected dynamically -->
-                                    </tr>
+                                    <tr id="admin-table-head"></tr>
                                 </thead>
-                                <tbody id="admin-table-body" class="divide-y divide-gray-200">
-                                    <!-- Injected dynamically -->
-                                </tbody>
+                                <tbody id="admin-table-body" class="divide-y divide-gray-200"></tbody>
                             </table>
                         </div>
                     </div>
@@ -383,6 +417,68 @@
                     <div id="admin-content-settings-profile" class="admin-content-section hidden">
                         <h2 class="text-2xl font-bold text-gray-800 mb-6">Pengaturan Beranda Sekolah</h2>
                         <form onsubmit="saveSchoolSettings(event)" class="space-y-4">
+                            
+                            <!-- Pengaturan Teks Selamat Datang Dinamis -->
+                            <div class="p-4 bg-teal-50 rounded-xl border border-teal-100 mb-4">
+                                <h3 class="font-bold text-[#004D40] text-lg mb-3"><i class="fas fa-bullhorn mr-2"></i>Pengaturan Header Selamat Datang</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Teks Selamat Datang (Atas)</label>
+                                        <input type="text" id="set-welcome-tag" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Judul Utama</label>
+                                        <input type="text" id="set-welcome-title" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Tahun Ajaran</label>
+                                        <input type="text" id="set-welcome-year" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pengaturan Informasi Footer -->
+                            <div class="p-4 bg-amber-50/50 rounded-xl border border-amber-100 mb-4">
+                                <h3 class="font-bold text-amber-800 text-lg mb-3"><i class="fas fa-window-maximize mr-2"></i>Pengaturan Logo & Informasi Footer</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <!-- Unggah Logo Sekolah -->
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Logo Sekolah (Maks. 10MB)</label>
+                                        <div class="relative h-32 border-2 border-dashed border-gray-300 rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center">
+                                            <img id="preview-set-logo-img" class="absolute inset-0 w-full h-full object-contain p-2 z-0" src="" alt="Logo Preview">
+                                            <div class="relative z-10 p-2 bg-white/80 backdrop-blur-sm rounded-lg text-center shadow">
+                                                <label for="upload-logo" class="cursor-pointer text-[#004D40] hover:text-[#00332C] font-bold text-xs block">
+                                                    <i class="fas fa-camera mr-1"></i> Ganti Logo Sekolah
+                                                </label>
+                                                <input type="file" id="upload-logo" accept="image/*" class="sr-only" onchange="handleSettingImageUpload(this, 'set-logo', 'preview-set-logo-img')">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="set-logo">
+                                    </div>
+                                    
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">Tagline / Slogan Sekolah</label>
+                                            <input type="text" id="set-school-tagline" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]" placeholder="Membentuk Generasi Cerdas & Berkarakter">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium mb-1">WhatsApp Sekolah</label>
+                                            <input type="text" id="set-school-phone" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]" placeholder="contoh: 08123456789">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Alamat Lengkap Sekolah (Footer)</label>
+                                        <input type="text" id="set-school-address" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]" placeholder="Jl. Raya No. 3, Kota">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1">Email Sekolah (Footer)</label>
+                                        <input type="email" id="set-school-email" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]" placeholder="info@sekolah.sch.id">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div>
                                 <label class="block text-sm font-medium mb-1">Nama Sekolah</label>
                                 <input type="text" id="set-school-name" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]">
@@ -401,7 +497,10 @@
                                             <input type="file" id="upload-hero" accept="image/*" class="sr-only" onchange="handleSettingImageUpload(this, 'set-hero-img', 'preview-set-hero-img')">
                                         </div>
                                     </div>
-                                    <p class="text-xs text-gray-500 mt-1">Format gambar diperbolehkan (Maks. 10MB)</p>
+                                    <p class="text-xs text-gray-500 mt-2 leading-relaxed">
+                                        Format gambar diperbolehkan (Maks. 10MB). <br>
+                                        <i class="fas fa-lightbulb text-yellow-500"></i> <strong class="text-teal-700">Tips:</strong> Gunakan rasio ukuran <strong>3:1</strong> (contoh: 1200x400 piksel) agar gambar proporsional dan tidak terpotong di layar laptop.
+                                    </p>
                                     <input type="hidden" id="set-hero-img">
                                 </div>
                                 
@@ -485,10 +584,45 @@
                             </div>
                         </div>
 
-                        <ul id="field-list-preview" class="space-y-2 mb-4">
-                            <!-- Injected -->
-                        </ul>
+                        <ul id="field-list-preview" class="space-y-2 mb-4"></ul>
                         <button onclick="saveFieldsSettings()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Simpan Konfigurasi Formulir</button>
+                    </div>
+
+                    <!-- Admin: Pengaturan Ganti Password -->
+                    <div id="admin-content-settings-password" class="admin-content-section hidden">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Ganti Password Administrator</h2>
+                        <p class="text-gray-500 mb-6 text-sm">Amankan hak akses sistem dengan memperbarui kata sandi admin secara berkala.</p>
+                        
+                        <form onsubmit="handlePasswordChange(event)" class="max-w-md space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Password Lama</label>
+                                <div class="relative">
+                                    <input type="password" id="change-old-pwd" required class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]">
+                                    <button type="button" onclick="togglePasswordVisibility('change-old-pwd', 'old-pwd-eye')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
+                                        <i id="old-pwd-eye" class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Password Baru</label>
+                                <div class="relative">
+                                    <input type="password" id="change-new-pwd" required class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]">
+                                    <button type="button" onclick="togglePasswordVisibility('change-new-pwd', 'new-pwd-eye')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
+                                        <i id="new-pwd-eye" class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Konfirmasi Password Baru</label>
+                                <div class="relative">
+                                    <input type="password" id="change-confirm-pwd" required class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]">
+                                    <button type="button" onclick="togglePasswordVisibility('change-confirm-pwd', 'confirm-pwd-eye')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400">
+                                        <i id="confirm-pwd-eye" class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="submit" class="bg-[#004D40] hover:bg-[#00332C] text-white px-5 py-2.5 rounded-xl font-bold shadow-md hover:shadow-lg transition">Perbarui Kata Sandi</button>
+                        </form>
                     </div>
 
                 </div>
@@ -497,137 +631,154 @@
 
     </main>
 
-    <!-- Modal Edit Siswa (Admin) -->
-    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <h3 class="text-xl font-bold mb-4">Edit Data Siswa</h3>
-            <form id="edit-student-form" onsubmit="saveStudentEdit(event)">
-                <input type="hidden" id="edit-idx">
-                <!-- Diubah menggunakan Grid Layout -->
-                <div id="edit-dynamic-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <!-- Injected -->
+    <!-- FOOTER PREMIUM & DINAMIS (Dapat diatur sepenuhnya dari admin) -->
+    <footer class="bg-[#00251A] text-white pt-12 pb-6 mt-auto border-t border-teal-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <!-- Kolom 1: Profil Sekolah & Logo -->
+            <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                <div class="flex items-center gap-3 mb-3">
+                    <img id="ui-footer-logo" src="https://via.placeholder.com/50" alt="Logo Sekolah" class="w-14 h-14 object-contain rounded-full border-2 border-white/20 bg-white p-1">
+                    <div>
+                        <h4 class="font-bold text-lg text-teal-200" id="ui-footer-name">SD Negeri 03 Yosorejo</h4>
+                        <p class="text-xs text-teal-100/70 italic" id="ui-footer-tagline">Membentuk Generasi Cerdas & Berkarakter</p>
+                    </div>
                 </div>
-                <div class="mb-4 pt-2 border-t">
-                    <label class="block text-sm font-medium mb-1">Status Seleksi</label>
-                    <select id="edit-status" class="w-full p-2 border rounded font-bold">
-                        <option value="Menunggu">Menunggu</option>
-                        <option value="Diterima" class="text-green-600">Diterima</option>
-                        <option value="Ditolak" class="text-red-600">Ditolak</option>
-                    </select>
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-[#004D40] text-white rounded hover:bg-[#00332C]">Simpan Perubahan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal Konfirmasi Kustom -->
-    <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-[9999]">
-        <div class="bg-white rounded-xl shadow-2xl p-6 max-w-sm w-full text-center transform transition-all scale-95 opacity-0" id="confirm-box">
-            <div class="text-yellow-500 mb-4"><i class="fas fa-exclamation-triangle text-5xl"></i></div>
-            <h3 class="text-lg font-bold text-gray-800 mb-2" id="confirm-title">Konfirmasi</h3>
-            <p class="text-sm text-gray-600 mb-6" id="confirm-msg">Apakah Anda yakin?</p>
-            <div class="flex gap-3 justify-center">
-                <button id="btn-confirm-cancel" class="px-4 py-2 bg-gray-200 text-gray-800 rounded font-bold hover:bg-gray-300 transition">Batal</button>
-                <button id="btn-confirm-ok" class="px-4 py-2 bg-red-600 text-white rounded font-bold hover:bg-red-700 transition">Ya, Lanjutkan</button>
+                <p class="text-xs text-teal-100/60 mt-2 max-w-sm">Sistem Penerimaan Murid Baru Online terintegrasi real-time dengan basis data cloud.</p>
+            </div>
+            
+            <!-- Kolom 2: Tautan Cepat -->
+            <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                <h4 class="font-bold text-teal-300 text-sm uppercase tracking-wider mb-4 border-b border-teal-800 pb-1 w-fit">Tautan Cepat</h4>
+                <ul class="space-y-2 text-sm text-teal-100/80">
+                    <li><button onclick="navigate('home')" class="hover:text-white transition-colors duration-200"><i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Beranda</button></li>
+                    <li><button onclick="navigate('flow')" class="hover:text-white transition-colors duration-200"><i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Alur Pendaftaran</button></li>
+                    <li><button onclick="navigate('form')" class="hover:text-white transition-colors duration-200"><i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Daftar Sekarang</button></li>
+                    <li><button onclick="navigate('edit-student')" class="hover:text-white transition-colors duration-200"><i class="fas fa-chevron-right text-xs mr-2 text-orange-400"></i>Cek/Edit Data</button></li>
+                </ul>
+            </div>
+            
+            <!-- Kolom 3: Informasi WhatsApp, Alamat, Email -->
+            <div class="space-y-4 text-sm text-gray-300">
+                <h4 class="font-bold text-teal-200 text-sm uppercase tracking-wider border-b border-teal-800 pb-1 w-fit">Hubungi Kami</h4>
+                <p class="flex items-start gap-3 justify-center md:justify-start">
+                    <i class="fas fa-map-marker-alt text-orange-400 mt-1 flex-shrink-0"></i>
+                    <span id="ui-footer-address">Jl. Raya Yosorejo No. 3, Pekalongan</span>
+                </p>
+                <p class="flex items-center gap-3 justify-center md:justify-start">
+                    <i class="fab fa-whatsapp text-green-400 text-lg"></i>
+                    <span id="ui-footer-wa">081234567890</span>
+                </p>
+                <p class="flex items-center gap-3 justify-center md:justify-start">
+                    <i class="fas fa-envelope text-teal-300"></i>
+                    <span id="ui-footer-email">sdn03yosorejo@sch.id</span>
+                </p>
             </div>
         </div>
-    </div>
+        <div class="border-t border-[#00332C] pt-6 text-center text-xs text-teal-200/70">
+            <p>&copy; 2026 <span id="ui-footer-copy-name">SD Negeri 03 Yosorejo</span>. All rights reserved.</p>
+        </div>
+    </footer>
 
     <!-- Modal Kartu (Simulasi Auto Send) -->
     <div id="card-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
-        <div class="bg-white p-0 rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div class="bg-green-600 text-white text-center p-4">
-                <i class="fas fa-check-circle text-4xl mb-2"></i>
-                <h3 class="text-xl font-bold">Pendaftaran Berhasil!</h3>
-                <p class="text-sm opacity-90">Data telah masuk ke database.</p>
+        <div class="bg-green-600 text-white text-center p-4">
+            <i class="fas fa-check-circle text-4xl mb-2"></i>
+            <h3 class="text-xl font-bold">Pendaftaran Berhasil!</h3>
+            <p class="text-sm opacity-90">Data telah masuk ke database.</p>
+        </div>
+        <div class="p-6 text-center bg-white rounded-b-xl max-w-md w-full">
+            <p class="text-gray-700 mb-4">Kartu Pendaftaran telah otomatis dikirimkan ke email Anda: <br><strong id="card-email-display"></strong></p>
+            <div class="border-2 border-dashed border-gray-300 p-4 mb-4 bg-gray-50 rounded text-left relative">
+                <div class="absolute top-2 right-2 text-gray-300"><i class="fas fa-id-card text-4xl"></i></div>
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Nomor Pendaftaran</p>
+                <p class="text-xl font-bold font-mono text-[#004D40] mb-2" id="card-reg-no">SPMB-001</p>
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Nama Calon Siswa</p>
+                <p class="font-bold text-gray-800" id="card-reg-name">Budi Santoso</p>
             </div>
-            <div class="p-6 text-center">
-                <p class="text-gray-700 mb-4">Kartu Pendaftaran telah otomatis dikirimkan ke email Anda: <br><strong id="card-email-display"></strong></p>
-                <div class="border-2 border-dashed border-gray-300 p-4 mb-4 bg-gray-50 rounded text-left relative">
-                    <div class="absolute top-2 right-2 text-gray-300"><i class="fas fa-id-card text-4xl"></i></div>
-                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nomor Pendaftaran</p>
-                    <p class="text-xl font-bold font-mono text-[#004D40] mb-2" id="card-reg-no">SPMB-001</p>
-                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nama Calon Siswa</p>
-                    <p class="font-bold text-gray-800" id="card-reg-name">Budi Santoso</p>
-                </div>
-                <button onclick="document.getElementById('card-modal').classList.replace('flex','hidden'); navigate('announcement')" class="w-full px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300">Tutup</button>
-            </div>
+            <button onclick="document.getElementById('card-modal').classList.replace('flex','hidden'); navigate('announcement')" class="w-full px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300">Tutup</button>
         </div>
     </div>
 
-    <footer class="bg-gray-800 text-white text-center py-4 mt-auto">
-        <p>&copy; 2026 Sistem SPMB Web Terintegrasi Google Drive. All rights reserved.</p>
-    </footer>
-
     <script>
-        /* =======================================================================
-           KONFIGURASI BACKEND 
-           Ubah USE_MOCK menjadi false dan isi GAS_WEB_APP_URL jika kode 
-           Code.gs sudah di-deploy di Google Apps Script.
-        ======================================================================= */
-        const USE_MOCK = false; // Set true untuk preview, false untuk production
-        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbww_-E_hSfkUhQMY6l6B-vTc20cpA_omVsYVlY6-C5jQtMozZdqdvb3VrPq3zEA-DDizQ/exec";
+        const USE_MOCK = false; // Diubah ke false untuk fungsionalitas Google Drive Apps Script
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbww_-E_hSfkUhQMY6l6B-vTc20cpA_omVsYVlY6-C5jQtMozZdqdvb3VrPq3zEA-DDizQ/exec"; // Diisi dengan URL Web App Anda sesuai panduan.md
 
         // --- STATE APLIKASI ---
         let appState = {
             schoolInfo: {
-                name: "SMA Negeri 1 Prestasi",
+                name: "SD Negeri 03 Yosorejo",
                 heroImg: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-                kepsekName: "Dr. Budi Darmawan, M.Pd.",
+                kepsekName: "SUNAR HARMININGSIH",
                 kepsekImg: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
                 coordinates: "-6.1754, 106.8272",
-                kepsekMsg: "Selamat datang calon pemimpin masa depan. Kami berkomitmen memberikan pelayanan pendidikan terbaik dan membina karakter berprestasi. Mari bergabung dan berkembang bersama kami.",
-                visi: "Menjadi lembaga pendidikan unggul, inovatif, dan berkarakter global di era teknologi modern.",
-                misi: "Menyelenggarakan pembelajaran berkualitas berbasis imtaq dan iptek.<br>Mengembangkan bakat, minat, dan potensi peserta didik secara holistik.<br>Membentuk karakter mandiri, disiplin, dan berwawasan lingkungan.",
-                schedule: "Pendaftaran: 1 - 20 Juli 2026\nTes Akademik: 25 Juli 2026\nPengumuman: 30 Juli 2026"
+                kepsekMsg: "Atas nama keluarga besar sekolah, saya mengucapkan selamat datang kepada seluruh calon peserta didik baru dan orang tua/wali. Kami merasa bangga dan bahagia karena Bapak/Ibu telah mempercayakan pendidikan putra-putrinya kepada sekolah ini. Sekolah bukan hanya tempat untuk belajar membaca, menulis, dan berhitung, tetapi juga tempat membentuk karakter, menanamkan disiplin, tanggung jawab, kejujuran, serta semangat untuk meraih cita-cita. Oleh karena itu, kami berkomitmen memberikan layanan pendidikan terbaik agar setiap peserta didik dapat berkembang sesuai potensi yang dimiliki.",
+                visi: "Unggul dalam prestasi akademik dan non akademik berlandasan keimanan, ketakwaan terhadap Tuhan Yang Maha Esa, kreativitas, kecerdasan dan kemandirian serta tanggap terhadap perkembangan.",
+                misi: "Meningkatkan penghayatan serta pengamalan pancasila.<br>Meningkatkan ketaqwaan terhadap Tuhan yang maha esa.<br>Melaksanakan pembelajaran dan bimbingan secara efektif, kreatif, inovatif dengan mengembangkan perilaku bersahabat, kerjasama, dan keteladanan.<br>Membangun kemampuan berkomunikasi dengan sesama dan lingkungan dengan berakhlaqul karimah.<br>Menumbukan semangat keunggulan secara intensif kepada seluruh warga sekolah.<br>Mendorong setiap siswa untuk mengembangkan potensi dirinya secara optimal.",
+                schedule: "Pendaftaran: 1-10 Juli 2026\nPengumuman: 15 Juli 2026",
+                welcomeTag: "Selamat Datang",
+                welcomeTitle: "Sistem Penerimaan Murid Baru (SPMB)",
+                welcomeYear: "Tahun Ajaran 2026/2027",
+                adminPassword: "admin123",
+                
+                // Konfigurasi Footer
+                logo: "", 
+                tagline: "Membentuk Generasi Cerdas & Berkarakter",
+                address: "Jl. Raya Yosorejo No. 3, Pekalongan, Jawa Tengah",
+                whatsapp: "081234567890",
+                email: "sdn03yosorejo@sch.id"
             },
             formFields: [
                 { id: "nisn", label: "NISN", type: "number", placeholder: "Masukkan 10 digit NISN", required: true },
                 { id: "nama", label: "Nama Lengkap", type: "text", placeholder: "Nama Sesuai Ijazah", required: true },
-                { id: "asal_sekolah", label: "Asal Sekolah", type: "text", placeholder: "Contoh: SMPN 1 Jakarta", required: true },
+                { id: "asal_sekolah", label: "Asal Sekolah", type: "text", placeholder: "Contoh: TK Dharma Wanita", required: true },
                 { id: "alamat", label: "Alamat Lengkap", type: "textarea", placeholder: "Nama jalan, RT/RW, dll.", required: false }
             ],
             students: [],
             isAdminLoggedIn: false
         };
 
-        // Inisialisasi awal (Membaca dari localStorage jika MOCK, atau fetch dari GAS)
+        // Inisialisasi awal - Ditambahkan pengaman otomatis fallback jika URL kosong
         async function initApp() {
-            // Pulihkan state Admin Login
             if(localStorage.getItem('isAdminLoggedIn') === 'true') {
                 appState.isAdminLoggedIn = true;
             }
 
-            if (USE_MOCK) {
+            // Jika URL kosong, paksa gunakan MOCK/Lokal agar tidak menghasilkan error URL tak valid
+            if (USE_MOCK || !GAS_WEB_APP_URL) {
                 const saved = localStorage.getItem('spmbState');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    appState = { ...parsed, isAdminLoggedIn: appState.isAdminLoggedIn }; 
+                    appState = { ...appState, ...parsed, isAdminLoggedIn: appState.isAdminLoggedIn }; 
                 }
                 renderAll();
+                if (!GAS_WEB_APP_URL && !USE_MOCK) {
+                    showToast("GAS_WEB_APP_URL belum dikonfigurasi. Berjalan dalam mode Demo (Lokal).", "warning");
+                }
             } else {
                 try {
-                    // Fetch dari Google Apps Script
                     const response = await fetch(`${GAS_WEB_APP_URL}?action=get_settings`);
                     const data = await response.json();
                     if(data.status === 'success') {
                         appState.schoolInfo = data.schoolInfo;
                         appState.formFields = data.formFields;
-                        renderAll();
                     }
+                    renderAll();
                 } catch (e) {
                     console.error("Gagal terhubung ke database", e);
-                    showToast("Koneksi ke database gagal.", "error");
+                    showToast("Koneksi gagal. Memuat data cadangan lokal.", "warning");
+                    // Fallback to local storage if fail
+                    const saved = localStorage.getItem('spmbState');
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        appState = { ...appState, ...parsed, isAdminLoggedIn: appState.isAdminLoggedIn }; 
+                    }
+                    renderAll();
                 }
             }
         }
 
-        // Simpan Data di LocalStorage jika USE_MOCK = true
         function saveMockData() {
-            if (USE_MOCK) localStorage.setItem('spmbState', JSON.stringify(appState));
+            if (USE_MOCK || !GAS_WEB_APP_URL) localStorage.setItem('spmbState', JSON.stringify(appState));
         }
 
         // --- NAVIGASI ---
@@ -648,8 +799,6 @@
             if(pageId === 'admin-dashboard') loadAdminData();
             if(pageId === 'announcement') renderAnnouncement();
             window.scrollTo(0, 0);
-
-            // Perbarui ukuran peta setiap kali pindah halaman
             resizeAllMaps();
         }
 
@@ -657,10 +806,15 @@
             document.getElementById('mobile-menu').classList.toggle('hidden');
         }
 
-        // --- RENDER UI PUBLIK ---
+        // --- RENDER UI PUBLIK & FOOTER DINAMIS ---
         function renderAll() {
-            // Beranda UI
             document.getElementById('nav-school-name').textContent = appState.schoolInfo.name;
+            
+            // Set Teks Banner Selamat Datang
+            document.getElementById('ui-welcome-tag').textContent = appState.schoolInfo.welcomeTag || "Selamat Datang";
+            document.getElementById('ui-welcome-title').textContent = appState.schoolInfo.welcomeTitle || "Sistem Penerimaan Murid Baru (SPMB)";
+            document.getElementById('ui-welcome-year').textContent = appState.schoolInfo.welcomeYear || "Tahun Ajaran 2026/2027";
+            
             document.getElementById('ui-hero-img').src = appState.schoolInfo.heroImg;
             document.getElementById('ui-kepsek-name').textContent = appState.schoolInfo.kepsekName;
             document.getElementById('ui-kepsek-img').src = appState.schoolInfo.kepsekImg;
@@ -669,16 +823,14 @@
             // Set Visi
             document.getElementById('ui-visi').textContent = appState.schoolInfo.visi || 'Visi belum diatur oleh admin.';
             
-            // --- PEMBARUAN PINTAR PARSING MISI DENGAN IKON CHECKLIST ---
+            // Parsing Misi dengan Checklist Oranye
             const misiRaw = appState.schoolInfo.misi || '';
-            // Pecah berdasarkan baris/break dan bersihkan yang kosong
             const misiItems = misiRaw.split('<br>').map(item => item.trim()).filter(item => item !== '');
             let misiHtml = '';
             
             if (misiItems.length > 0) {
                 misiHtml = '<ul class="space-y-3 w-full">';
                 misiItems.forEach(item => {
-                    // Ekspresi reguler untuk menghapus angka manual di depan kalimat (misal: "1. Misi" -> "Misi")
                     let cleanItem = item.replace(/^\d+[\.\s\-)]+/, '').trim();
                     misiHtml += `
                         <li class="flex items-start gap-3 w-full group">
@@ -701,11 +853,18 @@
             }).join('');
             document.getElementById('ui-schedule').innerHTML = scheduleHtml;
 
-            // Render Form Fields
+            // RENDER INFORMASI FOOTER DINAMIS
+            document.getElementById('ui-footer-logo').src = appState.schoolInfo.logo || "https://via.placeholder.com/50";
+            document.getElementById('ui-footer-name').textContent = appState.schoolInfo.name;
+            document.getElementById('ui-footer-tagline').textContent = appState.schoolInfo.tagline || "";
+            document.getElementById('ui-footer-address').textContent = appState.schoolInfo.address || "Belum diatur";
+            document.getElementById('ui-footer-wa').textContent = appState.schoolInfo.whatsapp || "Belum diatur";
+            document.getElementById('ui-footer-email').textContent = appState.schoolInfo.email || "Belum diatur";
+            document.getElementById('ui-footer-copy-name').textContent = appState.schoolInfo.name;
+
+            // Render Form Fields pendaftar
             const formContainer = document.getElementById('dynamic-fields-container');
             formContainer.innerHTML = '';
-            
-            // Urutkan: Field biasa di atas, Field Tipe 'File' di paling bawah
             const regularFields = appState.formFields.filter(f => f.type !== 'file');
             const fileFields = appState.formFields.filter(f => f.type === 'file');
             const sortedFields = [...regularFields, ...fileFields];
@@ -736,9 +895,7 @@
                     inputHtml = `<input type="${field.type}" id="reg_${field.id}" ${reqAttr} ${ph} class="${commonClass}">`;
                 }
 
-                // Field selain 'file' dibuat melebar penuh, khusus 'file' dibuat setengah lebar agar bisa berjejer
                 let colSpan = (field.type === 'file') ? 'col-span-1' : 'md:col-span-2 col-span-1';
-
                 formContainer.innerHTML += `
                     <div class="${colSpan}">
                         <label class="block text-sm font-medium text-gray-700 mb-1">${field.label} ${reqStar}</label>
@@ -747,13 +904,23 @@
                 `;
             });
             
-            // Inisialisasi peta setelah form di render
             setTimeout(() => { initLeafletMaps('reg_', appState.formFields); }, 300);
 
-            // Populate form pengaturan admin agar sesuai data saat ini
+            // Populate form admin dari database
             document.getElementById('set-school-name').value = appState.schoolInfo.name;
-            
-            // Atur file hidden input dan preview gambar profil admin
+            document.getElementById('set-welcome-tag').value = appState.schoolInfo.welcomeTag || "";
+            document.getElementById('set-welcome-title').value = appState.schoolInfo.welcomeTitle || "";
+            document.getElementById('set-welcome-year').value = appState.schoolInfo.welcomeYear || "";
+
+            // Populate Footer & Logo Settings di Admin
+            document.getElementById('set-logo').value = appState.schoolInfo.logo || "";
+            document.getElementById('preview-set-logo-img').src = appState.schoolInfo.logo || "https://via.placeholder.com/50";
+            document.getElementById('set-school-tagline').value = appState.schoolInfo.tagline || "";
+            document.getElementById('set-school-phone').value = appState.schoolInfo.whatsapp || "";
+            document.getElementById('set-school-address').value = appState.schoolInfo.address || "";
+            document.getElementById('set-school-email').value = appState.schoolInfo.email || "";
+
+            // Preview banner profil admin
             document.getElementById('set-hero-img').value = appState.schoolInfo.heroImg || "";
             document.getElementById('preview-set-hero-img').src = appState.schoolInfo.heroImg || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80";
             
@@ -763,11 +930,8 @@
             
             document.getElementById('set-coordinates').value = appState.schoolInfo.coordinates || '';
             document.getElementById('set-kepsek-msg').value = appState.schoolInfo.kepsekMsg;
-            
-            // Set nilai input Visi dan Misi Admin
             document.getElementById('set-visi').value = (appState.schoolInfo.visi || '').replace(/<br>/g, '\n');
             document.getElementById('set-misi').value = (appState.schoolInfo.misi || '').replace(/<br>/g, '\n');
-            
             document.getElementById('set-schedule').value = appState.schoolInfo.schedule;
             
             renderAdminFieldsList();
@@ -782,13 +946,12 @@
 
             const email = document.getElementById('reg-email').value;
             
-            // --- FITUR PENCEGAHAN PENDAFTARAN DOBEL ---
+            // Pencegahan pendaftaran dobel
             let isDuplicate = false;
             let nisnFieldId = appState.formFields.find(f => f.id.toLowerCase() === 'nisn')?.id;
             let inputNisn = nisnFieldId ? document.getElementById(`reg_${nisnFieldId}`).value : null;
 
             for (let s of appState.students) {
-                // Cek apakah email sama ATAU (jika form punya kolom NISN) NISN sama
                 if (s.email.toLowerCase() === email.toLowerCase()) {
                     isDuplicate = true; break;
                 }
@@ -798,12 +961,11 @@
             }
 
             if (isDuplicate) {
-                showToast('Pendaftaran Ditolak: Email atau NISN yang Anda masukkan sudah terdaftar di sistem!', 'error');
+                showToast("Pendaftaran Ditolak: Email atau NISN sudah terdaftar di sistem!", "error");
                 btn.innerHTML = 'Kirim Pendaftaran';
                 btn.disabled = false;
                 return;
             }
-            // --- AKHIR PENCEGAHAN ---
 
             let studentData = { 
                 id: 'SPMB-' + new Date().getTime().toString().slice(-6),
@@ -817,8 +979,7 @@
                 studentData.data[field.id] = document.getElementById(`reg_${field.id}`).value;
             });
 
-            if (USE_MOCK) {
-                // Simulasi delay jaringan
+            if (USE_MOCK || !GAS_WEB_APP_URL) {
                 setTimeout(() => {
                     appState.students.push(studentData);
                     saveMockData();
@@ -829,18 +990,17 @@
                 }, 1000);
             } else {
                 try {
-                    // Kirim ke GAS via POST
                     const response = await fetch(GAS_WEB_APP_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: 'register', payload: studentData })
                     });
                     const result = await response.json();
                     if(result.status === 'success') {
-                        showSuccessCard(result.data); // GAS harus mengembalikan data yg tersimpan
+                        showSuccessCard(result.data);
                         e.target.reset();
                     }
                 } catch (error) {
-                    showToast('Gagal mengirim data. Pastikan jaringan Anda stabil.', 'error');
+                    showToast("Gagal mengirim data. Pastikan jaringan Anda stabil.", "error");
                 }
                 btn.innerHTML = 'Kirim Pendaftaran';
                 btn.disabled = false;
@@ -850,7 +1010,6 @@
         function showSuccessCard(student) {
             document.getElementById('card-email-display').textContent = student.email;
             document.getElementById('card-reg-no').textContent = student.id;
-            // Coba ambil field yang mirip nama
             let nama = student.data.nama || student.data.nama_lengkap || student.data.name || "Calon Siswa";
             document.getElementById('card-reg-name').textContent = nama;
             
@@ -865,9 +1024,7 @@
             const tbody = document.getElementById('announcement-list');
             tbody.innerHTML = '';
             
-            // Urutkan diterima di atas, lalu menunggu
             let displayStudents = [...appState.students];
-
             if(query) {
                 displayStudents = displayStudents.filter(s => {
                     return JSON.stringify(s.data).toLowerCase().includes(query) || s.id.toLowerCase().includes(query);
@@ -885,9 +1042,7 @@
                                   s.status === 'Ditolak' ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Ditolak</span>' :
                                   '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Menunggu</span>';
                 
-                // Masking data agar privacy terjaga di publik, kecual id
                 let maskedName = nama.substring(0, 3) + "***";
-
                 tbody.innerHTML += `
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${s.id}</td>
@@ -898,16 +1053,18 @@
             });
         }
 
-        // --- ADMIN AREA ---
+        // --- ADMIN LOGIN & DASHBOARD ---
         function handleLogin(e) {
             e.preventDefault();
             const pwd = document.getElementById('admin-pwd').value;
-            if(pwd === 'admin123') { // Simple client side check untuk mock
+            const currentPassword = appState.schoolInfo.adminPassword || "admin123";
+            
+            if(pwd === currentPassword) {
                 appState.isAdminLoggedIn = true;
                 localStorage.setItem('isAdminLoggedIn', 'true');
                 document.getElementById('login-error').classList.add('hidden');
                 document.getElementById('admin-pwd').value = '';
-                showToast('Login berhasil', 'success');
+                showToast("Login berhasil", "success");
                 navigate('admin-dashboard');
             } else {
                 document.getElementById('login-error').classList.remove('hidden');
@@ -917,25 +1074,30 @@
         function logoutAdmin() {
             appState.isAdminLoggedIn = false;
             localStorage.removeItem('isAdminLoggedIn');
-            showToast('Anda telah keluar dari dashboard Admin', 'info');
+            showToast("Anda telah keluar dari dashboard Admin", "info");
             navigate('home');
         }
 
         function switchAdminTab(tab) {
             document.querySelectorAll('.admin-tab').forEach(el => {
                 el.classList.remove('bg-teal-100', 'text-[#004D40]', 'font-medium');
-                el.classList.add('text-gray-600');
+                el.classList.add('text-gray-600', 'hover:bg-gray-50');
             });
             document.getElementById('tab-' + tab).classList.add('bg-teal-100', 'text-[#004D40]', 'font-medium');
-            document.getElementById('tab-' + tab).classList.remove('text-gray-600');
+            document.getElementById('tab-' + tab).classList.remove('text-gray-600', 'hover:bg-gray-50');
 
             document.querySelectorAll('.admin-content-section').forEach(el => el.classList.add('hidden'));
             document.getElementById('admin-content-' + tab).classList.remove('hidden');
+            
+            if(tab === 'settings-password') {
+                document.getElementById('change-old-pwd').value = '';
+                document.getElementById('change-new-pwd').value = '';
+                document.getElementById('change-confirm-pwd').value = '';
+            }
         }
 
         async function loadAdminData() {
-            if (!USE_MOCK) {
-                // Fetch students dari GAS
+            if (!USE_MOCK && GAS_WEB_APP_URL) {
                 try {
                     const response = await fetch(`${GAS_WEB_APP_URL}?action=get_students`);
                     const data = await response.json();
@@ -945,12 +1107,10 @@
                 }
             }
 
-            // Hitung statistik
             document.getElementById('stat-total').textContent = appState.students.length;
             document.getElementById('stat-acc').textContent = appState.students.filter(s => s.status === 'Diterima').length;
             document.getElementById('stat-pend').textContent = appState.students.filter(s => s.status === 'Menunggu').length;
 
-            // Bangun Tabel Dinamis
             const thead = document.getElementById('admin-table-head');
             const tbody = document.getElementById('admin-table-body');
             
@@ -984,9 +1144,11 @@
             });
         }
 
-        // --- EDIT PROFIL SEKOLAH ---
+        // --- EDIT PROFIL SEKOLAH (TERMASUK FOOTER DINAMIS) ---
         async function saveSchoolSettings(e) {
             e.preventDefault();
+            const currentPassword = appState.schoolInfo.adminPassword || "admin123";
+            
             appState.schoolInfo = {
                 name: document.getElementById('set-school-name').value,
                 heroImg: document.getElementById('set-hero-img').value,
@@ -996,45 +1158,86 @@
                 kepsekMsg: document.getElementById('set-kepsek-msg').value,
                 visi: document.getElementById('set-visi').value.replace(/\n/g, '<br>'),
                 misi: document.getElementById('set-misi').value.replace(/\n/g, '<br>'),
-                schedule: document.getElementById('set-schedule').value
+                schedule: document.getElementById('set-schedule').value,
+                welcomeTag: document.getElementById('set-welcome-tag').value,
+                welcomeTitle: document.getElementById('set-welcome-title').value,
+                welcomeYear: document.getElementById('set-welcome-year').value,
+                adminPassword: currentPassword,
+                
+                logo: document.getElementById('set-logo').value,
+                tagline: document.getElementById('set-school-tagline').value,
+                whatsapp: document.getElementById('set-school-phone').value,
+                address: document.getElementById('set-school-address').value,
+                email: document.getElementById('set-school-email').value
             };
 
-            if(USE_MOCK) {
+            if(USE_MOCK || !GAS_WEB_APP_URL) {
                 saveMockData();
                 renderAll();
                 showToast("Pengaturan Berhasil Disimpan (Lokal)!", "success");
             } else {
-                // Kirim ke GAS
-                await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'save_settings', payload: { type: 'school', data: appState.schoolInfo }})
-                });
-                renderAll();
-                showToast("Pengaturan Berhasil Disimpan di Database!", "success");
+                try {
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'save_settings', payload: { type: 'school', data: appState.schoolInfo }})
+                    });
+                    renderAll();
+                    showToast("Pengaturan Berhasil Disimpan di Database!", "success");
+                } catch (e) {
+                    showToast("Koneksi gagal. Gagal menyimpan ke Google Sheets.", "error");
+                }
             }
+        }
+
+        // --- FITUR GANTI PASSWORD ---
+        async function handlePasswordChange(e) {
+            e.preventDefault();
+            const oldPwd = document.getElementById('change-old-pwd').value;
+            const newPwd = document.getElementById('change-new-pwd').value;
+            const confirmPwd = document.getElementById('change-confirm-pwd').value;
+            
+            const currentPwd = appState.schoolInfo.adminPassword || "admin123";
+            
+            if(oldPwd !== currentPwd) {
+                return showToast("Password lama yang Anda masukkan salah!", "error");
+            }
+            if(newPwd !== confirmPwd) {
+                return showToast("Konfirmasi password baru tidak cocok!", "warning");
+            }
+            if(newPwd.length < 6) {
+                return showToast("Password baru minimal harus 6 karakter!", "warning");
+            }
+            
+            appState.schoolInfo.adminPassword = newPwd;
+            
+            if(USE_MOCK || !GAS_WEB_APP_URL) {
+                saveMockData();
+                showToast("Kata sandi admin berhasil diperbarui!", "success");
+            } else {
+                try {
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'save_settings', payload: { type: 'school', data: appState.schoolInfo }})
+                    });
+                    showToast("Kata sandi admin berhasil diperbarui di server!", "success");
+                } catch(err) {
+                    showToast("Gagal menyimpan perubahan sandi ke cloud database.", "error");
+                }
+            }
+            e.target.reset();
         }
 
         // --- PENGATURAN FORMULIR DINAMIS ---
         let dragIndex = null;
         let editingFieldIndex = null;
 
-        function dragStart(e, index) {
-            dragIndex = index;
-            e.dataTransfer.effectAllowed = 'move';
-        }
-
-        function dragOver(e) {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-        }
-
+        function dragStart(e, index) { dragIndex = index; e.dataTransfer.effectAllowed = 'move'; }
+        function dragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
         function drop(e, dropIndex) {
             e.preventDefault();
             if (dragIndex === null || dragIndex === dropIndex) return;
-            
             const fieldToMove = appState.formFields.splice(dragIndex, 1)[0];
             appState.formFields.splice(dropIndex, 0, fieldToMove);
-            
             dragIndex = null;
             renderAdminFieldsList();
         }
@@ -1059,8 +1262,8 @@
                             </div>
                         </div>
                         <div>
-                            <button onclick="editFormField(${index})" class="text-yellow-500 hover:text-yellow-600 p-2 mr-1" title="Edit Field"><i class="fas fa-edit"></i></button>
-                            <button onclick="removeFormField(${index})" class="text-red-500 hover:text-red-700 p-2" title="Hapus Field"><i class="fas fa-trash"></i></button>
+                            <button onclick="editFormField(${index})" class="text-yellow-500 hover:text-yellow-600 p-2 mr-1"><i class="fas fa-edit"></i></button>
+                            <button onclick="removeFormField(${index})" class="text-red-500 hover:text-red-700 p-2"><i class="fas fa-trash"></i></button>
                         </div>
                     </li>
                 `;
@@ -1105,16 +1308,13 @@
 
             if(!id || !label) return showToast("ID dan Label harus diisi!", "warning");
             
-            // Mode Tambah Baru (cek duplikat ID)
             if(editingFieldIndex === null) {
                 if(appState.formFields.find(f => f.id === id)) return showToast("ID field sudah ada!", "warning");
                 appState.formFields.push({ id, label, placeholder, type, required: req });
             } else {
-                // Mode Edit
                 if(appState.formFields.find((f, i) => f.id === id && i !== editingFieldIndex)) return showToast("ID field sudah dipakai!", "warning");
                 appState.formFields[editingFieldIndex] = { id, label, placeholder, type, required: req };
             }
-            
             cancelEditField();
             renderAdminFieldsList();
         }
@@ -1128,17 +1328,21 @@
         }
 
         async function saveFieldsSettings() {
-            if(USE_MOCK) {
+            if(USE_MOCK || !GAS_WEB_APP_URL) {
                 saveMockData();
                 renderAll();
                 showToast("Konfigurasi Form Disimpan!", "success");
             } else {
-                await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'save_settings', payload: { type: 'fields', data: appState.formFields }})
-                });
-                renderAll();
-                showToast("Konfigurasi Form Disimpan di Database!", "success");
+                try {
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'save_settings', payload: { type: 'fields', data: appState.formFields }})
+                    });
+                    renderAll();
+                    showToast("Konfigurasi Form Disimpan di Database!", "success");
+                } catch (e) {
+                    showToast("Gagal menyimpan ke Google Sheets.", "error");
+                }
             }
         }
 
@@ -1151,7 +1355,6 @@
             const container = document.getElementById('edit-dynamic-inputs');
             container.innerHTML = '';
             
-            // Urutkan: Field biasa di atas, Field Tipe 'File' di paling bawah
             const regularFields = appState.formFields.filter(f => f.type !== 'file');
             const fileFields = appState.formFields.filter(f => f.type === 'file');
             const sortedFields = [...regularFields, ...fileFields];
@@ -1178,9 +1381,7 @@
                     inputHtml = `<input type="${f.type}" id="edit_field_${f.id}" value="${val}" class="w-full p-2 border rounded text-sm">`;
                 }
                 
-                // Field selain 'file' dibuat melebar penuh, khusus 'file' dibuat setengah lebar agar bisa berjejer
                 let colSpan = (f.type === 'file') ? 'col-span-1' : 'md:col-span-2 col-span-1';
-
                 container.innerHTML += `
                     <div class="${colSpan}">
                         <label class="block text-xs font-medium text-gray-500 mb-1">${f.label}</label>
@@ -1189,13 +1390,9 @@
                 `;
             });
             
-            // Inisialisasi peta di modal admin
             setTimeout(() => { initLeafletMaps('edit_field_', appState.formFields); }, 300);
-
             document.getElementById('edit-modal').classList.remove('hidden');
             document.getElementById('edit-modal').classList.add('flex');
-            
-            // Perbarui ukuran peta saat modal terbuka
             resizeAllMaps();
         }
 
@@ -1212,28 +1409,30 @@
             student.status = document.getElementById('edit-status').value;
             appState.formFields.forEach(f => {
                 const el = document.getElementById(`edit_field_${f.id}`);
-                // Karena kita menggunakan input hidden, nilainya akan selalu aman walau file tidak diganti
                 student.data[f.id] = el.value;
             });
 
-            if(USE_MOCK) {
+            if(USE_MOCK || !GAS_WEB_APP_URL) {
                 saveMockData();
                 closeEditModal();
                 loadAdminData();
                 showToast("Data siswa diperbarui!", "success");
             } else {
-                // Kirim update ke GAS
-                await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'update_student', payload: student })
-                });
-                closeEditModal();
-                loadAdminData();
-                showToast("Data siswa diperbarui di server!", "success");
+                try {
+                    await fetch(GAS_WEB_APP_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'update_student', payload: student })
+                    });
+                    closeEditModal();
+                    loadAdminData();
+                    showToast("Data siswa diperbarui di server!", "success");
+                } catch (e) {
+                    showToast("Gagal memperbarui data siswa ke Google Sheets.", "error");
+                }
             }
         }
 
-        // --- FITUR CEK & EDIT DATA OLEH CALON SISWA ---
+        // --- CEK & EDIT OLEH CALON SISWA ---
         let currentApplicantEdit = null;
 
         function loginEditStudent(e) {
@@ -1241,17 +1440,15 @@
             const id = document.getElementById('cek-id').value.trim();
             const email = document.getElementById('cek-email').value.trim().toLowerCase();
             
-            // Validasi data
             const student = appState.students.find(s => s.id === id && s.email.toLowerCase() === email);
             if (!student) {
-                showToast("Data tidak ditemukan! Pastikan Nomor Pendaftaran and Email diketik dengan benar.", "error");
+                showToast("Data tidak ditemukan! Pastikan nomor pendaftaran dan email valid.", "error");
                 return;
             }
             
             currentApplicantEdit = student;
             document.getElementById('applicant-status-display').textContent = student.status;
             
-            // Jika status bukan menunggu (sudah diverifikasi), kunci agar tidak bisa diubah
             const isLocked = student.status === 'Diterima' || student.status === 'Ditolak';
             document.getElementById('btn-save-applicant').style.display = isLocked ? 'none' : 'block';
             
@@ -1259,11 +1456,9 @@
                  showToast(`Pemberitahuan: Status seleksi Anda sudah "${student.status}". Data tidak dapat diubah lagi.`, "info");
             }
 
-            // Render form dinamis
             const container = document.getElementById('applicant-dynamic-fields');
             container.innerHTML = '';
             
-            // Urutkan: Field biasa di atas, Field Tipe 'File' di paling bawah
             const regularFields = appState.formFields.filter(f => f.type !== 'file');
             const fileFields = appState.formFields.filter(f => f.type === 'file');
             const sortedFields = [...regularFields, ...fileFields];
@@ -1272,7 +1467,7 @@
                 let val = student.data[f.id] || '';
                 const reqAttr = f.required ? 'required' : '';
                 const readonly = isLocked ? 'readonly disabled' : '';
-                const bg = isLocked ? 'bg-gray-100 cursor-not-allowed' : 'bg-white focus:ring-[#004D40] focus:border-[#004D40]';
+                const bg = isLocked ? 'bg-gray-100 cursor-not-allowed' : 'bg-white focus:ring-blue-500 focus:border-blue-500';
                 const ph = f.placeholder ? `placeholder="${f.placeholder}"` : '';
                 
                 let inputHtml = '';
@@ -1292,25 +1487,19 @@
                         ${locBtn}
                         <div id="map_edit_app_${f.id}" class="h-64 w-full rounded border border-gray-300 relative z-0 mb-1"></div>
                         <input type="hidden" id="edit_app_${f.id}" value="${val}">
-                        <p class="text-xs text-gray-500"><i class="fas fa-hand-pointer"></i> Geser peta/marker untuk mengubah lokasi.</p>
                     `;
                 } else {
                     inputHtml = `<input type="${f.type}" id="edit_app_${f.id}" value="${val}" ${reqAttr} ${readonly} ${ph} class="w-full p-2 border border-gray-300 rounded ${bg}">`;
                 }
                 
-                // Field selain 'file' dibuat melebar penuh, khusus 'file' dibuat setengah lebar agar bisa berjejer
                 let colSpan = (f.type === 'file') ? 'col-span-1' : 'md:col-span-2 col-span-1';
-                    
                 container.innerHTML += `<div class="${colSpan}"><label class="block text-sm font-medium text-gray-700 mb-1">${f.label}</label>${inputHtml}</div>`;
             });
             
-            // Inisialisasi peta di form pendaftar
             setTimeout(() => { initLeafletMaps('edit_app_', appState.formFields); }, 300);
 
             document.getElementById('applicant-login-section').classList.add('hidden');
             document.getElementById('applicant-edit-section').classList.remove('hidden');
-            
-            // Perbarui ukuran peta saat form edit terbuka
             resizeAllMaps();
         }
 
@@ -1330,39 +1519,36 @@
             btn.innerHTML = 'Menyimpan...';
             btn.disabled = true;
 
-            // Memperbarui objek data
             appState.formFields.forEach(f => {
                 const el = document.getElementById(`edit_app_${f.id}`);
                 currentApplicantEdit.data[f.id] = el.value;
             });
 
-            if(USE_MOCK) {
+            if(USE_MOCK || !GAS_WEB_APP_URL) {
                 saveMockData();
                 showToast("Data pendaftaran Anda berhasil diperbarui!", "success");
                 btn.innerHTML = 'Simpan Perubahan';
                 btn.disabled = false;
             } else {
                 try {
-                    // Mengirimkan pembaruan data ke server GAS (menggunakan endpoint update_student yg sama seperti Admin)
                     await fetch(GAS_WEB_APP_URL, {
                         method: 'POST',
                         body: JSON.stringify({ action: 'update_student', payload: currentApplicantEdit })
                     });
                     showToast("Data pendaftaran Anda berhasil diperbarui di server!", "success");
                 } catch (err) {
-                    showToast("Gagal menyimpan ke server. Pastikan koneksi internet Anda stabil.", "error");
+                    showToast("Gagal menyimpan ke server database.", "error");
                 }
                 btn.innerHTML = 'Simpan Perubahan';
                 btn.disabled = false;
             }
         }
         
-        // --- HELPER UNTUK KUSTOM TOAST & MODAL ---
+        // --- HELPER TOAST, PASSWORDS, MEDIA, & MAPS ---
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            let icon = '';
-            let colorClass = '';
+            let icon = ''; let colorClass = '';
             
             if(type === 'success') { icon = '<i class="fas fa-check-circle text-2xl"></i>'; colorClass = 'bg-green-500'; }
             else if(type === 'error') { icon = '<i class="fas fa-exclamation-circle text-2xl"></i>'; colorClass = 'bg-red-500'; }
@@ -1371,21 +1557,18 @@
 
             toast.className = `flex items-center gap-3 text-white px-4 py-3 rounded shadow-lg toast-enter ${colorClass}`;
             toast.innerHTML = `${icon} <span class="font-medium text-sm">${message}</span>`;
-            
             container.appendChild(toast);
 
             setTimeout(() => {
                 toast.classList.replace('toast-enter', 'toast-exit');
-                setTimeout(() => toast.remove(), 300); // Wait for exit animation
+                setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // --- HELPER UNTUK KUSTOM CONFIRM ---
         function showCustomConfirm(msg, onConfirm) {
             const modal = document.getElementById('confirm-modal');
             const box = document.getElementById('confirm-box');
             document.getElementById('confirm-msg').textContent = msg;
-            
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             
@@ -1404,7 +1587,6 @@
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
                 }, 200);
-                // Remove listeners to prevent multiple triggers
                 btnOk.removeEventListener('click', okHandler);
                 btnCancel.removeEventListener('click', cancelHandler);
             };
@@ -1416,9 +1598,21 @@
             btnCancel.addEventListener('click', cancelHandler);
         }
 
-        // --- HELPER UNTUK FILE DAN PETA ---
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input && icon) {
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.classList.replace("fa-eye", "fa-eye-slash");
+                } else {
+                    input.type = "password";
+                    icon.classList.replace("fa-eye-slash", "fa-eye");
+                }
+            }
+        }
+
         function resizeAllMaps() {
-            // Beri sedikit jeda waktu (300ms) agar animasi CSS selesai dan wadah peta memiliki ukuran yang valid
             setTimeout(() => {
                 for (let mapId in activeMaps) {
                     if(activeMaps[mapId] && activeMaps[mapId].map) {
@@ -1432,34 +1626,32 @@
             if (navigator.geolocation) {
                 const btn = event.currentTarget;
                 const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mencari Lokasi...';
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Mencari...';
                 btn.disabled = true;
 
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
-                        const inputEl = document.getElementById(inputId);
-                        inputEl.value = `${lat},${lng}`;
+                        document.getElementById(inputId).value = `${lat},${lng}`;
                         
                         if(activeMaps[mapId]) {
-                            const mapObj = activeMaps[mapId];
-                            mapObj.map.setView([lat, lng], 16);
-                            mapObj.marker.setLatLng([lat, lng]);
+                            activeMaps[mapId].map.setView([lat, lng], 16);
+                            activeMaps[mapId].marker.setLatLng([lat, lng]);
                         }
-                        showToast("Lokasi berhasil diperbarui ke posisi Anda", "success");
+                        showToast("Lokasi berhasil disesuaikan dengan posisi GPS Anda", "success");
                         btn.innerHTML = originalHtml;
                         btn.disabled = false;
                     },
                     (error) => {
-                        showToast("Gagal mendapatkan lokasi. Pastikan izin lokasi browser Anda aktif.", "error");
+                        showToast("Gagal melacak posisi GPS. Aktifkan izin izin lokasi browser.", "error");
                         btn.innerHTML = originalHtml;
                         btn.disabled = false;
                     },
                     { enableHighAccuracy: true }
                 );
             } else {
-                showToast("Fitur lokasi (GPS) tidak didukung oleh browser Anda.", "error");
+                showToast("Akses lokasi (GPS) tidak didukung browser.", "error");
             }
         }
 
@@ -1469,21 +1661,16 @@
             const displayId = `${prefix}${field.id}_display`;
             const previewId = `${prefix}${field.id}_preview`;
             
-            // ID elemen tambahan untuk JS Toggle
             const overlayId = `${prefix}${field.id}_overlay`;
             const iconId = `${prefix}${field.id}_icon`;
             const placeholderId = `${prefix}${field.id}_placeholder`;
             const btnTextId = `${prefix}${field.id}_btnText`;
             
-            // File hanya wajib jika field diset wajib, belum ada value sebelumnya, dan tidak sedang dilock
             const isRequired = field.required && !val && !isLocked ? 'required' : ''; 
             const readonlyAttr = isLocked ? 'disabled' : '';
             const bg = isLocked ? 'bg-gray-100 cursor-not-allowed border-gray-300' : 'hover:bg-teal-50 bg-gray-50 border-teal-300 cursor-pointer';
             
-            let existingFileLink = val ? `<div class="mb-2"><a href="${val}" target="_blank" class="text-teal-700 underline text-sm font-medium"><i class="fas fa-external-link-alt"></i> Buka Gambar Saat Ini</a></div>` : '';
             let labelText = val ? 'Upload Ulang' : 'Pilih Gambar';
-            
-            // Style yang sangat adaptif. Jika value sudah ada, overlay transparan saat normal, dan muncul gelap (glassmorphism) saat di-hover.
             let overlayClass = val 
                 ? 'absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-300 opacity-0 hover:opacity-100 bg-black/60 backdrop-blur-sm' 
                 : 'absolute inset-0 z-10 flex flex-col items-center justify-center transition-all duration-300 bg-white/80 backdrop-blur-sm p-4';
@@ -1511,7 +1698,6 @@
                 : `<img id="${previewId}" class="absolute inset-0 w-full h-full object-cover z-0 hidden" alt="Preview">`;
 
             return `
-                ${existingFileLink}
                 <div class="mt-1 flex justify-center items-center h-48 border-2 border-dashed rounded-xl relative overflow-hidden transition ${bg}">
                     ${imagePreviewHtml}
                     ${uploadArea}
@@ -1525,22 +1711,15 @@
             const displayEl = document.getElementById(displayId);
             const previewEl = document.getElementById(previewId);
             
-            if(!file) {
-                return; // Jika dibatalkan, biarkan state terakhir
-            }
+            if(!file) return;
 
-            // Validasi tipe file agar hanya gambar
             if(!file.type.match('image.*')) {
                 showToast("Hanya file gambar (JPG/PNG) yang diperbolehkan!", "warning");
-                element.value = "";
-                return;
+                element.value = ""; return;
             }
-            
-            // Batasan ukuran untuk berkas calon siswa (tetap 2MB)
             if(file.size > 2 * 1024 * 1024) {
                 showToast("Ukuran file terlalu besar! Maksimal 2MB.", "warning");
-                element.value = "";
-                return;
+                element.value = ""; return;
             }
             
             const reader = new FileReader();
@@ -1551,7 +1730,6 @@
                     previewEl.classList.remove('hidden');
                 }
                 
-                // --- UPDATE UI MENJADI STATE "UPLOADED" ---
                 const overlay = document.getElementById(overlayId);
                 const icon = document.getElementById(iconId);
                 const placeholder = document.getElementById(placeholderId);
@@ -1563,34 +1741,29 @@
                 if(placeholder) placeholder.className = "hidden";
                 if(btnText) btnText.innerHTML = '<i class="fas fa-upload mr-1"></i> Upload Ulang';
                 if(labelBtn) labelBtn.className = "relative cursor-pointer px-4 py-2 rounded-md font-medium transition shadow-md w-full max-w-[200px] text-center bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border border-white/50";
-                if(displayEl) displayEl.textContent = ""; // Kosongkan teks indikator karena gambar sudah langsung terlihat
+                if(displayEl) displayEl.textContent = "";
             }
             reader.readAsDataURL(file);
         }
 
-        // --- HELPER UNTUK PROFIL SEKOLAH (GAMBAR & KEPSEK) ---
         function handleSettingImageUpload(element, hiddenId, previewId) {
             const file = element.files[0];
             if(!file) return;
 
             if(!file.type.match('image.*')) {
                 showToast("Hanya file gambar (JPG/PNG) yang diperbolehkan!", "warning");
-                element.value = "";
-                return;
+                element.value = ""; return;
             }
-
-            // Batasan ukuran file diubah dari 2MB menjadi 10MB khusus pengaturan admin profil sekolah
             if(file.size > 10 * 1024 * 1024) {
                 showToast("Ukuran file terlalu besar! Maksimal 10MB.", "warning");
-                element.value = "";
-                return;
+                element.value = ""; return;
             }
 
             const reader = new FileReader();
             reader.onloadend = function() {
                 document.getElementById(hiddenId).value = reader.result;
                 document.getElementById(previewId).src = reader.result;
-                showToast("Pratinjau gambar berhasil diperbarui!", "success");
+                showToast("Pratinjau gambar berhasil dimuat!", "success");
             }
             reader.readAsDataURL(file);
         }
@@ -1602,7 +1775,6 @@
                     const mapId = `map_${prefix}${f.id}`;
                     const inputId = `${prefix}${f.id}`;
                     
-                    // Bersihkan instance lama jika form dirender ulang
                     if(activeMaps[mapId] && activeMaps[mapId].map) {
                         activeMaps[mapId].map.remove();
                     }
@@ -1611,8 +1783,7 @@
                     const containerEl = document.getElementById(mapId);
                     if(!containerEl) return;
 
-                    // Kordinat Default Dari Pengaturan Profil
-                    let defaultLat = -6.1754; // Monas sbg Fallback Default
+                    let defaultLat = -6.1754; 
                     let defaultLng = 106.8272;
 
                     if (appState.schoolInfo.coordinates) {
@@ -1623,52 +1794,39 @@
                         }
                     }
 
-                    let lat = defaultLat;
-                    let lng = defaultLng;
-
+                    let lat = defaultLat; let lng = defaultLng;
                     if(inputEl.value) {
                         const parts = inputEl.value.split(',');
                         if(parts.length === 2) {
-                            lat = parseFloat(parts[0]);
-                            lng = parseFloat(parts[1]);
+                            lat = parseFloat(parts[0]); lng = parseFloat(parts[1]);
                         }
                     }
 
                     const map = L.map(mapId).setView([lat, lng], 14);
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 19,
-                        attribution: '© OpenStreetMap'
+                        maxZoom: 19, attribution: '© OpenStreetMap'
                     }).addTo(map);
 
                     const marker = L.marker([lat, lng], {draggable: true}).addTo(map);
-
-                    // Tetapkan kordinat awal ke input jika kosong
                     if(!inputEl.value) inputEl.value = `${lat},${lng}`;
 
-                    // Update koordinat saat marker digeser
-                    marker.on('dragend', function(e) {
+                    marker.on('dragend', function() {
                         const pos = marker.getLatLng();
                         inputEl.value = `${pos.lat},${pos.lng}`;
                     });
 
-                    // Update koordinat saat peta diklik
                     map.on('click', function(e) {
                         marker.setLatLng(e.latlng);
                         inputEl.value = `${e.latlng.lat},${e.latlng.lng}`;
                     });
 
-                    // Simpan objek map dan marker untuk digunakan oleh fitur Gunakan Lokasi Saat Ini
                     activeMaps[mapId] = { map: map, marker: marker };
-                    
-                    // Paksa peta merender ulang (menghindari isu ubin terpotong di tab tersembunyi)
                     setTimeout(() => { map.invalidateSize(); }, 500);
                 }
             });
         }
 
-        // Mulai aplikasi saat dimuat
         window.onload = initApp;
-
     </script>
 </body>
 </html>
