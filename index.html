@@ -84,11 +84,10 @@
         
         <!-- 1. Beranda -->
         <section id="home" class="page-section active">
-            <!-- Teks Selamat Datang (Dinamis Diatur Oleh Admin) - Oranye, Border Putih & Tanpa Latar Belakang -->
             <div class="text-center py-6 px-4 mb-4 select-none">
-                <span class="text-3xl sm:text-4xl md:text-5xl font-black tracking-wider uppercase block" 
+                <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider uppercase block" 
                       id="ui-welcome-tag" 
-                      style="color: #FF6F00; -webkit-text-stroke: 1.5px #FFFFFF; filter: drop-shadow(0px 3px 5px rgba(0,0,0,0.25)); font-family: 'Arial Black', sans-serif;">
+                      style="color: #FF6F00;">
                     Selamat Datang
                 </span>
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#004D40] mt-3.5 leading-tight drop-shadow-sm" id="ui-welcome-title">
@@ -100,8 +99,8 @@
             </div>
 
             <!-- Foto Header Sekolah -->
-            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-                <div class="h-64 md:h-auto md:aspect-[3/1] bg-gray-300 relative w-full flex justify-center items-center overflow-hidden">
+            <div class="bg-gray-50 overflow-hidden mb-8">
+                <div class="h-64 md:h-auto md:aspect-[3/1] bg-gray-300 relative w-full flex justify-center items-center overflow-hidden rounded-xl">
                    <img id="ui-hero-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Sekolah" class="w-full h-full object-cover">
                 </div>
             </div>
@@ -109,44 +108,38 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="md:col-span-2 space-y-8">
                     
-                    <!-- Visi & Misi Terpisah secara Vertikal (Visi di atas Misi) -->
+                    <!-- Visi & Misi Terpisah secara Vertikal (Flat, Tanpa Kotak/Batas/Shadow) -->
                     <div class="flex flex-col gap-6">
-                        <!-- Card Visi -->
-                        <div class="bg-white p-8 rounded-3xl shadow-md border border-teal-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden group transform hover:-translate-y-2">
-                            <div class="absolute -right-8 -bottom-8 text-teal-100 opacity-40 text-9xl transform -rotate-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-0">
+                        <!-- Visi Sekolah (Flat, Tanpa Kotak Kartu) -->
+                        <div class="flex flex-col items-center text-center py-6 relative">
+                            <div class="w-20 h-20 bg-gradient-to-br from-[#004D40] to-teal-400 text-white rounded-full flex items-center justify-center text-4xl mb-5 shadow-lg shadow-teal-900/30">
                                 <i class="fas fa-lightbulb"></i>
                             </div>
-                            <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-[#004D40] to-teal-400 text-white rounded-full flex items-center justify-center text-4xl mb-5 shadow-lg shadow-teal-900/30 group-hover:scale-110 transition-transform duration-300">
-                                <i class="fas fa-lightbulb"></i>
-                            </div>
-                            <h3 class="relative z-10 text-2xl font-extrabold text-[#004D40] mb-3 tracking-wide">Visi Sekolah</h3>
-                            <p class="relative z-10 text-gray-700 leading-relaxed text-sm" id="ui-visi">
+                            <h3 class="text-2xl font-extrabold text-[#004D40] mb-3 tracking-wide">Visi Sekolah</h3>
+                            <p class="text-gray-700 leading-relaxed text-sm max-w-2xl" id="ui-visi">
                                 Memuat visi...
                             </p>
                         </div>
 
-                        <!-- Card Misi -->
-                        <div class="bg-white p-8 rounded-3xl shadow-md border border-teal-100 hover:shadow-xl transition-all duration-300 flex flex-col items-center relative overflow-hidden group transform hover:-translate-y-2">
-                            <div class="absolute -right-8 -bottom-8 text-amber-100 opacity-40 text-9xl transform rotate-12 transition-transform duration-500 group-hover:scale-110 group-hover:rotate-0">
+                        <!-- Misi Sekolah (Flat, Tanpa Kotak Kartu, Tanpa Border, Tanpa Bayangan & Hover) -->
+                        <div class="flex flex-col items-center py-6 relative">
+                            <div class="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-full flex items-center justify-center text-4xl mb-5 shadow-lg shadow-orange-600/30">
                                 <i class="fas fa-rocket"></i>
                             </div>
-                            <div class="relative z-10 w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-full flex items-center justify-center text-4xl mb-5 shadow-lg shadow-orange-600/30 group-hover:scale-110 transition-transform duration-300">
-                                <i class="fas fa-rocket"></i>
-                            </div>
-                            <h3 class="relative z-10 text-2xl font-extrabold text-[#004D40] mb-4 tracking-wide text-center w-full">Misi Sekolah</h3>
-                            <div class="relative z-10 text-gray-700 text-left text-sm leading-relaxed w-full" id="ui-misi">
+                            <h3 class="text-2xl font-extrabold text-[#004D40] mb-4 tracking-wide text-center">Misi Sekolah</h3>
+                            <div class="text-gray-700 text-left text-sm leading-relaxed max-w-2xl w-full" id="ui-misi">
                                 Memuat misi...
                             </div>
                         </div>
                     </div>
 
-                    <!-- Sambutan Kepala Sekolah -->
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col sm:flex-row gap-6">
-                        <img id="ui-kepsek-img" src="https://via.placeholder.com/150" alt="Kepala Sekolah" class="w-32 h-32 rounded-full object-cover border-4 border-teal-100 mx-auto sm:mx-0">
-                        <div>
+                    <!-- Sambutan Kepala Sekolah (Flat, Tanpa Kotak Kartu, Tanpa Border, Tanpa Bayangan & Hover) -->
+                    <div class="flex flex-col items-center text-center gap-6 py-6">
+                        <img id="ui-kepsek-img" src="https://via.placeholder.com/150" alt="Kepala Sekolah" class="w-32 h-32 rounded-full object-cover border-4 border-teal-100 mx-auto">
+                        <div class="w-full">
                             <h2 class="text-2xl font-bold mb-2 text-[#004D40]">Sambutan Kepala Sekolah</h2>
-                            <p class="text-gray-600 italic mb-2" id="ui-kepsek-name">Bapak/Ibu Kepala Sekolah</p>
-                            <p class="text-gray-700 text-justify" id="ui-kepsek-msg">Memuat sambutan...</p>
+                            <p class="text-gray-600 italic mb-4" id="ui-kepsek-name">Bapak/Ibu Kepala Sekolah</p>
+                            <p class="text-gray-700 text-justify max-w-3xl mx-auto leading-relaxed" id="ui-kepsek-msg">Memuat sambutan...</p>
                         </div>
                     </div>
 
@@ -713,7 +706,7 @@
                 coordinates: "-6.1754, 106.8272",
                 kepsekMsg: "Atas nama keluarga besar sekolah, saya mengucapkan selamat datang kepada seluruh calon peserta didik baru dan orang tua/wali. Kami merasa bangga dan bahagia karena Bapak/Ibu telah mempercayakan pendidikan putra-putrinya kepada sekolah ini. Sekolah bukan hanya tempat untuk belajar membaca, menulis, dan berhitung, tetapi juga tempat membentuk karakter, menanamkan disiplin, tanggung jawab, kejujuran, serta semangat untuk meraih cita-cita. Oleh karena itu, kami berkomitmen memberikan layanan pendidikan terbaik agar setiap peserta didik dapat berkembang sesuai potensi yang dimiliki.",
                 visi: "Unggul dalam prestasi akademik dan non akademik berlandasan keimanan, ketakwaan terhadap Tuhan Yang Maha Esa, kreativitas, kecerdasan dan kemandirian serta tanggap terhadap perkembangan.",
-                misi: "Meningkatkan penghayatan serta pengamalan pancasila.<br>Meningkatkan ketaqwaan terhadap Tuhan yang maha esa.<br>Melaksanakan pembelajaran dan bimbingan secara efektif, kreatif, inovatif dengan mengembangkan perilaku bersahabat, kerjasama, dan keteladanan.<br>Membangun kemampuan berkomunikasi dengan sesama dan lingkungan dengan berakhlaqul karimah.<br>Menumbukan semangat keunggulan secara intensif kepada seluruh warga sekolah.<br>Mendorong setiap siswa untuk mengembangkan potensi dirinya secara optimal.",
+                misi: "Meningkatkan penghayatan serta pengamalan pancasila.<br>Meningkatkan ketaqwaan terhadap Tuhan yang maha esa.<br>Melaksanakan pembelajaran and bimbingan secara efektif, kreatif, inovatif dengan mengembangkan perilaku bersahabat, kerjasama, dan keteladanan.<br>Mangun kemampuan berkomunikasi dengan sesama dan lingkungan dengan berakhlaqul karimah.<br>Menumbukan semangat keunggulan secara intensif kepada seluruh warga sekolah.<br>Mendorong setiap siswa untuk mengembangkan potensi dirinya secara optimal.",
                 schedule: "Pendaftaran: 1-10 Juli 2026\nPengumuman: 15 Juli 2026",
                 welcomeTag: "Selamat Datang",
                 welcomeTitle: "Sistem Penerimaan Murid Baru (SPMB)",
@@ -823,7 +816,7 @@
             // Set Visi
             document.getElementById('ui-visi').textContent = appState.schoolInfo.visi || 'Visi belum diatur oleh admin.';
             
-            // Parsing Misi dengan Checklist Oranye
+            // Parsing Misi dengan Checklist Netral (Menghapus warna jingga/oranye & hover)
             const misiRaw = appState.schoolInfo.misi || '';
             const misiItems = misiRaw.split('<br>').map(item => item.trim()).filter(item => item !== '');
             let misiHtml = '';
@@ -833,8 +826,8 @@
                 misiItems.forEach(item => {
                     let cleanItem = item.replace(/^\d+[\.\s\-)]+/, '').trim();
                     misiHtml += `
-                        <li class="flex items-start gap-3 w-full group">
-                            <span class="text-orange-500 mt-1 flex-shrink-0 transition-transform duration-300 group-hover:scale-110">
+                        <li class="flex items-start gap-3 w-full">
+                            <span class="text-[#004D40] mt-1 flex-shrink-0">
                                 <i class="fas fa-check-circle"></i>
                             </span>
                             <span class="text-gray-700 text-sm leading-relaxed">${cleanItem}</span>
@@ -1396,6 +1389,20 @@
             resizeAllMaps();
         }
 
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input && icon) {
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.classList.replace("fa-eye", "fa-eye-slash");
+                } else {
+                    input.type = "password";
+                    icon.classList.replace("fa-eye-slash", "fa-eye");
+                }
+            }
+        }
+
         function closeEditModal() {
             document.getElementById('edit-modal').classList.add('hidden');
             document.getElementById('edit-modal').classList.remove('flex');
@@ -1596,20 +1603,6 @@
 
             btnOk.addEventListener('click', okHandler);
             btnCancel.addEventListener('click', cancelHandler);
-        }
-
-        function togglePasswordVisibility(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
-            if (input && icon) {
-                if (input.type === "password") {
-                    input.type = "text";
-                    icon.classList.replace("fa-eye", "fa-eye-slash");
-                } else {
-                    input.type = "password";
-                    icon.classList.replace("fa-eye-slash", "fa-eye");
-                }
-            }
         }
 
         function resizeAllMaps() {
