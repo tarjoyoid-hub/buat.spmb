@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
-    <!-- STREAMING_CHUNK: Memuat Konfigurasi Dasar dan Animasi Halaman... -->
     <style>
         .page-section { display: none; }
         .page-section.active { display: block; animation: fadeIn 0.3s; }
@@ -42,7 +41,6 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
-    <!-- STREAMING_CHUNK: Menyusun Menu Navigasi Sekolah... -->
     <!-- Navbar -->
     <nav class="bg-[#004D40] text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -59,22 +57,24 @@
                 </div>
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-4" id="desktop-menu">
-                    <button id="nav-btn-home" onclick="navigate('home')" class="text-white hover:bg-[#005957] px-3 py-2 rounded transition-colors">Beranda</button>
-                    <button id="nav-btn-form" onclick="navigate('form')" class="text-white hover:bg-[#005957] px-3 py-2 rounded transition-colors">Daftar Sekarang</button>
-                    <button id="nav-btn-edit-student" onclick="navigate('edit-student')" class="text-white hover:bg-[#005957] px-3 py-2 rounded transition-colors">Cek/Edit Data</button>
-                    <button id="nav-btn-announcement" onclick="navigate('announcement')" class="text-white hover:bg-[#005957] px-3 py-2 rounded transition-colors">Pengumuman</button>
-                    <button id="nav-btn-admin-login" onclick="navigate('admin-login')" class="bg-[#00332C] hover:bg-[#00251A] px-3 py-2 rounded text-sm transition-colors"><i class="fas fa-lock mr-1"></i> Admin</button>
+                    <button onclick="navigate('home')" id="nav-btn-home" class="nav-button hover:bg-[#005957] px-3 py-2 rounded">Beranda</button>
+                    <button onclick="navigate('flow')" id="nav-btn-flow" class="nav-button hover:bg-[#005957] px-3 py-2 rounded">Alur Pendaftaran</button>
+                    <button onclick="navigate('form')" id="nav-btn-form" class="nav-button hover:bg-[#005957] px-3 py-2 rounded">Daftar Sekarang</button>
+                    <button onclick="navigate('edit-student')" id="nav-btn-edit-student" class="nav-button hover:bg-[#005957] px-3 py-2 rounded">Cek/Edit Data</button>
+                    <button onclick="navigate('announcement')" id="nav-btn-announcement" class="nav-button hover:bg-[#005957] px-3 py-2 rounded">Pengumuman</button>
+                    <button onclick="navigate('admin-login')" id="nav-btn-admin-login" class="nav-button bg-[#00332C] hover:bg-[#00251A] px-3 py-2 rounded text-sm"><i class="fas fa-lock mr-1"></i> Admin</button>
                 </div>
             </div>
         </div>
         <!-- Mobile Menu -->
         <div class="md:hidden hidden bg-[#00332C]" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <button id="nav-m-btn-home" onclick="navigate('home'); toggleMobileMenu()" class="block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Beranda</button>
-                <button id="nav-m-btn-form" onclick="navigate('form'); toggleMobileMenu()" class="block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Daftar Sekarang</button>
-                <button id="nav-m-btn-edit-student" onclick="navigate('edit-student'); toggleMobileMenu()" class="block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Cek/Edit Data</button>
-                <button id="nav-m-btn-announcement" onclick="navigate('announcement'); toggleMobileMenu()" class="block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Pengumuman</button>
-                <button id="nav-m-btn-admin-login" onclick="navigate('admin-login'); toggleMobileMenu()" class="block w-full text-left bg-[#00251A] hover:bg-[#005957] px-3 py-2 rounded text-sm">Login Admin</button>
+                <button onclick="navigate('home'); toggleMobileMenu()" id="mob-nav-btn-home" class="mob-nav-button block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Beranda</button>
+                <button onclick="navigate('flow'); toggleMobileMenu()" id="mob-nav-btn-flow" class="mob-nav-button block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Alur Pendaftaran</button>
+                <button onclick="navigate('form'); toggleMobileMenu()" id="mob-nav-btn-form" class="mob-nav-button block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Daftar Sekarang</button>
+                <button onclick="navigate('edit-student'); toggleMobileMenu()" id="mob-nav-btn-edit-student" class="mob-nav-button block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Cek/Edit Data</button>
+                <button onclick="navigate('announcement'); toggleMobileMenu()" id="mob-nav-btn-announcement" class="mob-nav-button block w-full text-left hover:bg-[#005957] px-3 py-2 rounded">Pengumuman</button>
+                <button onclick="navigate('admin-login'); toggleMobileMenu()" id="mob-nav-btn-admin-login" class="mob-nav-button block w-full text-left bg-[#00251A] hover:bg-[#005957] px-3 py-2 rounded text-sm">Login Admin</button>
             </div>
         </div>
     </nav>
@@ -84,9 +84,8 @@
         
         <!-- 1. Beranda -->
         <section id="home" class="page-section active">
-            <!-- STREAMING_CHUNK: Menyusun Sambutan Kepala Sekolah dan Spanduk Selamat Datang... -->
             <div class="text-center py-6 px-4 mb-4 select-none">
-                <!-- Teks Selamat Datang (Kapital Awal Kata & Dinamis) -->
+                <!-- Teks Selamat Datang (Tanpa bayangan ekstrem dan kapital awal kata) -->
                 <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider block" 
                       id="ui-welcome-tag" 
                       style="color: #FF6F00;">
@@ -100,7 +99,7 @@
                 </p>
             </div>
 
-            <!-- Foto Header Sekolah (Menyatu Sempurna dengan Latar Belakang) -->
+            <!-- Foto Header Sekolah (Menyatu Sempurna dengan Latar Belakang & Tidak Terpotong di Android) -->
             <div class="bg-transparent mb-8">
                 <div class="w-full flex justify-center items-center overflow-hidden rounded-xl bg-transparent">
                    <img id="ui-hero-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Sekolah" class="w-full h-auto object-contain rounded-xl block" onerror="this.src='https://via.placeholder.com/1000x400?text=Gambar+Sekolah+SDN+03+Yosorejo'">
@@ -119,7 +118,7 @@
                             </div>
                             <h3 class="text-2xl font-extrabold text-[#004D40] mb-3 tracking-wide">Visi Sekolah</h3>
                             <p class="text-gray-700 leading-relaxed text-sm max-w-2xl" id="ui-visi">
-                                Unggul dalam prestasi akademik dan non akademik berlandasan keimanan, ketakwaan terhadap Tuhan Yang Maha Esa, kreativitas, kecerdasan dan kemandirian serta tanggap terhadap perkembangan.
+                                Memuat visi...
                             </p>
                         </div>
 
@@ -145,8 +144,7 @@
                         </div>
                     </div>
 
-                    <!-- STREAMING_CHUNK: Memposisikan Alur Pendaftaran di Beranda Persis di Bawah Sambutan... -->
-                    <!-- Alur Pendaftaran (Ditampilkan Persis Sama dengan Menu Alur Pendaftaran) -->
+                    <!-- Alur Pendaftaran (Persis Sama dengan Menu Alur Pendaftaran, Tanpa Efek Gerak-Gerak Hover Translate) -->
                     <div id="home-flow-section" class="pt-8">
                         <div class="text-center mb-12">
                             <span class="bg-teal-100 text-[#004D40] text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">Langkah Mudah</span>
@@ -154,7 +152,7 @@
                             <p class="text-gray-600 mt-2 max-w-xl mx-auto">Ikuti 4 langkah terstruktur berikut untuk mendaftarkan diri Anda sebagai calon siswa baru di sekolah kami.</p>
                         </div>
 
-                        <!-- Grid Kartu Alur Interaktif (Ikon Diperbesar Jadi w-20 h-20 & text-3xl, Efek Hover Translasi Diperhalus Menjadi Shadow/Border) -->
+                        <!-- Grid Kartu Alur Interaktif (Ikon Jumbo w-20 h-20 & Tanpa Getar Hover) -->
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
                             
                             <!-- Kartu Langkah 1 -->
@@ -212,10 +210,9 @@
 
                 </div>
 
-                <!-- STREAMING_CHUNK: Menyusun Sidebar Kanan Untuk Jadwal Seleksi dan Status Pendaftaran... -->
                 <!-- Jadwal & Info -->
                 <div class="space-y-6">
-                    <!-- Kartu Jadwal Seleksi Premium -->
+                    <!-- Kartu Jadwal Seleksi Premium Berwarna-Warni -->
                     <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-150 relative overflow-hidden">
                         <!-- Accent Background Glow -->
                         <div class="absolute -right-12 -top-12 w-24 h-24 bg-teal-500/10 rounded-full blur-xl pointer-events-none"></div>
@@ -225,16 +222,17 @@
                             Jadwal Seleksi
                         </h3>
                         
-                        <!-- Timeline Container (Padding disesuaikan untuk bullet ikon yang diperbesar lagi) -->
+                        <!-- Timeline Container (Ikon Diperbesar w-14 h-14) -->
                         <div class="relative pl-8 border-l-2 border-teal-100 space-y-6" id="ui-schedule">
-                            <!-- Diisi secara dinamis oleh JavaScript dengan ikon besar (w-14 h-14) and label berwarna solid -->
+                            <!-- Diisi secara dinamis oleh JavaScript -->
                         </div>
                     </div>
 
-                    <!-- Kartu Status Pendaftaran Dinamis (Hijau / Merah) -->
+                    <!-- Kartu Status Pendaftaran Dinamis (Hijau Buka / Merah Tutup) -->
                     <div id="ui-registration-status-card" class="p-6 rounded-2xl border text-center transition-all duration-300 shadow-sm">
                         <h3 id="ui-registration-status-title" class="text-xl font-extrabold mb-2">Memuat Status...</h3>
                         <p id="ui-registration-status-desc" class="text-sm mb-4">Menghubungkan ke server database.</p>
+                        <!-- Pill Button -->
                         <button id="ui-registration-status-btn" onclick="navigate('form')" class="w-full py-2.5 px-4 font-bold rounded-full shadow transition-all duration-300 flex items-center justify-center gap-2">
                             <span>Daftar Sekarang</span> <i class="fas fa-arrow-right text-xs"></i>
                         </button>
@@ -243,7 +241,6 @@
             </div>
         </section>
 
-        <!-- STREAMING_CHUNK: Menyusun Menu Halaman Alur Pendaftaran Standalone... -->
         <!-- 2. Alur Pendaftaran (Halaman Terpisah) -->
         <section id="flow" class="page-section">
             <div class="max-w-5xl mx-auto">
@@ -253,7 +250,7 @@
                     <p class="text-gray-600 mt-2 max-w-xl mx-auto">Ikuti 4 langkah terstruktur berikut untuk mendaftarkan diri Anda sebagai calon siswa baru di sekolah kami.</p>
                 </div>
 
-                <!-- Grid Kartu Alur Interaktif (Ikon Diperbesar Jadi w-20 h-20 & text-3xl, Efek Hover Translasi Diperhalus Menjadi Shadow/Border) -->
+                <!-- Grid Kartu Alur Interaktif (Ikon Jumbo w-20 h-20 & Tanpa Getar Hover) -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
                     
                     <!-- Kartu Langkah 1 -->
@@ -310,7 +307,6 @@
             </div>
         </section>
 
-        <!-- STREAMING_CHUNK: Menyusun Menu Halaman Formulir PPDB Online... -->
         <!-- 3. Formulir Pendaftaran -->
         <section id="form" class="page-section">
             <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md border-t-4 border-[#004D40]">
@@ -341,7 +337,6 @@
             </div>
         </section>
 
-        <!-- STREAMING_CHUNK: Menyusun Menu Halaman Cek/Edit Data Pelamar... -->
         <!-- Cek & Edit Data (Siswa) -->
         <section id="edit-student" class="page-section">
             <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md border-t-4 border-yellow-500">
@@ -376,7 +371,6 @@
             </div>
         </section>
 
-        <!-- STREAMING_CHUNK: Menyusun Menu Halaman Pengumuman Hasil Kelulusan... -->
         <!-- 4. Pengumuman -->
         <section id="announcement" class="page-section">
             <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-sm">
@@ -402,11 +396,9 @@
             </div>
         </section>
 
-        <!-- STREAMING_CHUNK: Menyusun Menu Login Dashboard Administrasi... -->
         <!-- 5. Admin Login -->
         <section id="admin-login" class="page-section">
             <div class="max-w-md mx-auto bg-white rounded-3xl shadow-xl overflow-hidden mt-10 border border-teal-50">
-                <!-- Header Card Login Premium -->
                 <div class="bg-gradient-to-br from-[#004D40] to-teal-800 text-white text-center py-8 px-4 relative">
                     <div class="absolute -right-4 -bottom-4 text-white/5 text-8xl">
                         <i class="fas fa-shield-alt"></i>
@@ -449,7 +441,6 @@
             </div>
         </section>
 
-        <!-- STREAMING_CHUNK: Menyusun Fitur dan Panel Dashboard Administrator Terintegrasi... -->
         <!-- 6. Admin Dashboard -->
         <section id="admin-dashboard" class="page-section">
             <div class="flex flex-col md:flex-row gap-6">
@@ -474,7 +465,7 @@
                     <div id="admin-content-data" class="admin-content-section">
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-2xl font-bold text-gray-800">Data Pendaftar (Real-time)</h2>
-                            <button onclick="loadAdminData()" class="text-[#004D40] hover:text-[#00332C]" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
+                            <button onclick="loadAdminData(true)" class="text-[#004D40] hover:text-[#00332C]" title="Refresh Data"><i class="fas fa-sync-alt"></i></button>
                         </div>
                         <div class="grid grid-cols-3 gap-4 mb-6">
                             <div class="bg-teal-50 p-4 rounded text-center border border-teal-100"><p class="text-sm text-gray-500">Total Masuk</p><p class="text-2xl font-bold text-[#004D40]" id="stat-total">0</p></div>
@@ -773,38 +764,43 @@
                 <h3 class="text-2xl font-bold">Pendaftaran Berhasil!</h3>
                 <p class="text-sm opacity-90 mt-1">Data telah terkirim ke server database sekolah.</p>
             </div>
-            <div class="p-6 text-center bg-white rounded-b-xl max-w-md w-full">
-                <p class="text-gray-700 mb-4">Kartu Pendaftaran telah otomatis dikirimkan ke email Anda: <br><strong id="card-email-display"></strong></p>
-                <div class="border-2 border-dashed border-gray-300 p-4 mb-4 bg-gray-50 rounded text-left relative">
-                    <div class="absolute top-2 right-2 text-gray-300"><i class="fas fa-id-card text-4xl"></i></div>
-                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nomor Pendaftaran</p>
-                    <p class="text-xl font-bold font-mono text-[#004D40] mb-2" id="card-reg-no">SPMB-001</p>
-                    <p class="text-xs text-gray-500 uppercase tracking-wide">Nama Calon Siswa</p>
-                    <p class="font-bold text-gray-800" id="card-reg-name">Budi Santoso</p>
+            <div class="p-6 text-center">
+                <p class="text-gray-600 mb-5 text-sm leading-relaxed">Kartu pendaftaran Anda telah otomatis dikirimkan ke email terdaftar: <br><strong id="card-email-display" class="text-teal-700"></strong></p>
+                <div class="border-2 border-dashed border-gray-200 p-5 mb-6 bg-gray-50 rounded-xl text-left relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 text-gray-100 text-8xl pointer-events-none"><i class="fas fa-id-card"></i></div>
+                    <p class="text-xs text-gray-400 uppercase tracking-wider font-bold">Nomor Pendaftaran</p>
+                    <p class="text-2xl font-bold font-mono text-[#004D40] mb-3 mt-1" id="card-reg-no">SPMB-001</p>
+                    <p class="text-xs text-gray-400 uppercase tracking-wider font-bold">Nama Calon Siswa</p>
+                    <p class="font-bold text-gray-800 text-lg mt-1" id="card-reg-name">Budi Santoso</p>
                 </div>
-                <button onclick="document.getElementById('card-modal').classList.replace('flex','hidden'); navigate('announcement')" class="w-full px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300">Tutup</button>
+                <button onclick="document.getElementById('card-modal').classList.replace('flex','hidden'); navigate('announcement')" class="w-full py-3 bg-[#004D40] text-white font-bold rounded-xl hover:bg-[#00332C] transition shadow-md">Tutup & Lihat Pengumuman</button>
             </div>
         </div>
     </div>
 
     <!-- Modal Edit Siswa (Admin) -->
-    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <h3 class="text-xl font-bold mb-4">Edit Data Siswa</h3>
-            <form id="edit-student-form" onsubmit="saveStudentEdit(event)">
-                <input type="hidden" id="edit-idx">
-                <div id="edit-dynamic-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"></div>
-                <div class="mb-4 pt-2 border-t">
-                    <label class="block text-sm font-medium mb-1">Status Seleksi</label>
-                    <select id="edit-status" class="w-full p-2 border rounded font-bold">
-                        <option value="Menunggu">Menunggu</option>
-                        <option value="Diterima">Diterima</option>
-                        <option value="Ditolak">Ditolak</option>
-                    </select>
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="bg-[#004D40] text-white p-5 flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-user-edit"></i> Edit Data Calon Siswa</h3>
+                <button onclick="closeEditModal()" class="hover:text-gray-200"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <form onsubmit="saveStudentEdit(event)" class="flex flex-col flex-grow overflow-hidden">
+                <div class="p-6 overflow-y-auto flex-grow space-y-4">
+                    <input type="hidden" id="edit-idx">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Status Verifikasi</label>
+                        <select id="edit-status" class="w-full p-2.5 border rounded-lg focus:ring-[#004D40] focus:border-[#004D40]">
+                            <option value="Menunggu">Menunggu Verifikasi</option>
+                            <option value="Diterima">Diterima (Lulus)</option>
+                            <option value="Ditolak">Ditolak (Gagal)</option>
+                        </select>
+                    </div>
+                    <div id="edit-dynamic-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-[#004D40] text-white rounded hover:bg-[#00332C]">Simpan Perubahan</button>
+                <div class="bg-gray-50 p-4 border-t flex justify-end gap-3">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 font-bold rounded-lg text-gray-800 text-sm">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-[#004D40] hover:bg-[#00332C] font-bold rounded-lg text-white text-sm shadow">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -827,7 +823,6 @@
         </div>
     </div>
 
-    <!-- STREAMING_CHUNK: Menyusun Engine JavaScript Untuk Leaflet dan Firestore Real-time... -->
     <script>
         // --- KONFIGURASI BACKEND ---
         const USE_MOCK = false; // Diubah ke false untuk fungsionalitas Google Drive Apps Script
@@ -857,7 +852,7 @@
                 whatsapp: "85642600190",
                 email: "sdn3yosorejo@gmail.com",
                 
-                // Status default
+                // Status default pendaftaran
                 registrationStatus: "buka" // 'buka' | 'tutup'
             },
             formFields: [
@@ -889,15 +884,17 @@
                 }
             } else {
                 try {
-                    const response = await fetch(`${GAS_WEB_APP_URL}?action=get_settings`);
+                    // Tambahkan Cache-Buster (_t) agar browser tidak menyimpan versi data yang lama
+                    const response = await fetch(`${GAS_WEB_APP_URL}?action=get_settings&_t=${new Date().getTime()}`);
                     const data = await response.json();
                     if(data.status === 'success') {
-                        // SOLUSI UTAMA: Menggunakan merge operator (...) agar parameter baru (seperti registrationStatus)
-                        // tidak terhapus apabila kolom data pada Google Sheets kosong/belum ada.
                         appState.schoolInfo = { ...appState.schoolInfo, ...data.schoolInfo };
                         appState.formFields = data.formFields;
                     }
+                    // Tarik data siswa dari spreadsheet untuk pertama kali
+                    await fetchStudentsFromServer();
                     renderAll();
+                    startAutoSync(); // Memulai sinkronisasi otomatis di latar belakang
                 } catch (e) {
                     console.error("Gagal terhubung ke database", e);
                     showToast("Koneksi gagal. Memuat data cadangan lokal.", "warning");
@@ -912,12 +909,58 @@
             }
         }
 
+        // Fitur Baru: Auto Sync Background (Sinkronisasi Otomatis Berkala)
+        function startAutoSync() {
+            setInterval(async () => {
+                if (USE_MOCK || !GAS_WEB_APP_URL) return;
+                try {
+                    // Sync students diam-diam
+                    await fetchStudentsFromServer();
+                    
+                    const activeTab = document.querySelector('.page-section.active');
+                    if(activeTab && activeTab.id === 'admin-dashboard' && document.getElementById('admin-content-data').classList.contains('hidden') === false) {
+                        loadAdminData(false); // Update tabel tanpa muter ikon loading
+                    } else if(activeTab && activeTab.id === 'announcement') {
+                        renderAnnouncement(); // Update tabel pengumuman secara live
+                    }
+
+                    // Sync settings diam-diam (Hanya perbarui kartu status agar form admin yang sedang diketik tidak hilang)
+                    const resSet = await fetch(`${GAS_WEB_APP_URL}?action=get_settings&_t=${new Date().getTime()}`);
+                    const dataSet = await resSet.json();
+                    if(dataSet.status === 'success') {
+                        appState.schoolInfo = { ...appState.schoolInfo, ...dataSet.schoolInfo };
+                        if(activeTab && activeTab.id === 'home') {
+                            updateRegistrationStatusUI();
+                        }
+                    }
+                } catch(e) {
+                    // Abaikan diam-diam jika jaringan sedang terputus sejenak
+                }
+            }, 15000); // Berjalan otomatis setiap 15 detik
+        }
+
+        // Helper khusus menarik data pendaftar langsung dari Spreadsheet secara real-time
+        async function fetchStudentsFromServer() {
+            if (!USE_MOCK && GAS_WEB_APP_URL) {
+                try {
+                    // Cache-Buster memastikan data terbaru langsung dari server Google
+                    const response = await fetch(`${GAS_WEB_APP_URL}?action=get_students&_t=${new Date().getTime()}`);
+                    const data = await response.json();
+                    if(data.status === 'success') {
+                        appState.students = data.students;
+                    }
+                } catch (e) {
+                    console.error("Gagal memuat data pendaftar dari spreadsheet", e);
+                }
+            }
+        }
+
         function saveMockData() {
             if (USE_MOCK || !GAS_WEB_APP_URL) localStorage.setItem('spmbState', JSON.stringify(appState));
         }
 
         // --- NAVIGASI ---
-        function navigate(pageId) {
+        async function navigate(pageId) {
             // Jika memilih 'flow', arahkan ke home lalu gulir mulus ke id alur di halaman utama
             if (pageId === 'flow') {
                 document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
@@ -930,7 +973,7 @@
                     }
                 }, 100);
                 resizeAllMaps();
-                updateActiveNavbar('home');
+                updateActiveNavbar('flow');
                 return;
             }
 
@@ -947,58 +990,39 @@
                 return;
             }
             
-            if(pageId === 'admin-dashboard') loadAdminData();
-            if(pageId === 'announcement') renderAnnouncement();
+            if(pageId === 'admin-dashboard') {
+                await loadAdminData();
+            }
+            if(pageId === 'announcement') {
+                // Tampilkan loading spinner saat mengambil status terbaru dari spreadsheet
+                const tbody = document.getElementById('announcement-list');
+                tbody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-gray-500"><i class="fas fa-spinner fa-spin mr-2"></i>Mengambil status terbaru dari Spreadsheet...</td></tr>`;
+                await fetchStudentsFromServer();
+                renderAnnouncement();
+            }
             window.scrollTo(0, 0);
             resizeAllMaps();
             updateActiveNavbar(pageId);
         }
 
         function updateActiveNavbar(pageId) {
-            const desktopNavs = {
-                'home': document.getElementById('nav-btn-home'),
-                'form': document.getElementById('nav-btn-form'),
-                'edit-student': document.getElementById('nav-btn-edit-student'),
-                'announcement': document.getElementById('nav-btn-announcement'),
-                'admin-login': document.getElementById('nav-btn-admin-login'),
-                'admin-dashboard': document.getElementById('nav-btn-admin-login')
-            };
+            // Reset semua tombol menu desktop
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.className = "nav-button hover:bg-[#005957] px-3 py-2 rounded";
+            });
+            // Reset semua tombol menu mobile
+            document.querySelectorAll('.mob-nav-button').forEach(btn => {
+                btn.className = "mob-nav-button block w-full text-left hover:bg-[#005957] px-3 py-2 rounded";
+            });
 
-            const mobileNavs = {
-                'home': document.getElementById('nav-m-btn-home'),
-                'form': document.getElementById('nav-m-btn-form'),
-                'edit-student': document.getElementById('nav-m-btn-edit-student'),
-                'announcement': document.getElementById('nav-m-btn-announcement'),
-                'admin-login': document.getElementById('nav-m-btn-admin-login'),
-                'admin-dashboard': document.getElementById('nav-m-btn-admin-login')
-            };
-
-            for (const [key, btn] of Object.entries(desktopNavs)) {
-                if (btn) {
-                    if (key === pageId || (pageId === 'admin-dashboard' && key === 'admin-login')) {
-                        btn.className = (key === 'admin-login' || key === 'admin-dashboard')
-                            ? "bg-[#00332C] text-yellow-300 font-bold px-3 py-2 rounded text-sm transition-colors"
-                            : "text-yellow-300 font-bold px-3 py-2 rounded transition-colors";
-                    } else {
-                        btn.className = (key === 'admin-login' || key === 'admin-dashboard')
-                            ? "bg-[#00332C] hover:bg-[#00251A] text-white font-normal px-3 py-2 rounded text-sm transition-colors"
-                            : "text-white hover:bg-[#005957] px-3 py-2 rounded transition-colors";
-                    }
-                }
+            // Set warna kuning tebal pada halaman yang aktif
+            const activeDesktopBtn = document.getElementById(`nav-btn-${pageId}`);
+            if (activeDesktopBtn) {
+                activeDesktopBtn.className = "nav-button px-3 py-2 rounded text-yellow-300 font-bold hover:bg-[#005957]";
             }
-
-            for (const [key, btn] of Object.entries(mobileNavs)) {
-                if (btn) {
-                    if (key === pageId || (pageId === 'admin-dashboard' && key === 'admin-login')) {
-                        btn.className = (key === 'admin-login' || key === 'admin-dashboard')
-                            ? "block w-full text-left bg-[#00251A] text-yellow-300 font-bold px-3 py-2 rounded text-sm"
-                            : "block w-full text-left text-yellow-300 font-bold px-3 py-2 rounded";
-                    } else {
-                        btn.className = (key === 'admin-login' || key === 'admin-dashboard')
-                            ? "block w-full text-left bg-[#00251A] hover:bg-[#005957] text-white px-3 py-2 rounded text-sm"
-                            : "block w-full text-left hover:bg-[#005957] text-white px-3 py-2 rounded";
-                    }
-                }
+            const activeMobileBtn = document.getElementById(`mob-nav-btn-${pageId}`);
+            if (activeMobileBtn) {
+                activeMobileBtn.className = "mob-nav-button block w-full text-left px-3 py-2 rounded text-yellow-300 font-bold hover:bg-[#005957]";
             }
         }
 
@@ -1046,7 +1070,6 @@
             }
             document.getElementById('ui-misi').innerHTML = misiHtml;
             
-            // STREAMING_CHUNK: Merender Jadwal Seleksi dengan Ikon Diperbesar Lagi (w-14 h-14) & Teks Solid Berwarna...
             // Parsing & Desain interaktif Jadwal Seleksi (Sesuai instruksi user)
             const scheduleLines = appState.schoolInfo.schedule.split('\n');
             let scheduleHtml = '';
@@ -1105,33 +1128,8 @@
             });
             document.getElementById('ui-schedule').innerHTML = scheduleHtml;
 
-            // STREAMING_CHUNK: Merender Komponen Status Kartu Pendaftaran Online Dinamis...
-            // Render Status Pendaftaran Dinamis (Hijau jika Buka, Merah jika Tutup)
-            const statusCard = document.getElementById('ui-registration-status-card');
-            const statusTitle = document.getElementById('ui-registration-status-title');
-            const statusDesc = document.getElementById('ui-registration-status-desc');
-            const statusBtn = document.getElementById('ui-registration-status-btn');
-            const regStatus = appState.schoolInfo.registrationStatus || "buka";
-
-            if (regStatus === 'buka') {
-                statusCard.className = "p-6 rounded-2xl border text-center transition-all duration-300 shadow-md bg-emerald-50 border-emerald-200 text-emerald-800 shadow-emerald-500/5";
-                statusTitle.textContent = "Pendaftaran Dibuka!";
-                statusTitle.className = "text-xl font-black text-emerald-800";
-                statusDesc.textContent = "Segera daftarkan diri Anda secara online sebelum kuota kelas terpenuhi.";
-                statusDesc.className = "text-sm text-emerald-700/90 mb-4";
-                statusBtn.className = "w-full py-2.5 px-4 font-bold rounded-full shadow transition-all duration-300 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/10";
-                statusBtn.disabled = false;
-                statusBtn.innerHTML = `<span>Daftar Sekarang</span> <i class="fas fa-arrow-right text-xs"></i>`;
-            } else {
-                statusCard.className = "p-6 rounded-2xl border text-center transition-all duration-300 shadow-md bg-rose-50 border-rose-200 text-rose-800 shadow-rose-500/5";
-                statusTitle.textContent = "Pendaftaran Ditutup!";
-                statusTitle.className = "text-xl font-black text-rose-800";
-                statusDesc.textContent = "Mohon maaf, pendaftaran murid baru online saat ini telah resmi ditutup oleh panitia.";
-                statusDesc.className = "text-sm text-rose-700/90 mb-4";
-                statusBtn.className = "w-full py-2.5 px-4 font-bold rounded-full shadow transition-all duration-300 flex items-center justify-center gap-2 bg-rose-300 text-rose-600 cursor-not-allowed shadow-none";
-                statusBtn.disabled = true;
-                statusBtn.innerHTML = `<span>Pendaftaran Ditutup</span> <i class="fas fa-lock text-xs"></i>`;
-            }
+            // Merender Komponen Status Kartu Pendaftaran Online Dinamis
+            updateRegistrationStatusUI();
 
             // RENDER INFORMASI FOOTER DINAMIS
             document.getElementById('ui-footer-logo').src = appState.schoolInfo.logo || "https://via.placeholder.com/50";
@@ -1141,12 +1139,6 @@
             document.getElementById('ui-footer-wa').textContent = appState.schoolInfo.whatsapp || "Belum diatur";
             document.getElementById('ui-footer-email').textContent = appState.schoolInfo.email || "Belum diatur";
             document.getElementById('ui-footer-copy-name').textContent = appState.schoolInfo.name;
-
-            // Pastikan status navigasi terupdate setelah render data
-            const activeSection = Array.from(document.querySelectorAll('.page-section')).find(el => el.classList.contains('active'));
-            if(activeSection) {
-                updateActiveNavbar(activeSection.id);
-            }
 
             // Render Form Fields pendaftar
             const formContainer = document.getElementById('dynamic-fields-container');
@@ -1383,15 +1375,12 @@
             }
         }
 
-        async function loadAdminData() {
-            if (!USE_MOCK && GAS_WEB_APP_URL) {
-                try {
-                    const response = await fetch(`${GAS_WEB_APP_URL}?action=get_students`);
-                    const data = await response.json();
-                    if(data.status === 'success') appState.students = data.students;
-                } catch (e) {
-                    console.error("Gagal load data siswa", e);
-                }
+        async function loadAdminData(forceFetch = true) {
+            if (forceFetch && !USE_MOCK && GAS_WEB_APP_URL) {
+                const icon = document.querySelector('button[title="Refresh Data"] i');
+                if(icon) icon.classList.add('fa-spin');
+                await fetchStudentsFromServer();
+                if(icon) icon.classList.remove('fa-spin');
             }
 
             document.getElementById('stat-total').textContent = appState.students.length;
@@ -1526,7 +1515,6 @@
             if (dragIndex === null || dragIndex === dropIndex) return;
             const fieldToMove = appState.formFields.splice(dragIndex, 1)[0];
             appState.formFields.splice(dropIndex, 0, fieldToMove);
-            
             dragIndex = null;
             renderAdminFieldsList();
         }
@@ -1685,17 +1673,16 @@
             resizeAllMaps();
         }
 
-        // Penanganan error pada tag password Login Admin
         function togglePasswordVisibility(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
-            if(input && icon) {
-                if(input.type === "password") {
+            if (input && icon) {
+                if (input.type === "password") {
                     input.type = "text";
-                    icon.className = "fas fa-eye-slash";
+                    icon.classList.replace("fa-eye", "fa-eye-slash");
                 } else {
                     input.type = "password";
-                    icon.className = "fas fa-eye";
+                    icon.classList.replace("fa-eye-slash", "fa-eye");
                 }
             }
         }
@@ -1921,13 +1908,13 @@
 
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        const fontLat = position.coords.latitude;
-                        const fontLng = position.coords.longitude;
-                        document.getElementById(inputId).value = `${fontLat},${fontLng}`;
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        document.getElementById(inputId).value = `${lat},${lng}`;
                         
                         if(activeMaps[mapId]) {
-                            activeMaps[mapId].map.setView([fontLat, fontLng], 16);
-                            activeMaps[mapId].marker.setLatLng([fontLat, fontLng]);
+                            activeMaps[mapId].map.setView([lat, lng], 16);
+                            activeMaps[mapId].marker.setLatLng([lat, lng]);
                         }
                         showToast("Lokasi berhasil disesuaikan dengan posisi GPS Anda", "success");
                         btn.innerHTML = originalHtml;
@@ -2114,6 +2101,37 @@
                     setTimeout(() => { map.invalidateSize(); }, 500);
                 }
             });
+        }
+
+        // Fungsi Helper untuk memperbarui UI Pendaftaran tanpa me-reset isi halaman
+        function updateRegistrationStatusUI() {
+            const statusCard = document.getElementById('ui-registration-status-card');
+            const statusTitle = document.getElementById('ui-registration-status-title');
+            const statusDesc = document.getElementById('ui-registration-status-desc');
+            const statusBtn = document.getElementById('ui-registration-status-btn');
+            if (!statusCard) return;
+
+            const regStatus = appState.schoolInfo.registrationStatus || "buka";
+
+            if (regStatus === 'buka') {
+                statusCard.className = "p-6 rounded-2xl border text-center transition-all duration-300 shadow-md bg-emerald-50 border-emerald-200 text-emerald-800 shadow-emerald-500/5";
+                statusTitle.textContent = "Pendaftaran Dibuka!";
+                statusTitle.className = "text-xl font-black text-emerald-800";
+                statusDesc.textContent = "Segera daftarkan diri Anda secara online sebelum kuota kelas terpenuhi.";
+                statusDesc.className = "text-sm text-emerald-700/90 mb-4";
+                statusBtn.className = "w-full py-2.5 px-4 font-bold rounded-full shadow transition-all duration-300 flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/10";
+                statusBtn.disabled = false;
+                statusBtn.innerHTML = `<span>Daftar Sekarang</span> <i class="fas fa-arrow-right text-xs"></i>`;
+            } else {
+                statusCard.className = "p-6 rounded-2xl border text-center transition-all duration-300 shadow-md bg-rose-50 border-rose-200 text-rose-800 shadow-rose-500/5";
+                statusTitle.textContent = "Pendaftaran Ditutup!";
+                statusTitle.className = "text-xl font-black text-rose-800";
+                statusDesc.textContent = "Mohon maaf, pendaftaran murid baru online saat ini telah resmi ditutup oleh panitia.";
+                statusDesc.className = "text-sm text-rose-700/90 mb-4";
+                statusBtn.className = "w-full py-2.5 px-4 font-bold rounded-full shadow transition-all duration-300 flex items-center justify-center gap-2 bg-rose-300 text-rose-600 cursor-not-allowed shadow-none";
+                statusBtn.disabled = true;
+                statusBtn.innerHTML = `<span>Pendaftaran Ditutup</span> <i class="fas fa-lock text-xs"></i>`;
+            }
         }
 
         window.onload = initApp;
