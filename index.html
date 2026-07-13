@@ -85,7 +85,7 @@
         <!-- 1. Beranda -->
         <section id="home" class="page-section active">
             <div class="text-center py-6 px-4 mb-4 select-none">
-                <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider uppercase block" 
+                <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider block animate-bounce" 
                       id="ui-welcome-tag" 
                       style="color: #FF6F00;">
                     Selamat Datang
@@ -100,18 +100,17 @@
 
             <!-- Foto Header Sekolah -->
             <div class="bg-gray-50 overflow-hidden mb-8">
-                <!-- Menggunakan rasio aspek dinamis (aspect-[16/9] di mobile/Android agar tidak terpotong, md:aspect-[3/1] di desktop) -->
                 <div class="aspect-[16/9] md:aspect-[3/1] bg-gray-300 relative w-full flex justify-center items-center overflow-hidden rounded-xl">
                    <img id="ui-hero-img" src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Sekolah" class="w-full h-full object-cover">
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="md:col-span-2 space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-8">
                     
                     <!-- Visi & Misi Terpisah secara Vertikal (Flat, Tanpa Kotak/Batas/Shadow) -->
                     <div class="flex flex-col gap-6">
-                        <!-- Visi Sekolah (Flat, Tanpa Kotak Kartu) -->
+                        <!-- Visi Sekolah -->
                         <div class="flex flex-col items-center text-center py-6 relative">
                             <div class="w-20 h-20 bg-gradient-to-br from-[#004D40] to-teal-400 text-white rounded-full flex items-center justify-center text-4xl mb-5 shadow-lg shadow-teal-900/30">
                                 <i class="fas fa-lightbulb"></i>
@@ -122,7 +121,7 @@
                             </p>
                         </div>
 
-                        <!-- Misi Sekolah (Flat, Tanpa Kotak Kartu, Tanpa Border, Tanpa Bayangan & Hover) -->
+                        <!-- Misi Sekolah -->
                         <div class="flex flex-col items-center py-6 relative">
                             <div class="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-full flex items-center justify-center text-4xl mb-5 shadow-lg shadow-orange-600/30">
                                 <i class="fas fa-rocket"></i>
@@ -134,7 +133,7 @@
                         </div>
                     </div>
 
-                    <!-- Sambutan Kepala Sekolah (Flat, Tanpa Kotak Kartu, Tanpa Border, Tanpa Bayangan & Hover) -->
+                    <!-- Sambutan Kepala Sekolah -->
                     <div class="flex flex-col items-center text-center gap-6 py-6">
                         <img id="ui-kepsek-img" src="https://via.placeholder.com/150" alt="Kepala Sekolah" class="w-32 h-32 rounded-full object-cover border-4 border-teal-100 mx-auto">
                         <div class="w-full">
@@ -148,16 +147,26 @@
 
                 <!-- Jadwal & Info -->
                 <div class="space-y-6">
-                    <div class="bg-teal-50 p-6 rounded-xl shadow-sm border border-teal-100">
-                        <h3 class="text-xl font-bold mb-4 text-[#004D40]"><i class="fas fa-calendar-alt mr-2"></i>Jadwal Seleksi</h3>
-                        <ul class="space-y-3" id="ui-schedule">
-                            <!-- Injected by JS -->
-                        </ul>
+                    <!-- Kartu Jadwal Seleksi Premium -->
+                    <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-150 relative overflow-hidden">
+                        <!-- Accent Background Glow -->
+                        <div class="absolute -right-12 -top-12 w-24 h-24 bg-teal-500/10 rounded-full blur-xl pointer-events-none"></div>
+                        
+                        <h3 class="text-xl font-extrabold mb-6 text-[#004D40] flex items-center gap-2">
+                            <span class="p-2 bg-teal-50 text-[#004D40] rounded-xl"><i class="fas fa-calendar-days text-lg"></i></span>
+                            Jadwal Seleksi
+                        </h3>
+                        
+                        <!-- Timeline Container -->
+                        <div class="relative pl-6 border-l-2 border-teal-100 space-y-6" id="ui-schedule">
+                            <!-- Diisi secara dinamis oleh JavaScript dengan ikon dan timeline yang elegan -->
+                        </div>
                     </div>
+
                     <div class="bg-yellow-50 p-6 rounded-xl shadow-sm border border-yellow-100 text-center">
                         <h3 class="text-lg font-bold mb-2 text-yellow-800">Pendaftaran Dibuka!</h3>
                         <p class="text-sm text-yellow-700 mb-4">Segera daftarkan diri Anda sebelum kuota terpenuhi.</p>
-                        <button onclick="navigate('form')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition">
+                        <button onclick="navigate('form')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2.5 px-4 rounded-xl shadow transition">
                             Daftar Sekarang <i class="fas fa-arrow-right ml-1"></i>
                         </button>
                     </div>
@@ -543,8 +552,8 @@
                             </div>
                             
                             <div>
-                                <label class="block text-sm font-medium mb-1">Jadwal Seleksi (Satu item per baris)</label>
-                                <textarea id="set-schedule" rows="4" placeholder="Misal: Pendaftaran: 1-10 Juli 2026&#10;Tes Tulis: 12 Juli 2026" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]"></textarea>
+                                <label class="block text-sm font-medium mb-1">Jadwal Seleksi (Satu item per baris dengan pemisah titik dua ':')</label>
+                                <textarea id="set-schedule" rows="4" placeholder="Misal:&#10;Pendaftaran: 1 Juni - 10 Juli 2026&#10;Pengumuman: 15 Juli 2026&#10;Daftar Ulang: 16 - 20 Juli 2026" class="w-full p-2 border rounded focus:ring-[#004D40] focus:border-[#004D40]"></textarea>
                             </div>
 
                             <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Simpan Pengaturan</button>
@@ -674,28 +683,75 @@
     </footer>
 
     <!-- Modal Kartu (Simulasi Auto Send) -->
-    <div id="card-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
-        <div class="bg-green-600 text-white text-center p-4">
-            <i class="fas fa-check-circle text-4xl mb-2"></i>
-            <h3 class="text-xl font-bold">Pendaftaran Berhasil!</h3>
-            <p class="text-sm opacity-90">Data telah masuk ke database.</p>
-        </div>
-        <div class="p-6 text-center bg-white rounded-b-xl max-w-md w-full">
-            <p class="text-gray-700 mb-4">Kartu Pendaftaran telah otomatis dikirimkan ke email Anda: <br><strong id="card-email-display"></strong></p>
-            <div class="border-2 border-dashed border-gray-300 p-4 mb-4 bg-gray-50 rounded text-left relative">
-                <div class="absolute top-2 right-2 text-gray-300"><i class="fas fa-id-card text-4xl"></i></div>
-                <p class="text-xs text-gray-500 uppercase tracking-wide">Nomor Pendaftaran</p>
-                <p class="text-xl font-bold font-mono text-[#004D40] mb-2" id="card-reg-no">SPMB-001</p>
-                <p class="text-xs text-gray-500 uppercase tracking-wide">Nama Calon Siswa</p>
-                <p class="font-bold text-gray-800" id="card-reg-name">Budi Santoso</p>
+    <div id="card-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-2xl">
+            <div class="bg-green-600 text-white text-center p-6">
+                <i class="fas fa-check-circle text-5xl mb-3"></i>
+                <h3 class="text-2xl font-bold">Pendaftaran Berhasil!</h3>
+                <p class="text-sm opacity-90 mt-1">Data telah terkirim ke server database sekolah.</p>
             </div>
-            <button onclick="document.getElementById('card-modal').classList.replace('flex','hidden'); navigate('announcement')" class="w-full px-4 py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300">Tutup</button>
+            <div class="p-6 text-center">
+                <p class="text-gray-600 mb-5 text-sm leading-relaxed">Kartu pendaftaran Anda telah otomatis dikirimkan ke email terdaftar: <br><strong id="card-email-display" class="text-teal-700"></strong></p>
+                <div class="border-2 border-dashed border-gray-200 p-5 mb-6 bg-gray-50 rounded-xl text-left relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 text-gray-100 text-8xl pointer-events-none"><i class="fas fa-id-card"></i></div>
+                    <p class="text-xs text-gray-400 uppercase tracking-wider font-bold">Nomor Pendaftaran</p>
+                    <p class="text-2xl font-bold font-mono text-[#004D40] mb-3 mt-1" id="card-reg-no">SPMB-001</p>
+                    <p class="text-xs text-gray-400 uppercase tracking-wider font-bold">Nama Calon Siswa</p>
+                    <p class="font-bold text-gray-800 text-lg mt-1" id="card-reg-name">Budi Santoso</p>
+                </div>
+                <button onclick="document.getElementById('card-modal').classList.replace('flex','hidden'); navigate('announcement')" class="w-full py-3 bg-[#004D40] text-white font-bold rounded-xl hover:bg-[#00332C] transition shadow-md">Tutup & Lihat Pengumuman</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Siswa (Admin) -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="bg-[#004D40] text-white p-5 flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-user-edit"></i> Edit Data Calon Siswa</h3>
+                <button onclick="closeEditModal()" class="hover:text-gray-200"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <form onsubmit="saveStudentEdit(event)" class="flex flex-col flex-grow overflow-hidden">
+                <div class="p-6 overflow-y-auto flex-grow space-y-4">
+                    <input type="hidden" id="edit-idx">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Status Verifikasi</label>
+                        <select id="edit-status" class="w-full p-2.5 border rounded-lg focus:ring-[#004D40] focus:border-[#004D40]">
+                            <option value="Menunggu">Menunggu Verifikasi</option>
+                            <option value="Diterima">Diterima (Lulus)</option>
+                            <option value="Ditolak">Ditolak (Gagal)</option>
+                        </select>
+                    </div>
+                    <div id="edit-dynamic-inputs" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+                <div class="bg-gray-50 p-4 border-t flex justify-end gap-3">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 font-bold rounded-lg text-gray-800 text-sm">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-[#004D40] hover:bg-[#00332C] font-bold rounded-lg text-white text-sm shadow">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Modal -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50 p-4">
+        <div id="confirm-box" class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl transform scale-95 opacity-0 transition-all duration-200">
+            <div class="text-center">
+                <div class="w-14 h-14 bg-red-50 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h4 class="text-lg font-bold text-gray-800 mb-2">Konfirmasi Tindakan</h4>
+                <p id="confirm-msg" class="text-sm text-gray-500 mb-6">Apakah Anda yakin ingin melanjutkan tindakan ini?</p>
+            </div>
+            <div class="flex gap-3">
+                <button id="btn-confirm-cancel" class="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-lg text-sm transition">Kembali</button>
+                <button id="btn-confirm-ok" class="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-sm transition shadow-md shadow-red-600/20">Ya, Hapus</button>
+            </div>
         </div>
     </div>
 
     <script>
         const USE_MOCK = false; // Diubah ke false untuk fungsionalitas Google Drive Apps Script
-        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbww_-E_hSfkUhQMY6l6B-vTc20cpA_omVsYVlY6-C5jQtMozZdqdvb3VrPq3zEA-DDizQ/exec"; // Diisi dengan URL Web App Anda sesuai panduan.md
+        const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbww_-E_hSfkUhQMY6l6B-vTc20cpA_omVsYVlY6-C5jQtMozZdqdvb3VrPq3zEA-DDizQ/exec";
 
         // --- STATE APLIKASI ---
         let appState = {
@@ -707,8 +763,10 @@
                 coordinates: "-6.1754, 106.8272",
                 kepsekMsg: "Atas nama keluarga besar sekolah, saya mengucapkan selamat datang kepada seluruh calon peserta didik baru dan orang tua/wali. Kami merasa bangga dan bahagia karena Bapak/Ibu telah mempercayakan pendidikan putra-putrinya kepada sekolah ini. Sekolah bukan hanya tempat untuk belajar membaca, menulis, dan berhitung, tetapi juga tempat membentuk karakter, menanamkan disiplin, tanggung jawab, kejujuran, serta semangat untuk meraih cita-cita. Oleh karena itu, kami berkomitmen memberikan layanan pendidikan terbaik agar setiap peserta didik dapat berkembang sesuai potensi yang dimiliki.",
                 visi: "Unggul dalam prestasi akademik dan non akademik berlandasan keimanan, ketakwaan terhadap Tuhan Yang Maha Esa, kreativitas, kecerdasan dan kemandirian serta tanggap terhadap perkembangan.",
-                misi: "Meningkatkan penghayatan serta pengamalan pancasila.<br>Meningkatkan ketaqwaan terhadap Tuhan yang maha esa.<br>Melaksanakan pembelajaran and bimbingan secara efektif, kreatif, inovatif dengan mengembangkan perilaku bersahabat, kerjasama, dan keteladanan.<br>Mangun kemampuan berkomunikasi dengan sesama dan lingkungan dengan berakhlaqul karimah.<br>Menumbukan semangat keunggulan secara intensif kepada seluruh warga sekolah.<br>Mendorong setiap siswa untuk mengembangkan potensi dirinya secara optimal.",
-                schedule: "Pendaftaran: 1-10 Juli 2026\nPengumuman: 15 Juli 2026",
+                misi: "Meningkatkan penghayatan serta pengamalan pancasila.<br>Meningkatkan ketaqwaan terhadap Tuhan yang maha esa.<br>Melaksanakan pembelajaran dan bimbingan secara efektif, kreatif, inovatif dengan mengembangkan perilaku bersahabat, kerjasama, dan keteladanan.<br>Membangun kemampuan berkomunikasi dengan sesama dan lingkungan dengan berakhlaqul karimah.<br>Menumbukan semangat keunggulan secara intensif kepada seluruh warga sekolah.<br>Mendorong setiap siswa untuk mengembangkan potensi dirinya secara optimal.",
+                
+                // Diperbarui agar menarik sesuai instruksi dengan jadwal terperinci (Pendaftaran, Pengumuman, Daftar Ulang)
+                schedule: "Pendaftaran: 1 Juni - 10 Juli 2026\nPengumuman: 15 Juli 2026\nDaftar Ulang: 16 - 20 Juli 2026",
                 welcomeTag: "Selamat Datang",
                 welcomeTitle: "Sistem Penerimaan Murid Baru (SPMB)",
                 welcomeYear: "Tahun Ajaran 2026/2027",
@@ -737,7 +795,6 @@
                 appState.isAdminLoggedIn = true;
             }
 
-            // Jika URL kosong, paksa gunakan MOCK/Lokal agar tidak menghasilkan error URL tak valid
             if (USE_MOCK || !GAS_WEB_APP_URL) {
                 const saved = localStorage.getItem('spmbState');
                 if (saved) {
@@ -760,7 +817,6 @@
                 } catch (e) {
                     console.error("Gagal terhubung ke database", e);
                     showToast("Koneksi gagal. Memuat data cadangan lokal.", "warning");
-                    // Fallback to local storage if fail
                     const saved = localStorage.getItem('spmbState');
                     if (saved) {
                         const parsed = JSON.parse(saved);
@@ -804,7 +860,7 @@
         function renderAll() {
             document.getElementById('nav-school-name').textContent = appState.schoolInfo.name;
             
-            // Set Teks Banner Selamat Datang
+            // Set Teks Banner Selamat Datang (Tanpa class 'uppercase' agar Case-sensitive)
             document.getElementById('ui-welcome-tag').textContent = appState.schoolInfo.welcomeTag || "Selamat Datang";
             document.getElementById('ui-welcome-title').textContent = appState.schoolInfo.welcomeTitle || "Sistem Penerimaan Murid Baru (SPMB)";
             document.getElementById('ui-welcome-year').textContent = appState.schoolInfo.welcomeYear || "Tahun Ajaran 2026/2027";
@@ -817,7 +873,7 @@
             // Set Visi
             document.getElementById('ui-visi').textContent = appState.schoolInfo.visi || 'Visi belum diatur oleh admin.';
             
-            // Parsing Misi dengan Checklist Netral (Menghapus warna jingga/oranye & hover)
+            // Parsing Misi dengan Checklist Netral
             const misiRaw = appState.schoolInfo.misi || '';
             const misiItems = misiRaw.split('<br>').map(item => item.trim()).filter(item => item !== '');
             let misiHtml = '';
@@ -840,11 +896,57 @@
             }
             document.getElementById('ui-misi').innerHTML = misiHtml;
             
-            const scheduleHtml = appState.schoolInfo.schedule.split('\n').map(s => {
+            // Parsing & Desain interaktif Jadwal Seleksi
+            const scheduleLines = appState.schoolInfo.schedule.split('\n');
+            let scheduleHtml = '';
+            
+            scheduleLines.forEach(s => {
                 let parts = s.split(':');
-                if(parts.length > 1) return `<li><span class="font-bold text-gray-700">${parts[0]}:</span> ${parts[1]}</li>`;
-                return `<li>${s}</li>`;
-            }).join('');
+                if (parts.length > 1) {
+                    const label = parts[0].trim();
+                    const value = parts.slice(1).join(':').trim();
+                    
+                    // Default values
+                    let iconClass = 'fa-calendar-alt';
+                    let iconColor = 'bg-teal-50 text-[#004D40] border-teal-200';
+                    let borderAccent = 'border-l-teal-500';
+                    
+                    // Atur ikon & aksen berdasarkan kata kunci (Pendaftaran, Pengumuman, Daftar Ulang)
+                    if (label.toLowerCase().includes('pendaftaran')) {
+                        iconClass = 'fa-file-signature';
+                        iconColor = 'bg-teal-50 text-teal-600 border-teal-200';
+                        borderAccent = 'border-l-teal-500';
+                    } else if (label.toLowerCase().includes('pengumuman')) {
+                        iconClass = 'fa-bullhorn';
+                        iconColor = 'bg-amber-50 text-amber-500 border-amber-200';
+                        borderAccent = 'border-l-amber-500';
+                    } else if (label.toLowerCase().includes('daftar ulang') || label.toLowerCase().includes('registrasi')) {
+                        iconClass = 'fa-user-check';
+                        iconColor = 'bg-indigo-50 text-indigo-600 border-indigo-200';
+                        borderAccent = 'border-l-indigo-500';
+                    }
+                    
+                    scheduleHtml += `
+                        <div class="relative group">
+                            <!-- Timeline Bullet with dynamic Icon -->
+                            <div class="absolute -left-10 top-0.5 w-8 h-8 rounded-full ${iconColor} border-4 border-white shadow-sm flex items-center justify-center text-xs transition-transform duration-300 group-hover:scale-110 z-10">
+                                <i class="fas ${iconClass}"></i>
+                            </div>
+                            <!-- Card Content info -->
+                            <div class="bg-gray-50 hover:bg-gray-100/80 p-3.5 rounded-xl border border-gray-150 border-l-4 ${borderAccent} transition-all duration-200">
+                                <p class="text-[10px] font-extrabold text-gray-400 uppercase tracking-wider">${label}</p>
+                                <p class="text-sm font-bold text-gray-800 mt-1">${value}</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (s.trim() !== '') {
+                    scheduleHtml += `
+                        <div class="relative pl-1 py-1 text-xs text-gray-500 italic">
+                            ${s}
+                        </div>
+                    `;
+                }
+            });
             document.getElementById('ui-schedule').innerHTML = scheduleHtml;
 
             // RENDER INFORMASI FOOTER DINAMIS
@@ -1138,7 +1240,7 @@
             });
         }
 
-        // --- EDIT PROFIL SEKOLAH (TERMASUK FOOTER DINAMIS) ---
+        // --- EDIT PROFIL SEKOLAH ---
         async function saveSchoolSettings(e) {
             e.preventDefault();
             const currentPassword = appState.schoolInfo.adminPassword || "admin123";
@@ -1563,7 +1665,7 @@
             else if(type === 'warning') { icon = '<i class="fas fa-exclamation-triangle text-2xl"></i>'; colorClass = 'bg-yellow-500'; }
             else { icon = '<i class="fas fa-info-circle text-2xl"></i>'; colorClass = 'bg-teal-700'; }
 
-            toast.className = `flex items-center gap-3 text-white px-4 py-3 rounded shadow-lg toast-enter ${colorClass}`;
+            toast.className = `flex items-center gap-3 text-white px-4 py-3 rounded-xl shadow-lg toast-enter ${colorClass}`;
             toast.innerHTML = `${icon} <span class="font-medium text-sm">${message}</span>`;
             container.appendChild(toast);
 
